@@ -45,3 +45,23 @@ Standards 與 Spec 各一個獨立 agent，審查基準 `a819bb6` 加本次工�
 固定 `8547e43` 的 private Git URL 實測中，uvx／npx 均成功建立並驗證 30 個 skills；pnpx 11.14.0 在 prepare 階段遭 `ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED` 阻擋。單獨允許套件名稱也未解決。這符合 [pnpm 對 Git build 的限制](https://github.com/pnpm/pnpm.io/blob/main/blog/releases/10.26.md)；未變更使用者的全域白名單。
 
 因此 npm 改為透過明確的 `files` 白名單攜帶範本正本，移除 prepare／prepack 及 build wrapper。CLI 執行時讀取同版本隨附的檔案，不需安裝 script。Python wheel 仍在建置時產生 bundle，套件 E2E 逐檔比對兩者並確認成品 digest 相同。npm 匯出不保留 `.git`，因此 provenance 的 commit／dirty 可為 null，須連同安裝指令的固定 revision 回報。
+
+後續內容比對發現 npm 安裝會將 `.gitignore` 改名成 `.npmignore`，已在 snapshot 還原並新增 regression。pnpx 對重複的本機 tarball 路徑會沿用 cache，驗收工具因此每次複製到新路徑再執行，避免把舊產物誤認為最新產物。Windows 原有的壞連結也必須實際能讀取目錄，才可視為有效；單看解析後的路徑相同不足以判定。
+
+## 完成驗收
+
+2026-09-09 的 [完整跨平台 CI](https://github.com/CXPhoenix/harness-agile/actions/runs/34256102062)，程式碼 commit `c864c4f475b5ac18ca4c60a8aac78d70de86deea`：
+
+| 實際介面 | 結果 |
+| --- | --- |
+| Linux、macOS、Windows runner | 三者全部通過 |
+| 各平台 Python 3.11 regression | 各 22 項通過 |
+| 各平台 uvx／npx／pnpx 套件執行 | 各自建立 30 個 skills，成品 verifier 通過 |
+| wheel／npm 範本內容 | 逐檔一致，三入口成品來源 digest 一致 |
+| Windows skills | 新連結、舊壞連結修復、copy、無 symlink 權限 fallback 通過 |
+| private Git URL | 固定 `47beef4e497e1e4d23a5dcadcb9572c4e3833358` 的三入口均成功，無額外 build 白名單 |
+| 文件入口 | README、INSTALL、維護索引的本機連結無缺漏 |
+
+Git URL 驗收在 macOS 執行，三者範本 digest 均為 `3c2d10b3a85d90ed80615c0624870f74efee12aecb645b94b4e72ada82a254ba`；其後的程式碼修正只有上述 Windows 既有壞連結判定，已由三平台 CI 覆蓋。digest 隨版本內文件與程式變更而更新，這裡記錄的是該次驗收，不當成後續版本的固定值。
+
+第一版入口使用 `v0.1.0` Git tag；repository 維持 private、template 啟用、預設分支 main。npm／PyPI registry 尚未發布，執行 Git URL 需要既有讀取權限。以上驗收涵蓋 CLI 與設定檔結構，不代表 Claude Code／Codex 的模型行為或新產品功能已驗證。
