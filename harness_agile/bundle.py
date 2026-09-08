@@ -25,6 +25,9 @@ def snapshot(root):
     files = {}
     for rel in PATHS:
         selected = root / rel
+        # npm's installer renames the explicitly packed .gitignore to .npmignore.
+        if rel == '.gitignore' and not selected.exists():
+            selected = root / '.npmignore'
         if not selected.exists():
             continue
         for path in ([selected] if selected.is_file() else sorted(selected.rglob('*'))):
@@ -34,7 +37,8 @@ def snapshot(root):
             if path.is_symlink() or not path.resolve().is_relative_to(root):
                 raise ValueError(f'Template source contains an unsupported link: {path}')
             if path.is_file():
-                files[path.relative_to(root).as_posix()] = base64.b64encode(path.read_bytes()).decode('ascii')
+                name = rel if selected.is_file() else path.relative_to(root).as_posix()
+                files[name] = base64.b64encode(path.read_bytes()).decode('ascii')
     commit = None
     dirty = None
     if (root / '.git').exists():

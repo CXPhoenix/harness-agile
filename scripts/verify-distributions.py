@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run built packages through uvx, npx and pnpx outside the source checkout."""
 import argparse
+import base64
 import json
 import os
 from pathlib import Path
@@ -31,20 +32,26 @@ def main():
         python_bundle = json.loads(archive.read('harness_agile/data/template.json'))
     with tarfile.open(npm) as archive:
         assert not any(member.issym() or member.islnk() for member in archive), 'npm artifact contains links'
-        node_bundle = json.load(archive.extractfile('package/harness_agile/data/template.json'))
-    assert python_bundle['source']['content_sha256'] == node_bundle['source']['content_sha256'], 'Entry points bundled different template content'
+        manifest = json.load(archive.extractfile('package/package.json'))
+        assert not ({'prepare', 'prepack', 'preinstall', 'install', 'postinstall'} & manifest.get('scripts', {}).keys()), 'npm install must not require build scripts'
+        node_files = {name: base64.b64encode(archive.extractfile('package/' + name).read()).decode('ascii') for name in python_bundle['files']}
+    assert python_bundle['files'] == node_files, 'Entry points bundled different template content'
     with tempfile.TemporaryDirectory(prefix='harness-package-e2e-') as temp:
         parent = Path(temp)
+        # dlx caches local tarball specifiers; each run must install today's bytes.
+        fresh_npm = parent / npm.name
+        shutil.copyfile(npm, fresh_npm)
         rows = []
         commands = [
             ('uvx', ['uvx', '--from', str(wheel), 'harness-agile'], 'auto'),
-            ('npx', ['npx', '--yes', '--package', str(npm), 'create-harness-agile'], 'copy'),
-            ('pnpx', ['pnpx', str(npm)], 'copy'),
+            ('npx', ['npx', '--yes', '--package', str(fresh_npm), 'create-harness-agile'], 'copy'),
+            ('pnpx', ['pnpx', str(fresh_npm)], 'copy'),
         ]
         for label, command, mode in commands:
             target = parent / (label + ' 專案 with spaces')
             output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--skill-mode', mode, '--no-input', '--json'], parent)
             report = json.loads(output.strip().splitlines()[-1])
+            assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
             assert report['skills'] == 30, report
             assert not (target / 'package.json').exists()
             assert not (target / 'pyproject.toml').exists()

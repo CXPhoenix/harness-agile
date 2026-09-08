@@ -16,6 +16,20 @@ spec.loader.exec_module(verifier)
 
 
 class SkillCopyTests(unittest.TestCase):
+    def test_auto_entries_remain_readable_after_project_moves(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / 'staging'
+            skill = root / '.agents/skills/example'
+            skill.mkdir(parents=True)
+            (skill / 'SKILL.md').write_text('canonical')
+            sync(root)
+            target = Path(temp) / 'finished'
+            root.rename(target)
+            entry = target / '.claude/skills/example'
+            self.assertEqual((entry / 'SKILL.md').read_text(), 'canonical')
+            if entry.is_symlink():
+                self.assertFalse(entry.readlink().is_absolute())
+
     def test_identical_skill_copies_pass_and_drift_fails(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / 'project'

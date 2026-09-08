@@ -3,10 +3,20 @@ import base64
 from pathlib import Path
 import tempfile
 import unittest
-from harness_agile.bundle import unpack, digest
+from harness_agile.bundle import unpack, digest, snapshot
 
 
 class BundleTests(unittest.TestCase):
+    def test_npm_renamed_gitignore_preserves_snapshot_content(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / 'scripts').mkdir()
+            (root / 'scripts/init-project.py').write_text('# fixture')
+            (root / '.gitignore').write_text('.env\n')
+            expected = snapshot(root)
+            (root / '.gitignore').rename(root / '.npmignore')
+            self.assertEqual(snapshot(root)['files'], expected['files'])
+
     def test_rejects_unsafe_paths_before_any_writes(self):
         for bad in ('../outside', '/absolute', 'C:/drive', '.git/config', 'a\\b', 'CON', 'folder/../outside'):
             with self.subTest(path=bad), tempfile.TemporaryDirectory() as temp:

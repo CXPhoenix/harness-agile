@@ -61,7 +61,8 @@ def sync(root, mode='auto', refresh=False, dry_run=False):
             linked = False
             if mode != 'copy':
                 try:
-                    staged.symlink_to(f'../../.agents/skills/{skill.name}', target_is_directory=True)
+                    # Windows reparse points need native separators in their target.
+                    staged.symlink_to(Path('../../.agents/skills') / skill.name, target_is_directory=True)
                     linked = True
                 except OSError:
                     if mode == 'symlink':

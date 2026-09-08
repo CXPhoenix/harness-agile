@@ -6,10 +6,14 @@
   "repository": { "type": "git", "url": "git+https://github.com/CXPhoenix/harness-agile.git" },
   "engines": { "node": ">=18" },
   "bin": { "create-harness-agile": "bin/create.cjs" },
-  "files": ["bin", "harness_agile/**/*.py", "harness_agile/data/template.json"],
+  "files": [
+    "bin", "harness_agile/**/*.py",
+    "AGENTS.md", "CLAUDE.md", "README.md", "INSTALL.md", "bootstrap", ".gitignore", ".gitattributes", "skills-lock.json",
+    ".agents/skills", ".claude/agents", ".codex/agents", ".codex/config.toml",
+    "docs", ".tmpl.docs", "scripts/init-project.py", "scripts/verify-project.py",
+    "scripts/skill_links.py", "scripts/sync-skills.py", "scripts/project-readme.md", "tests/test_init_project.py"
+  ],
   "scripts": {
-    "prepare": "node bin/build.cjs",
-    "prepack": "node bin/build.cjs",
     "test": "node bin/python.cjs -m unittest discover -s tests -v"
   }
 }

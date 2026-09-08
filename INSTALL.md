@@ -18,7 +18,9 @@ checkout, use that checkout's `git rev-parse HEAD`.
 ## Choose an entry point
 
 Use uv, or Node.js 18+ with Python 3.11+ (or uv). Package managers may download
-dependencies and populate caches. The creator itself uses its bundled snapshot.
+dependencies and populate caches. The creator reads only the template shipped in
+the selected package: a wheel snapshot or regular files in the npm package. The
+npm package has no installation lifecycle scripts and requires no build allowlist.
 
 ```bash
 uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.1.0' \
@@ -65,6 +67,9 @@ Pass user values through argv; avoid constructing shell code from them.
    generated directory, using Python 3.11+ (or the equivalent interpreter through uv).
 3. Report the source commit/content digest, dirty-source status, target, skill mode
    and count. Provenance is saved in `docs/agents/template-source.json`.
+   Exported npm packages have no Git metadata, so commit and dirty status can be
+   `null`; also report the exact Git revision requested in the install command.
+   The content digest identifies the template bytes across all entry points.
 4. Open a fresh Claude Code or Codex session in the target. Keep account setup and
    Codex trust local. Use `grill-with-docs` to define the Project Charter.
 

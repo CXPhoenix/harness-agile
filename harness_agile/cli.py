@@ -47,9 +47,11 @@ def create(args):
         bundle = snapshot(source)
     else:
         resource = Path(__file__).parent / 'data/template.json'
-        if not resource.is_file():
-            raise ValueError('Template bundle missing. Build the package or pass --source /path/to/template')
-        bundle = json.loads(resource.read_text(encoding='utf-8'))
+        if resource.is_file():
+            bundle = json.loads(resource.read_text(encoding='utf-8'))
+        else:
+            # npm ships regular source files and needs no install-time scripts.
+            bundle = snapshot(Path(__file__).resolve().parents[1])
     result = {'target': str(target), 'generator_version': __version__, 'source': bundle['source'], 'dry_run': args.dry_run}
     if args.dry_run:
         return result

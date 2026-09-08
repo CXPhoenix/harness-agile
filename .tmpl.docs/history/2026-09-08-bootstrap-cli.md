@@ -37,3 +37,11 @@ Standards 與 Spec 各一個獨立 agent，審查基準 `a819bb6` 加本次工�
 ## 發行界線
 
 第一版透過 Git URL 與版本 tag 提供套件入口，未發布 npm／PyPI registry，也未將 repo 改成 public。Git URL 的 prepare 流程與 GitHub Actions 原生跨平台結果，於推送後另記確認結果；不得把本機 wheel／tarball 測試誤稱為這兩項已通過。
+
+## 2026-09-09：遠端實測後修正
+
+首輪 [GitHub Actions](https://github.com/CXPhoenix/harness-agile/actions/runs/34249225513) 的 Linux／macOS 套件驗證通過，Windows 揭露以 `/` 字串建立的 relative symlink 無法讀取。改用 `Path` 產生原生分隔符號，新增專案搬移後 skills 仍可讀取的 regression；copy 與無權限 fallback 原已通過。
+
+固定 `8547e43` 的 private Git URL 實測中，uvx／npx 均成功建立並驗證 30 個 skills；pnpx 11.14.0 在 prepare 階段遭 `ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED` 阻擋。單獨允許套件名稱也未解決。這符合 [pnpm 對 Git build 的限制](https://github.com/pnpm/pnpm.io/blob/main/blog/releases/10.26.md)；未變更使用者的全域白名單。
+
+因此 npm 改為透過明確的 `files` 白名單攜帶範本正本，移除 prepare／prepack 及 build wrapper。CLI 執行時讀取同版本隨附的檔案，不需安裝 script。Python wheel 仍在建置時產生 bundle，套件 E2E 逐檔比對兩者並確認成品 digest 相同。npm 匯出不保留 `.git`，因此 provenance 的 commit／dirty 可為 null，須連同安裝指令的固定 revision 回報。
