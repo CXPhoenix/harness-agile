@@ -18,7 +18,7 @@ def contents(directory):
 
 def matches(entry, canonical):
     if entry.is_symlink():
-        return not entry.readlink().is_absolute() and entry.resolve() == canonical.resolve()
+        return entry.is_dir() and not entry.readlink().is_absolute() and entry.resolve() == canonical.resolve()
     expected = contents(canonical)
     return expected is not None and contents(entry) == expected
 
