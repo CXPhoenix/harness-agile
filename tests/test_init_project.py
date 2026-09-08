@@ -19,6 +19,7 @@ class InitializeProjectTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "scripts").mkdir()
         shutil.copy2(SOURCE / "scripts/init-project.py", self.root / "scripts/init-project.py")
+        shutil.copy2(SOURCE / "scripts/skill_links.py", self.root / "scripts/skill_links.py")
         (self.root / "AGENTS.md").write_text(
             "# Instructions\n\n<!-- TEMPLATE: {{PROJECT_NAME}} -->\n"
             "\n## Project Charter\n**{{PROJECT_NAME}}** — {{PROJECT_ONE_LINER}}\n"
@@ -43,7 +44,10 @@ class InitializeProjectTests(unittest.TestCase):
             (skill / "SKILL.md").write_text(f"# {name}\n", encoding="utf-8")
             link = self.root / ".claude/skills" / name
             link.parent.mkdir(parents=True, exist_ok=True)
-            link.symlink_to(f"../../.agents/skills/{name}", target_is_directory=True)
+            try:
+                link.symlink_to(f"../../.agents/skills/{name}", target_is_directory=True)
+            except OSError:
+                shutil.copytree(skill, link)
 
     def run_init(self, *extra):
         return subprocess.run(
@@ -95,6 +99,17 @@ class InitializeProjectTests(unittest.TestCase):
         before = self.snapshot()
         result = self.run_init("--date", "2026-02-30")
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_divergent_copy_fails_before_changing_project_or_removing_history(self):
+        entry = self.root / '.claude/skills/research'
+        if entry.is_symlink():
+            entry.unlink()
+            shutil.copytree(self.root / '.agents/skills/research', entry)
+        (entry / 'SKILL.md').write_text('local edit', encoding='utf-8')
+        before = self.snapshot()
+        result = self.run_init()
+        self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.snapshot(), before)
 
     def test_default_init_removes_template_history_and_its_readme_link(self):

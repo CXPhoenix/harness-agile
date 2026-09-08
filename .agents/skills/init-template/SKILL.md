@@ -20,8 +20,8 @@ If the charter is already filled, stop without deleting template files.
 - **One-liner** — one sentence saying what the project does. This is not the Charter; it is the
   single line that sits above it.
 
-Ask for both in one turn and wait. Do not invent them from the directory name: the directory name is
-what the user typed when cloning, and it is often not what they would call the project.
+Use values already supplied by the user; ask together only for missing values and wait.
+Keep the human-readable name distinct from the directory name.
 
 ## 3. Run the script from the repository root
 
@@ -29,10 +29,14 @@ what the user typed when cloning, and it is often not what they would call the p
 python3 scripts/init-project.py --dry-run --name "<name>" --one-liner "<one sentence>"
 ```
 
-Read the plan, then drop `--dry-run` to apply it. The script fills the three tokens, strips the
+Read the plan, then drop `--dry-run` to apply it. `--skill-mode copy` avoids symlinks;
+the default `auto` uses relative symlinks with a verified-copy fallback. For flattened
+Git links, run `python3 scripts/sync-skills.py` before structural verification.
+The script fills the three tokens, strips the
 template banner from `AGENTS.md`, and removes `.tmpl.docs/`, its marked README entry,
-the initializer and its test, and both this shared skill directory and its Claude
-link. `--keep-template-files` preserves these files and the README entry; historical
+the initializer, creator packaging and template tests, and both this shared skill directory and its Claude
+entry. It writes a product README and synchronizes remaining skills.
+`--keep-template-files` preserves template files and the original README; historical
 tokens inside `.tmpl.docs/` are always left untouched. It exits non-zero and names
 the files if any project token survives.
 

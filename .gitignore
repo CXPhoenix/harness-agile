@@ -6,6 +6,10 @@ __pycache__/
 .codex/*.local.toml
 .worktrees/
 .scratch/
+node_modules/
+dist/
+harness_agile/data/template.json
+*.egg-info/
 
 # Credentials belong to each runtime's local configuration.
 .env

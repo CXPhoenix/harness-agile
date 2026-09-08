@@ -35,7 +35,8 @@
       "source": ".claude/skills/init-template in template commit 501c8a2",
       "adaptations": [
         "Relocated to shared project skill root.",
-        "Skip template-history tokens; remove .tmpl.docs and its marked README entry unless keeping template files."
+        "Skip template-history tokens; remove .tmpl.docs and its marked README entry unless keeping template files.",
+        "Use supplied values without repeated questions; support synchronized copies and product README generation."
       ]
     },
     "tw-emoji-commit": {

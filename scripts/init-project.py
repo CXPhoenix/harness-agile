@@ -21,7 +21,7 @@ from pathlib import Path
 TOKENS = ("{{PROJECT_NAME}}", "{{PROJECT_ONE_LINER}}", "{{INIT_DATE}}")
 
 # Directories never walked: vendored upstream skills, git internals, caches.
-SKIP_DIRS = {".git", ".agents", "__pycache__", "node_modules", ".venv"}
+SKIP_DIRS = {".git", ".agents", ".claude", "__pycache__", "node_modules", ".venv"}
 
 # Text extensions worth scanning. Anything else is left alone.
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".html", ".py", ".sh"}
@@ -30,6 +30,11 @@ TEXT_SUFFIXES = {".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".html", ".py
 TEMPLATE_ONLY = (
     ".tmpl.docs", "TEMPLATE.md", "scripts/init-project.py", "tests/test_init_project.py",
     ".claude/skills/init-template", ".agents/skills/init-template",
+    "scripts/project-readme.md", "harness_agile", "bin", "hatch_build.py",
+    "pyproject.toml", "package.json", "INSTALL.md", "bootstrap",
+    "tests/test_bootstrap.py", "tests/test_skill_links.py", "tests/test_bundle.py",
+    "scripts/verify-distributions.py",
+    ".github/workflows/verify.yml",
 )
 
 # The banner in shared instructions that only makes sense before initialisation.
@@ -86,6 +91,7 @@ def main() -> int:
     ap.add_argument("--one-liner", help="One sentence saying what the project does")
     ap.add_argument("--date", default=_dt.date.today().isoformat(), help="ADR adoption date (default: today)")
     ap.add_argument("--dry-run", action="store_true", help="Print the plan and change nothing")
+    ap.add_argument("--skill-mode", choices=("auto", "symlink", "copy"), default="auto", help="Claude skill transport: auto falls back to verified copies")
     ap.add_argument("--keep-template-files", action="store_true", help="Keep template documentation, its README link, initializer, test, and init skill entries")
     args = ap.parse_args()
 
@@ -113,6 +119,17 @@ def main() -> int:
         print(f"--date must be a valid YYYY-MM-DD date, got {args.date!r}", file=sys.stderr)
         return 2
 
+    # Validate all entries before token writes or template cleanup. Importing this
+    # helper should not create a cache during dry-run or a rejected initialization.
+    sys.dont_write_bytecode = True
+    if (root / "scripts/skill_links.py").is_file():
+        from skill_links import sync
+        try:
+            print(f"Skills synchronized ({sync(root, args.skill_mode, dry_run=args.dry_run)}).")
+        except (OSError, ValueError) as error:
+            print(f"Skill sync failed: {error}", file=sys.stderr)
+            return 4
+
     replacements = {
         "{{PROJECT_NAME}}": args.name,
         "{{PROJECT_ONE_LINER}}": args.one_liner,
@@ -135,8 +152,13 @@ def main() -> int:
         if readme.is_file() and not readme.is_symlink():
             body = readme.read_text(encoding="utf-8")
             cleaned = TEMPLATE_DOC_LINK.sub("", body)
+            product_readme = root / "scripts/project-readme.md"
+            if product_readme.is_file():
+                cleaned = product_readme.read_text(encoding="utf-8")
+                for token, value in replacements.items():
+                    cleaned = cleaned.replace(token, value)
             if cleaned != body:
-                print(f"{prefix}remove template documentation link from README.md")
+                print(f"{prefix}update README.md for the adopted project")
                 if not args.dry_run:
                     readme.write_text(cleaned, encoding="utf-8")
         for rel in TEMPLATE_ONLY:
@@ -159,6 +181,7 @@ def main() -> int:
     if args.dry_run:
         print("\n[dry-run] nothing was written.")
         return 0
+
 
     leftover = find_tokens(root)
     if leftover:

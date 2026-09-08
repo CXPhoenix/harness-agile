@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create Harness Project"
+  short_description: "Create a new Claude Code and Codex project"
+policy:
+  allow_implicit_invocation: false

@@ -7,7 +7,7 @@ needed by an adopted project and is independent of removable template history.
 ## Shared skill contract
 
 `.agents/skills/<name>/` is the complete project copy. `.claude/skills/<name>` is a
-relative symlink to it. Read the project copy when a user-level skill has the same
+relative symlink or verified byte-identical copy of it. Read the canonical project copy when a user-level skill has the same
 name; helper paths resolve relative to that loaded SKILL.md. Keep reference files
 and scripts with their skill. Provenance: [skill-sources.json](skill-sources.json).
 `skills-lock.json` records the upstream installer snapshot; local adaptations are
@@ -38,7 +38,10 @@ unless a project adapter or the user states otherwise.
 
 `CLAUDE.md` imports `@AGENTS.md`; use `/memory` to inspect loaded instructions.
 Use `/skills` and `/agents` to inspect discovery after a fresh session. Project
-skills use relative links supported by Claude Code. Existing user or managed
+skills use relative links or synchronized real directories. After reviewing canonical
+skill edits, run `python3 scripts/sync-skills.py --refresh`; verification rejects divergent
+copies. `--mode copy` avoids filesystem symlink requirements. Git checkouts may contain
+flattened link text files; `sync-skills.py` repairs those before verification. Existing user or managed
 permissions continue to apply; the template does not enable permission bypass.
 
 Project roles in `.claude/agents/`:

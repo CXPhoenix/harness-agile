@@ -1,13 +1,64 @@
-# harness-agile-template
+# harness-agile
 
 供 **Claude Code 與 Codex 共用**的 AI 協作開發範本：需求訪談、spec、獨立 review、拆票、TDD、驗證與交付。技術棧由新專案自行選擇，母範本保留未填的 Project Charter。
 
 ## 開始使用
 
-把完整範本複製到新專案目錄，保留隱藏檔與相對 symlink。Git 會攜帶連結；其他搬移方式須保留 symlink。需要 Python 3.11+ 與 Git。
+這個 GitHub repo 同時是 template 與專案建立器，目前為 private，下載需要既有 Git 讀取權限。可以先在本機建立，以後才 push。套件版本為 `0.1.0`，以下使用固定 Git tag `v0.1.0`，不依賴 npm／PyPI registry 同名套件。
+
+使用 uv：
+
+```bash
+uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.1.0' \
+  harness-agile init my-project --name '我的專案' \
+  --one-liner '它要解決的問題。' --no-input
+```
+
+使用 npx（Node.js 18+，另需 Python 3.11+ 或 uv）：
+
+```bash
+npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+  create-harness-agile init my-project --name '我的專案' \
+  --one-liner '它要解決的問題。' --no-input
+```
+
+使用 pnpx；也可將 `pnpx` 換成 `pnpm dlx`：
+
+```bash
+pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+  init my-project --name '我的專案' --one-liner '它要解決的問題。' --no-input
+```
+
+這三個入口使用同一套 Python 初始化邏輯與隨套件攜帶的範本。Node 入口會尋找 Python 3.11+，找不到才使用 uv；可用 `HARNESS_PYTHON` 指定 Python 執行檔。完整參數不需互動；省略參數時只有互動終端機會詢問缺值。
+
+| 選項 | 行為 |
+| --- | --- |
+| `--dry-run` | 預覽來源與目標，不寫入成品；套件管理器仍可能使用 cache |
+| `--json` | 輸出結果供 agent／CI 使用，缺少必要值時失敗、不詢問 |
+| `--skill-mode copy` | 完全不使用 symlink；預設 `auto` 在連結不可用時改用副本 |
+| `--date YYYY-MM-DD` | 指定採用日期 |
+| `--keep-template-files` | 保留範本歷史、初始化工具與原 README |
+| `--source PATH` | 使用指定的本機母範本，目標須在來源之外 |
+| `--git` | 建立獨立 Git repo；不自動 commit、建立 remote 或 push |
+
+目標必須不存在或為空，父目錄須已存在。建立器會保存採用來源及內容 digest 至 `docs/agents/template-source.json`。預設產生專案 README，保留 30 個 skills，移除範本專用內容。
+
+也可以讓 agent 讀取 [INSTALL.md](INSTALL.md)，提供目標、名稱與描述後執行；獨立 bootstrap skill 位於 [bootstrap/create-harness-project](bootstrap/create-harness-project/SKILL.md)，不計入每個產品攜帶的 30 個 skills。
+
+### 從 GitHub template 或本機母範本開始
+
+```bash
+gh repo create MY_ACCOUNT/my-project \
+  --template CXPhoenix/harness-agile --private --clone
+```
+
+沒有 GitHub remote 的本機建立方式：在**另外取得的、未初始化母範本 checkout** 執行 `python3 -m harness_agile init /absolute/path/my-project --source . --name '我的專案' --one-liner '它要解決的問題。' --no-input`。`--keep-template-files` 成品保留的是範本說明與 init 工具，並非完整建立器 checkout；從成品再開新專案請使用上方 Git URL 指令。
+
+若使用 GitHub template 或直接複製完整範本，保留隱藏檔；先同步 skills，再初始化。此路線需要 Python 3.11+ 與 Git。
 
 ```bash
 cd my-project
+python3 scripts/sync-skills.py
 python3 scripts/verify-project.py
 ```
 
@@ -28,7 +79,7 @@ python3 scripts/init-project.py --dry-run --name "我的專案" --one-liner "它
 python3 scripts/init-project.py --name "我的專案" --one-liner "它要解決的問題。"
 ```
 
-`--date YYYY-MM-DD` 指定採用日期；`--keep-template-files` 保留範本文件及初始化工具。預設會移除 `.tmpl.docs/`、README 中的範本文件入口、初始化腳本、其專用測試與兩邊的 init skill 入口。README 的使用說明、共用規範、其他 skills 和可攜性驗證工具會保留。
+`--date YYYY-MM-DD` 指定採用日期；`--keep-template-files` 保留範本文件及初始化工具。預設會移除 `.tmpl.docs/`、建立器與初始化工具、專用測試及兩邊的 init skill 入口，並改寫為成品 README。共用規範、其他 skills、同步與驗證工具會保留。
 
 接著用 `grill-with-docs` 定義 `AGENTS.md` 的 Project Charter，再建立真正端到端可執行的 walking skeleton。初始化不會安裝產品依賴、建立產品程式碼或替你選技術棧。
 
@@ -40,7 +91,7 @@ python3 scripts/init-project.py --name "我的專案" --one-liner "它要解決�
 AGENTS.md                         共用規範、Project Charter、交付流程
 CLAUDE.md                         匯入 @AGENTS.md，加上 Claude 專用入口
 .agents/skills/<name>/            skills 正本，含 scripts 與 references
-.claude/skills/<name>             指向上述正本的相對 symlink
+.claude/skills/<name>             相對 symlink，或經驗證一致的副本
 .claude/agents/                   Claude 原生 reviewer／researcher
 .codex/config.toml                Codex 專案預設
 .codex/agents/                    Codex 原生 reviewer／researcher
@@ -49,6 +100,8 @@ docs/agents/skill-sources.json    來源、固定版本、checksum 與客製紀�
 ```
 
 兩邊都可以研究、實作和 review。Claude 保留原生工具限制、subagents 與互動訪談；Codex 保留終端機驗證、patch、worktree 與原生 review。角色預設繼承當前模型，使用者可用各自工具的模型選擇器調整。
+
+npm 與 wheel 攜帶正本範本資料，不靠套件保存 symlink。修改 `.agents/skills/` 後，檢閱差異，再執行 `python3 scripts/sync-skills.py --refresh` 與 verifier。副本偏離時會報錯；Git 在不支援連結的環境留下的文字檔，也可由 sync 修復。
 
 切換工具時，用 `handoff` 保存目標、spec／ticket 路徑、Git branch／HEAD、未提交變更、驗證結果和下一步。同一張票維持一位寫入者；並行實作使用不同 worktree。詳見 [runtime.md](docs/agents/runtime.md)。
 
