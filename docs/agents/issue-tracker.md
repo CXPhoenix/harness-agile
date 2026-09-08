@@ -121,3 +121,30 @@ The user will normally pass the ticket id or path. Given only an id, search
 `/to-spec` and `/to-tickets` reference a triage vocabulary. This repo does not use one: a spec that
 has cleared adversarial review is ready by construction, and ticket readiness is the derived
 frontier above.
+
+## Wayfinding operations
+
+Decision maps precede implementation specs. Keep them in
+`.proj.specs/_discovery/<effort>/map.md`, with one child at
+`.proj.specs/_discovery/<effort>/decisions/D-NNNN-<slug>.md`.
+These are decision ids local to a map, separate from permanent implementation
+ticket ids. Creating a decision map does not satisfy the product spec gate.
+
+- **Map:** use wayfinder's Destination, Notes, Decisions so far, Not yet specified
+  and Out of scope sections. Link each resolved decision once.
+- **Child:** frontmatter has `id`, `type` (`research`, `prototype`, `grilling`,
+  `task`), `status` (`todo`, `processing`, `done`, `pending`), `blocked_by` and
+  optional `owner`. Put the decision under `## Question`.
+- **Frontier:** children with `status: todo` whose blockers are all `done`, ordered
+  by local decision id. The claim operation sets `processing` and `owner` before
+  work. A single writer allocates ids and updates the map; concurrent researchers
+  return findings to that writer instead of racing on shared files.
+- **Resolve:** append evidence under `## Answer`, set `done`, and link from the
+  map's Decisions so far. An out-of-scope closure records its reason and links from
+  Out of scope instead. `pending` carries the same reason/evidence/revisit fields
+  as implementation tickets.
+- **Research:** the installed project `research` skill delegates primary-source
+  reading; the parent saves returned evidence beside the decision and links it.
+
+Map labels and issue assignments in upstream wayfinder instructions map to these
+frontmatter fields. Use these paths rather than its generic `.scratch/` examples.

@@ -5,7 +5,7 @@ date: {{INIT_DATE}}
 
 # Walking skeleton first, then one pipeline pass per epic
 
-The pipeline in `CLAUDE.md` runs **once per epic**, not once per project. Ahead of the first epic,
+The pipeline in `AGENTS.md` runs **once per epic**, not once per project. Ahead of the first epic,
 round 0 builds a **walking skeleton** — the thinnest end-to-end path — and is exempt from the spec
 and adversarial-review stages, an exemption that expires when the skeleton merges to `main`.
 

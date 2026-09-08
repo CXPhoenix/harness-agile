@@ -6,13 +6,14 @@ Which language a document is written in follows from who has to accept it.
 
 | Document | Language | Why |
 |---|---|---|
-| `CLAUDE.md`, `docs/agents/*`, `docs/adr/*` | **English** | Read by agents only |
-| `.claude/skills/*/SKILL.md` | **English** | Read by agents only |
+| `AGENTS.md`, `CLAUDE.md`, `docs/agents/*`, `docs/adr/*` | **English** | Read by agents only |
+| `.agents/skills/*/SKILL.md` | **English** | Read by agents only |
 | `spec.en.md` | **English** | Source of truth for implementation |
 | `spec.zh-TW.md` | **Traditional Chinese** | The user audits the spec in this |
 | Ticket body | **English** | Drives implementation |
 | Ticket `## 給使用者（zh-TW）` section | **Traditional Chinese** | The user audits intent in this |
 | Commit messages, PR descriptions, release notes | **Traditional Chinese** | Produced by `/tw-emoji-*` |
+| README, TEMPLATE and research for the user | **Traditional Chinese** | Setup and evidence |
 | Standalone HTML reports | **Traditional Chinese** | Written for the user |
 | Conversation with the user | **Traditional Chinese** | |
 

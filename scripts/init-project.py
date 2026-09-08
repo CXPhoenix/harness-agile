@@ -27,11 +27,18 @@ SKIP_DIRS = {".git", ".agents", "__pycache__", "node_modules", ".venv"}
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".html", ".py", ".sh"}
 
 # Removed after a successful run unless --keep-template-files is given.
-TEMPLATE_ONLY = ("TEMPLATE.md", "scripts/init-project.py", ".claude/skills/init-template")
+TEMPLATE_ONLY = (
+    ".tmpl.docs", "TEMPLATE.md", "scripts/init-project.py", "tests/test_init_project.py",
+    ".claude/skills/init-template", ".agents/skills/init-template",
+)
 
-# The banner in CLAUDE.md that only makes sense before initialisation.
+# The banner in shared instructions that only makes sense before initialisation.
 BANNER = re.compile(
     r"\n\n<!-- TEMPLATE:.*?-->\n",
+    re.DOTALL,
+)
+TEMPLATE_DOC_LINK = re.compile(
+    r"<!-- TEMPLATE-DOCS:START -->.*?<!-- TEMPLATE-DOCS:END -->\n?",
     re.DOTALL,
 )
 
@@ -79,7 +86,7 @@ def main() -> int:
     ap.add_argument("--one-liner", help="One sentence saying what the project does")
     ap.add_argument("--date", default=_dt.date.today().isoformat(), help="ADR adoption date (default: today)")
     ap.add_argument("--dry-run", action="store_true", help="Print the plan and change nothing")
-    ap.add_argument("--keep-template-files", action="store_true", help="Leave TEMPLATE.md, this script, and /init-template in place")
+    ap.add_argument("--keep-template-files", action="store_true", help="Keep template documentation, its README link, initializer, test, and init skill entries")
     args = ap.parse_args()
 
     root = project_root()
@@ -98,8 +105,12 @@ def main() -> int:
             print(f"  {path.relative_to(root)}: {', '.join(toks)}", file=sys.stderr)
         return 2
 
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.date):
-        print(f"--date must be YYYY-MM-DD, got {args.date!r}", file=sys.stderr)
+    try:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.date):
+            raise ValueError("Expected YYYY-MM-DD")
+        _dt.date.fromisoformat(args.date)
+    except ValueError:
+        print(f"--date must be a valid YYYY-MM-DD date, got {args.date!r}", file=sys.stderr)
         return 2
 
     replacements = {
@@ -113,20 +124,33 @@ def main() -> int:
         body = path.read_text(encoding="utf-8")
         for token, value in replacements.items():
             body = body.replace(token, value)
-        if path.name == "CLAUDE.md":
+        if path.name in {"AGENTS.md", "CLAUDE.md"}:
             body = BANNER.sub("\n", body, count=1)
         print(f"{prefix}fill {path.relative_to(root)} ({', '.join(hits[path])})")
         if not args.dry_run:
             path.write_text(body, encoding="utf-8")
 
     if not args.keep_template_files:
+        readme = root / "README.md"
+        if readme.is_file() and not readme.is_symlink():
+            body = readme.read_text(encoding="utf-8")
+            cleaned = TEMPLATE_DOC_LINK.sub("", body)
+            if cleaned != body:
+                print(f"{prefix}remove template documentation link from README.md")
+                if not args.dry_run:
+                    readme.write_text(cleaned, encoding="utf-8")
         for rel in TEMPLATE_ONLY:
             target = root / rel
-            if not target.exists():
+            if not target.exists() and not target.is_symlink():
                 continue
             print(f"{prefix}remove {rel}")
             if not args.dry_run:
-                shutil.rmtree(target) if target.is_dir() else target.unlink()
+                if target.is_symlink():
+                    target.unlink()
+                elif target.is_dir():
+                    shutil.rmtree(target)
+                else:
+                    target.unlink()
         scripts_dir = root / "scripts"
         if scripts_dir.is_dir() and not args.dry_run and not any(scripts_dir.iterdir()):
             scripts_dir.rmdir()
@@ -144,8 +168,9 @@ def main() -> int:
         return 3
 
     print(
-        "\nDone. Next: run /grill-with-docs to fill the Project Charter in CLAUDE.md.\n"
-        "Until that section is written, CLAUDE.md's gate blocks specs, tickets, and implementation."
+        "\nDone. Next: use grill-with-docs to fill the Project Charter in AGENTS.md.\n"
+        "Claude Code: /grill-with-docs; Codex: $grill-with-docs.\n"
+        "Until that section is written, AGENTS.md's gate blocks specs, tickets, and implementation."
     )
     return 0
 

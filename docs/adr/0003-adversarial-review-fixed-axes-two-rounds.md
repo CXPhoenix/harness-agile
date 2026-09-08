@@ -5,7 +5,7 @@ date: {{INIT_DATE}}
 
 # Adversarial review: four fixed axes, a frozen prompt, two rounds maximum
 
-Spec review runs four Opus subagents on four fixed axes — completeness, verifiability, contract
+Spec review runs four independent subagents using the active runtime's available model on four fixed axes — completeness, verifiability, contract
 conflict, red team — for at most two rounds, where round 2 replays round 1's prompt file verbatim
 and only the spec version changes.
 

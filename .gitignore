@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.claude/settings.local.json
+.claude/worktrees/
+.codex/*.local.toml
+.worktrees/
+.scratch/
+
+# Credentials belong to each runtime's local configuration.
+.env
+.env.*
+!.env.example

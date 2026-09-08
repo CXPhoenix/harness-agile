@@ -6,7 +6,10 @@ chain analysis at epic close-out).
 
 ## Adversarial review
 
-Four Opus subagents, one per axis, at most two rounds.
+Four independent reviewers, one per axis, at most two rounds. Select the active
+runtime's `harness-reviewer` role; inherit its available model unless the user
+chooses another. Batch within actual concurrency limits. Supply identical captured
+scope and the frozen prompt to each pass; do not replace missing axes with a vote.
 
 ### The four axes
 
@@ -61,7 +64,10 @@ then wait.
 
 ### Stage 7: per-ticket, diff-scoped
 
-Run `/security-review` on the branch diff, then fix what it finds.
+Use the project `.agents/skills/security-review/SKILL.md`, then fix confirmed
+findings and verify those fixes. Claude's built-in command has the same name;
+explicitly load the project file so both runtimes apply the same scope and policy.
+The parent captures the diff and persists the report; delegated reviewers stay read-only.
 
 If this project's domain makes some findings expected rather than defects — a security-training
 range, a deliberately vulnerable fixture, a red-team target — define that distinction here before
@@ -70,7 +76,7 @@ finding blocks its own ticket.
 
 ### Epic close-out: chain analysis
 
-`/security-review` reads pending changes on the current branch, so it cannot see a chain that spans
+The per-ticket security-review scope covers one branch diff, so it cannot see a chain that spans
 tickets. Run a separate analysis after the epic's last ticket lands.
 
 **Input:** every finding from the epic's tickets, whatever their grade, plus the trust boundaries the

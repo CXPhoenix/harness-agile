@@ -1,6 +1,6 @@
 # Workflow
 
-The nine stages of the delivery pipeline, in order. `CLAUDE.md` carries the summary table and the
+The nine stages of the delivery pipeline, in order. `AGENTS.md` carries the summary table and the
 hard rules; this file carries the entry conditions, gates, and exceptions.
 
 The unit of work is the **epic**: one spec, one pass through stages 1–9, one demoable increment.
@@ -51,7 +51,9 @@ criterion.
 
 ## Stage 3 — Adversarial review
 
-Four Opus subagents, four fixed axes, at most two rounds. Axes, grading, and the frozen-prompt
+Four independent reviewers, four fixed axes, at most two rounds. Use the active
+host's native agents and available models as described in [runtime.md](runtime.md);
+run in batches if its concurrency limit is lower than four. Axes, grading, and the frozen-prompt
 mechanism live in [review.md](review.md).
 
 **Gate:** zero P0 findings.
@@ -102,11 +104,12 @@ stage 6.
 
 Run `/code-review`. It reviews on two axes: does the code follow this repo's documented standards,
 and does it match what the spec asked for. Direction and requirement are what matter here;
-`/simplify` handles quality-only cleanups separately.
+Quality-only cleanup is a separate optional task; use a host-provided simplify
+command when available or review the proposed cleanup directly.
 
 ## Stage 7 — Security review
 
-Run `/security-review` on the diff. The cross-cutting chain analysis is not part of this stage; it
+Load the project `.agents/skills/security-review/SKILL.md` on the diff. The cross-cutting chain analysis is not part of this stage; it
 runs at epic close-out. See [review.md](review.md).
 
 ## Stage 8 — End-to-end
@@ -127,10 +130,20 @@ Record the choice of non-browser harness as an ADR once it is made; until then i
 
 ## Stage 9 — Land it
 
-With a git remote: `gh pr create`, description from `/tw-emoji-pr-note`.
+Inspect the actual remote host and intended base first.
 
-Without a remote: `git merge --no-ff` into `main`, with the `/tw-emoji-pr-note` output as the merge
-commit message. Check with `git remote -v` rather than assuming.
+- GitHub: create a PR with `gh pr create`; generate the description with the project
+  `tw-emoji-pr-note` skill and pass its UTF-8 file with `--body-file`.
+- GitLab or another host: use that host's supported PR/MR tool and the same description
+  skill. A remote existing does not imply GitHub.
+- No remote: merge into local `main` with `git merge --no-ff --no-commit`, then use
+  `tw-emoji-commit` to generate, sanitize and execute the merge commit. Resolve any
+  conflicts before generating the final message. The merge command itself does not
+  generate a separate message outside that skill.
+
+Every `git commit` variant uses `tw-emoji-commit`. Existing user authorization for
+landing work remains valid; report unresolved decisions instead of silently choosing
+an unexpected remote or base. Update ticket status to `done` after landing.
 
 ## Epic close-out
 
