@@ -7,6 +7,7 @@
 - [範本採用指引](adoption.md)：複製範本、初始化及保留選項。
 - [Claude Code／Codex 整合計畫](plans/2026-09-08-dual-agent-template.md)：雙工具設定、skills 攜入與驗收範圍。
 - [Claude Code／Codex 研究](research/2026-09-08-claude-code-codex.md)：官方來源、工具差異、設定依據與當時的實測結果。
+- [範本發布與快速建立研究](research/2026-09-08-template-distribution-bootstrap.md)：GitHub template、本機建立、npx／uvx 與 agent 安裝指引的官方依據、取捨與實測邊界。
 - [本次文件搬移歷程](history/2026-09-08-template-docs-relocation.md)：搬移理由、取捨、實作與驗證結果。
 
 ## 存放原則
