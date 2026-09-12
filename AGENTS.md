@@ -1,8 +1,9 @@
 # Agent instructions
 
-Shared project instructions for Claude Code and Codex. Read
-[docs/agents/runtime.md](docs/agents/runtime.md) before invoking skills, delegating,
-configuring tools, or handing work to the other runtime. Project skill contents live
+Shared project instructions for the coding assistants Claude Code and Codex. Use the
+shared contract and active-runtime section of [docs/agents/runtime.md](docs/agents/runtime.md)
+when invoking skills, delegating, or configuring tools; use its handoff section for
+cross-runtime work. Reuse context already read unless it changed. Project skill contents live
 in `.agents/skills/`; resolve helpers relative to the loaded skill, not a home directory.
 Claude Code imports this file through `CLAUDE.md`; keep project rules here.
 
@@ -62,9 +63,9 @@ See [ADR-0001](docs/adr/0001-walking-skeleton-then-epic-loop.md).
 
 Stage detail, gates, exceptions, and the epic close-out: **[docs/agents/workflow.md](docs/agents/workflow.md)**.
 
-`/to-spec` and `/to-tickets` ask for a tracker configuration and fall back to `.scratch/` paths
-without one. **[docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) is that configuration** —
-read it before either skill writes a file.
+**[docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) is the tracker configuration** —
+read it before `/to-spec` or `/to-tickets` writes a file. Its paths and statuses override
+upstream examples; use the existing configuration without asking to set it up again.
 
 ## Hard rules
 

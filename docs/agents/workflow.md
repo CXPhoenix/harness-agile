@@ -116,8 +116,13 @@ runs at epic close-out. See [review.md](review.md).
 
 Verify the behaviour against the surface that actually runs it.
 
-- **Browser-reachable surface:** use `/agent-browser`. `/chrome-devtools-mcp:a11y-debugging` covers
-  accessibility; if that MCP server is absent from a clone, ask the user to install it.
+- **Browser-reachable surface:** use `/agent-browser` or available native browser tools
+  that provide equivalent evidence. For accessibility, verify the applicable criteria
+  with accessibility-tree inspection, keyboard interaction and any other required checks.
+  `/chrome-devtools-mcp:a11y-debugging` is one option. Unless the user requires that exact
+  tool, use an available equivalent before requesting installation. If no tool can obtain
+  the required evidence, report the missing capability and leave that criterion unverified;
+  dependent gates remain blocked. Screenshots alone do not prove keyboard accessibility.
 - **Any other surface** — a native client, a daemon, a CLI, a game server, a device: use a harness
   this project supplies. `/agent-browser` drives Chrome/Chromium and Electron over CDP, so anything
   outside that is outside its reach.

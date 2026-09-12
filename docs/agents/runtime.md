@@ -1,6 +1,7 @@
 # Runtime adapters
 
-Read this before configuring tools, invoking skills, delegating or handing off work.
+Use the shared contract and active-runtime section for skills, delegation and tools;
+read the handoff section when transferring work. Reuse unchanged context already loaded.
 The shared rules live in `AGENTS.md`. This document contains the operational rules
 needed by an adopted project and is independent of removable template history.
 
@@ -63,12 +64,14 @@ supplement the shared workflow; record what they actually verified.
 
 ## Codex
 
+For Codex prompt and skill execution boundaries, use [codex.md](codex.md).
+
 Codex reads `AGENTS.md` and discovers project skills in `.agents/skills/`.
 `.codex/config.toml` supplies project defaults only after the user trusts this
 checkout in their Codex environment. Keep trust decisions and account credentials
 local. CLI overrides, managed policy and the active host's permissions take priority.
 
-`.codex/agents/*.toml` defines `harness-reviewer` and `harness-researcher`. Models
+`.codex/agents/*.toml` defines the Codex Agent roles `harness-reviewer` and `harness-researcher`. Models
 and reasoning effort inherit the session. Read-only sandbox defaults express their
 role, but the active runtime may override them; check effective permissions and keep
 the assignment read-only. The parent captures Git context and writes final reports.

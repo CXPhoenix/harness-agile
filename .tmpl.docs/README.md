@@ -4,6 +4,10 @@
 
 ## 文件入口
 
+- [範本維護術語](CONTEXT.md)：開發助理、CC／Codex Skill、Plugin 與開發代理角色的定義。
+- [Codex Prompt／Skill 最佳化討論](research/2026-09-12-prompt-skill-optimization.md)：官方來源、盤點候選與已確認的範圍。
+- [Codex Prompt／Skill 最佳化計畫](plans/2026-09-12-codex-prompt-skill-optimization.md)：本輪共識、工作順序與六類行為驗收。
+- [Codex Prompt／Skill 最佳化結果](history/2026-09-12-codex-prompt-skill-optimization.md)：實際修改、回歸檢查、情境比較與證據限制。
 - [範本採用指引](adoption.md)：複製範本、初始化及保留選項。
 - [Claude Code／Codex 整合計畫](plans/2026-09-08-dual-agent-template.md)：雙工具設定、skills 攜入與驗收範圍。
 - [Claude Code／Codex 研究](research/2026-09-08-claude-code-codex.md)：官方來源、工具差異、設定依據與當時的實測結果。

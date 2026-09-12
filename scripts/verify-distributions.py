@@ -52,7 +52,7 @@ def main():
             output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--skill-mode', mode, '--no-input', '--json'], parent)
             report = json.loads(output.strip().splitlines()[-1])
             assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
-            assert report['skills'] == 30, report
+            assert report['skills'] == 31, report
             assert not (target / 'package.json').exists()
             assert not (target / 'pyproject.toml').exists()
             assert not (target / '.git').exists()
