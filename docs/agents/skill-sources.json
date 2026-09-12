@@ -90,6 +90,7 @@
     }
   },
   "local_adaptations": {
-    "setup-matt-pocock-skills": "Prefer shared AGENTS.md and preserve configured tracker conventions."
+    "setup-matt-pocock-skills": "Prefer shared AGENTS.md and preserve configured tracker conventions.",
+    "archify": "Add agents/openai.yaml for Codex discovery metadata; preserve upstream implicit invocation policy."
   }
 }

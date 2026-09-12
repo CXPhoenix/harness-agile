@@ -26,7 +26,7 @@ class BootstrapTests(unittest.TestCase):
         result = self.run_cli('--skill-mode', 'copy')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         output = json.loads(result.stdout)
-        self.assertEqual(output['skills'], 30)
+        self.assertEqual(output['skills'], 31)
         self.assertEqual(output['skill_mode'], 'copy')
         self.assertFalse((self.target / '.git').exists())
         self.assertFalse((self.target / '.tmpl.docs').exists())
@@ -54,7 +54,7 @@ class BootstrapTests(unittest.TestCase):
         env = {**os.environ, 'LC_ALL': 'C', 'LANG': 'C', 'PYTHONUTF8': '0', 'PYTHONCOERCECLOCALE': '0'}
         result = subprocess.run([sys.executable, '-m', 'harness_agile', 'init', str(target), '--source', str(ROOT), '--name', 'Test', '--one-liner', 'Test', '--json', '--no-input'], cwd=ROOT, env=env, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout)['skills'], 30)
+        self.assertEqual(json.loads(result.stdout)['skills'], 31)
 
     def test_rejects_existing_content_without_modifying_it(self):
         self.target.mkdir()
@@ -76,7 +76,7 @@ class BootstrapTests(unittest.TestCase):
     def test_keep_retains_history_and_git_is_opt_in(self):
         result = self.run_cli('--keep-template-files', '--git')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout)['skills'], 31)
+        self.assertEqual(json.loads(result.stdout)['skills'], 32)
         self.assertTrue((self.target / '.tmpl.docs').is_dir())
         self.assertTrue((self.target / 'INSTALL.md').is_file())
         self.assertTrue((self.target / 'bootstrap/create-harness-project/SKILL.md').is_file())
