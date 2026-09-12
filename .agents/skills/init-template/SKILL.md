@@ -1,6 +1,6 @@
 ---
 name: init-template
-description: Initialise a fresh copy of harness-agile-template — collect the project name and one-liner, fill the placeholder tokens, and remove the template-only files. Use when AGENTS.md still contains {{PROJECT_NAME}}, when the user says the project is a new copy of the template, or when they ask to initialise or set up the template.
+description: Initialize a new product copy of harness-agile-template when the user requests adoption or initialization. Template inspection and maintenance do not trigger initialization.
 ---
 
 # Initialise the template
