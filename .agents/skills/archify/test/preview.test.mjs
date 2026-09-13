@@ -511,10 +511,12 @@ test('preview: polling continues after an asynchronous watcher error', { timeout
   const watcher = new EventEmitter();
   let closeCount = 0;
   watcher.close = () => { closeCount += 1; };
-  t.mock.method(fs, 'watch', () => watcher);
+  let watchedDirectory;
+  t.mock.method(fs, 'watch', (directory) => { watchedDirectory = directory; return watcher; });
   const preview = await startPreview({ type: 'architecture', input, output, open: false, pollMs: 40, debounceMs: 20 });
   try {
     await waitForState(preview.url, (state) => state.status === 'verified' && state.revision === 1, 'initial artifact did not verify');
+    assert.equal(watchedDirectory, fs.realpathSync.native(path.dirname(input)), 'watcher must receive the native canonical directory');
     watcher.emit('error', Object.assign(new Error('watch limit reached'), { code: 'EMFILE' }));
     assert.equal(closeCount, 1, 'the failed watcher must be closed');
     source.meta.title = 'Recovered using polling';

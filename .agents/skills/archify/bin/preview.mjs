@@ -588,7 +588,9 @@ export async function startPreview(options) {
 
   if (options.watch !== false) {
     try {
-      watcher = fs.watch(path.dirname(inputPath), (event, filename) => {
+      // Native canonical paths avoid Windows short/long-name mismatches in libuv.
+      const watchDirectory = fs.realpathSync.native(path.dirname(inputPath));
+      watcher = fs.watch(watchDirectory, (event, filename) => {
         if (!filename || filename.toString() === path.basename(inputPath)) observeSource();
       });
       watcher.on('error', () => {

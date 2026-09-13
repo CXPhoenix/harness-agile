@@ -28,3 +28,7 @@ npm audit --package-lock-only --ignore-scripts
 ## 本輪結果
 
 macOS、Node.js 24.13.0：乾淨暫存副本安裝成功，npm 回報 0 vulnerabilities；驗證器重新產生檢查通過，產物無須變更；上述兩組 Node 測試合計 65／65 通過。首次嘗試額外的上游 preview-contract 測試因缺少其父目錄 README 而失敗，未納入本範本支援子集；預覽測試首次受 sandbox 禁止監聽，允許 loopback 監聽後全數通過。
+
+## Windows CI 追加修正
+
+三平台 CI 首次揭露 preview 在 Windows libuv 檔案監聽層中止，與[上游 issue 310](https://github.com/tt-a1i/archify/issues/310) 描述的短路徑問題一致。監聽前改以 `fs.realpathSync.native` 取得真實目錄，既有回歸測試加入傳入路徑斷言。此為可靠性修正，與已停用的 PowerShell opener 是不同問題；原始失敗及修正後結果以 CI 紀錄為準。
