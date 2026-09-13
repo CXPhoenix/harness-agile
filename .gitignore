@@ -15,3 +15,6 @@ harness_agile/data/template.json
 .env
 .env.*
 !.env.example
+
+# Local standalone vulnerability reproduction repositories.
+/.proj.vuln.recur/

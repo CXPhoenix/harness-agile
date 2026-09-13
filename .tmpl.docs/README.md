@@ -4,6 +4,11 @@
 
 ## 現行入口
 
+- [evidence-report 來源查核](research/2026-09-13-evidence-report-upstream-search.md)：網路查詢、同名候選排除與設計段落的新線索。
+
+- [Windows 自動開啟已停用](../docs/security/windows-opener.md)：兩個入口、自行驗證與暫緩實驗的範圍。
+
+- [公開準備：MIT 與第三方授權](history/2026-09-13-license-restoration.md)；[Windows opener 風險識別](research/2026-09-13-windows-opener-risk.md)。
 - [採用指引](adoption.md)：建立新目錄、初始化既有副本，以及保留範本的選項。
 - [貢獻與維護](contributing.md)：文件與程式放置位置、驗證方式、交付紀錄。
 - [範本維護術語](CONTEXT.md)：開發助理、Skill、Plugin 與代理角色的共用詞彙。

@@ -3,7 +3,7 @@
 ![Exploration paths pass through checkpoints and converge into a deliverable.](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.1.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.1.0)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.0)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
 [![Claude Code + Codex](https://img.shields.io/badge/Claude_Code_%2B_Codex-shared_workflow-d97757)](docs/agents/runtime.md)
 
@@ -26,7 +26,7 @@ It is designed for individuals and teams who want their AI development workflow 
 With Git and uv available, run this from the parent directory of your new project:
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.1.0' \
+uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 cd my-project
@@ -49,13 +49,13 @@ Next, open Claude Code or Codex in the new directory and run `grill-with-docs` t
 Requires Node.js 18+ and either Python 3.11+ or uv.
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   init my-project --name 'My Project' --one-liner 'The problem it solves.' --no-input
 ```
 
@@ -99,10 +99,12 @@ These checks cover template structure, skills, and initialization behavior. Prod
 
 ## License
 
-The repository does not currently provide a project-wide open-source license; `package.json` declares `UNLICENSED`. Bundled third-party skills retain their own licenses and [source records](docs/agents/skill-sources.json).
+This project is licensed under the [MIT License](LICENSE). Bundled third-party skills, fonts, and brand assets retain their respective terms; see [third-party notices](THIRD_PARTY_NOTICES.md) and [source records](docs/agents/skill-sources.json).
 
 <!-- TEMPLATE-DOCS:START -->
 ## Template design and history
 
 The [maintenance index](.tmpl.docs/README.md) (Traditional Chinese) contains design context, research, plans, and historical verification. Default initialization removes that material, the template banner, and this English README, and replaces the main README with a product README. Use `--keep-template-files` to retain template documentation.
 <!-- TEMPLATE-DOCS:END -->
+
+Archify automatic opening is disabled on Windows. Generation and validation remain available; open artifacts manually. See the [restriction and verification guide](docs/security/windows-opener.md) (Traditional Chinese).

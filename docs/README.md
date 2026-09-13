@@ -2,6 +2,8 @@
 
 第一次使用，先讀[協作指南](guide.md)，了解如何啟動工作、使用 skills 與交接。以下文件會隨專案保留，初始化後仍可查閱。
 
+[Windows 自動開啟停用公告與自行驗證](security/windows-opener.md)。
+
 ## 依工作找文件
 
 | 你遇到的問題 | 文件 |
@@ -24,3 +26,5 @@ ADR 保存已採用的決策與理由，方便後續修改時判斷影響。
 - [ADR-0001](adr/0001-walking-skeleton-then-epic-loop.md)：先建立 walking skeleton，再以 epic 交付。
 - [ADR-0002](adr/0002-ticket-status-in-frontmatter.md)：ticket 狀態存於 frontmatter。
 - [ADR-0003](adr/0003-adversarial-review-fixed-axes-two-rounds.md)：規格審查使用固定四軸，最多兩輪。
+
+[Archify 依賴處理與可執行測試](security/archify-dependencies.md)。

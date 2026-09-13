@@ -63,3 +63,5 @@ python3 scripts/verify-project.py
 瀏覽器功能可用 `agent-browser`，或宿主提供且符合驗證需求的瀏覽器工具；原生應用程式、CLI 與 daemon 需要對應的 e2e harness。GitHub／GitLab CLI、MCP 連線與服務登入按需設定。回報結果時，說明實際驗證了哪個介面。
 
 每次 `git commit`（含 amend）都使用專案的 `tw-emoji-commit` 產生並清理訊息；PR 與 release 文案使用對應的 `tw-emoji-*` skill。若 skill 不可用，停止該動作並回報。沒有 remote 時可在本機合併，有 remote 時依所在平台的流程交付。
+
+Windows 的 Archify 自動開啟功能已停用，包含 `deliver --open` 與 `preview`；請手動開啟產物或預覽網址。詳見[停用範圍與驗證方式](security/windows-opener.md)。

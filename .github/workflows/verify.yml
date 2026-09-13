@@ -35,6 +35,19 @@ jobs:
       - run: python scripts/sync-skills.py
       - run: python scripts/verify-project.py
       - run: python -m unittest discover -s tests -v
+      - run: npm ci --ignore-scripts
+        working-directory: .agents/skills/archify
+      - run: npm run test:portable
+        working-directory: .agents/skills/archify
+      - run: npm run test:preview
+        working-directory: .agents/skills/archify
+      - run: npm audit --package-lock-only --ignore-scripts
+        working-directory: .agents/skills/archify
+      - name: Remove development dependencies before packaging
+        shell: python
+        run: |
+          import shutil
+          shutil.rmtree('.agents/skills/archify/node_modules')
       - run: uv build --out-dir dist
       - run: npm pack --pack-destination dist
-      - run: python scripts/verify-distributions.py --wheel dist/harness_agile-0.1.0-py3-none-any.whl --npm dist/create-harness-agile-0.1.0.tgz
+      - run: python scripts/verify-distributions.py --wheel dist/harness_agile-0.2.0-py3-none-any.whl --npm dist/create-harness-agile-0.2.0.tgz

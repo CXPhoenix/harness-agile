@@ -30,8 +30,22 @@ def main():
     wheel, npm = args.wheel.resolve(), args.npm.resolve()
     with zipfile.ZipFile(wheel) as archive:
         python_bundle = json.loads(archive.read('harness_agile/data/template.json'))
+    notice_paths = [name for name in python_bundle['files'] if
+                    name in {'LICENSE', 'THIRD_PARTY_NOTICES.md'} or
+                    name.endswith('/LICENSE') or name.endswith('/THIRD_PARTY_NOTICES.md') or
+                    name.endswith('/JetBrainsMono-OFL.txt')]
+    assert '.agents/skills/evidence-report/LICENSE' in notice_paths
+    assert not any(any(part in {'.proj.vuln.recur', 'node_modules'} for part in name.split('/'))
+                   for name in python_bundle['files']), 'Private lab or development dependencies in bundle'
+    with zipfile.ZipFile(wheel) as archive:
+        license_roots = [name for name in archive.namelist() if name.endswith('.dist-info/METADATA')]
+        assert len(license_roots) == 1
+        license_root = license_roots[0].rsplit('/', 1)[0] + '/licenses/'
+        for name in notice_paths:
+            assert archive.read(license_root + name) == base64.b64decode(python_bundle['files'][name]), name
     with tarfile.open(npm) as archive:
         assert not any(member.issym() or member.islnk() for member in archive), 'npm artifact contains links'
+        assert not any(any(part in {'.proj.vuln.recur', 'node_modules'} for part in member.name.split('/')) for member in archive), 'Private lab or development dependencies in npm archive'
         manifest = json.load(archive.extractfile('package/package.json'))
         assert not ({'prepare', 'prepack', 'preinstall', 'install', 'postinstall'} & manifest.get('scripts', {}).keys()), 'npm install must not require build scripts'
         node_files = {name: base64.b64encode(archive.extractfile('package/' + name).read()).decode('ascii') for name in python_bundle['files']}
@@ -53,6 +67,9 @@ def main():
             report = json.loads(output.strip().splitlines()[-1])
             assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
             assert report['skills'] == 31, report
+            for name in notice_paths:
+                assert (target / name).read_bytes() == base64.b64decode(python_bundle['files'][name]), (label, name)
+            assert not (target / 'CHANGELOG.md').exists()
             assert not (target / 'package.json').exists()
             assert not (target / 'pyproject.toml').exists()
             assert not (target / '.git').exists()
