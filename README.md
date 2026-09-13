@@ -3,7 +3,9 @@
 ![多條探索路徑穿過檢查點，逐步收斂成可交付成果。](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.0)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.1-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.1)
+[![PyPI](https://img.shields.io/pypi/v/harness-agile)](https://pypi.org/project/harness-agile/)
+[![npm](https://img.shields.io/npm/v/create-harness-agile)](https://www.npmjs.com/package/create-harness-agile)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
 [![Claude Code + Codex](https://img.shields.io/badge/Claude_Code_%2B_Codex-shared_workflow-d97757)](docs/agents/runtime.md)
 
@@ -23,17 +25,17 @@ harness-agile 是一份可攜的 AI 協作開發範本。從釐清需求到合�
 
 ## 快速開始
 
-準備 Git 與 uv，然後在新專案的父目錄執行：
+準備 uv，然後在新專案的父目錄執行：
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
+uvx --from 'harness-agile==0.2.1' \
   harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 cd my-project
 uv run --python 3.11 python scripts/verify-project.py
 ```
 
-這會建立專案目錄、填入名稱與描述，並檢查協作設定。目標須不存在或為空，父目錄須已存在。指令使用固定 Git tag；若來源需要驗證，請先確認 Git 讀取權限。
+這會建立專案目錄、填入名稱與描述，並檢查協作設定。目標須不存在或為空，父目錄須已存在。指令從 PyPI 安裝固定版本，不需要 GitHub 帳號。
 
 接著在新目錄開啟 Claude Code 或 Codex，執行 `grill-with-docs`，定義 `AGENTS.md` 裡的 Project Charter：產品服務誰、解決什麼問題、必須做到什麼。名稱與一句話描述只是起點，尚未代表需求確認。
 
@@ -49,17 +51,17 @@ uv run --python 3.11 python scripts/verify-project.py
 需要 Node.js 18+，以及 Python 3.11+ 或 uv。
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+npx --yes --package='create-harness-agile@0.2.1' \
   create-harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+pnpx 'create-harness-agile@0.2.1' \
   init my-project --name '我的專案' --one-liner '它要解決的問題。' --no-input
 ```
 
-`pnpx` 也可換成 `pnpm dlx`。三個入口使用同一套 Python 初始化邏輯；這裡使用 Git 來源，並非 npm／PyPI 同名套件。Node 入口先尋找 Python，再使用 uv；可用 `HARNESS_PYTHON` 指定 Python 執行檔。
+`pnpx` 也可換成 `pnpm dlx`。三個入口使用同一套 Python 初始化邏輯；uvx 從 PyPI 安裝 `harness-agile`，npx／pnpx 從 npm 安裝 `create-harness-agile`。Node 入口先尋找 Python，再使用 uv；可用 `HARNESS_PYTHON` 指定 Python 執行檔。
 
 </details>
 

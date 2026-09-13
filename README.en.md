@@ -3,7 +3,9 @@
 ![Exploration paths pass through checkpoints and converge into a deliverable.](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.0)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.1-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.1)
+[![PyPI](https://img.shields.io/pypi/v/harness-agile)](https://pypi.org/project/harness-agile/)
+[![npm](https://img.shields.io/npm/v/create-harness-agile)](https://www.npmjs.com/package/create-harness-agile)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
 [![Claude Code + Codex](https://img.shields.io/badge/Claude_Code_%2B_Codex-shared_workflow-d97757)](docs/agents/runtime.md)
 
@@ -23,17 +25,17 @@ It is designed for individuals and teams who want their AI development workflow 
 
 ## Quick start
 
-With Git and uv available, run this from the parent directory of your new project:
+With uv available, run this from the parent directory of your new project:
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
+uvx --from 'harness-agile==0.2.1' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 cd my-project
 uv run --python 3.11 python scripts/verify-project.py
 ```
 
-This creates a project directory, fills in its name and description, and checks the collaboration setup. The target must be absent or empty, and its parent must exist. The command uses a fixed Git tag; make sure you have Git read access if the source requires authentication.
+This creates a project directory, fills in its name and description, and checks the collaboration setup. The target must be absent or empty, and its parent must exist. The command installs a fixed version from PyPI; no GitHub account is required.
 
 Next, open Claude Code or Codex in the new directory and run `grill-with-docs` to define the Project Charter in `AGENTS.md`: who the product serves, what problem it solves, and what it must do. A name and one-line description do not constitute approved requirements.
 
@@ -49,17 +51,17 @@ Next, open Claude Code or Codex in the new directory and run `grill-with-docs` t
 Requires Node.js 18+ and either Python 3.11+ or uv.
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+npx --yes --package='create-harness-agile@0.2.1' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+pnpx 'create-harness-agile@0.2.1' \
   init my-project --name 'My Project' --one-liner 'The problem it solves.' --no-input
 ```
 
-You can replace `pnpx` with `pnpm dlx`. All three entry points use the same Python initializer. These commands use Git sources, not same-name npm or PyPI packages. The Node entry point looks for Python first, then uv; `HARNESS_PYTHON` selects an explicit Python executable.
+You can replace `pnpx` with `pnpm dlx`. All three entry points use the same Python initializer. uvx installs `harness-agile` from PyPI; npx and pnpx install `create-harness-agile` from npm. The Node entry point looks for Python first, then uv; `HARNESS_PYTHON` selects an explicit Python executable.
 
 </details>
 

@@ -10,10 +10,8 @@ supplied by the user. Ask together only for missing values. The target must be
 absent or empty, with an existing parent directory, outside the source checkout.
 
 Source: `https://github.com/CXPhoenix/harness-agile.git`.
-Use existing Git credentials if the source requires authentication. Use release tag `v0.2.0` for the current template; `v0.1.0` remains a historical snapshot.
-For automation, resolve the approved tag to its full commit with Git and use that
-commit in place of the tag below. When reading this guide from an authenticated
-checkout, use that checkout's `git rev-parse HEAD`.
+Use version `0.2.1`: `harness-agile` on PyPI or `create-harness-agile` on npm.
+The corresponding source tag is `v0.2.1`. Registry installation does not require Git credentials.
 
 ## Choose an entry point
 
@@ -23,33 +21,34 @@ the selected package: a wheel snapshot or regular files in the npm package. The
 npm package has no installation lifecycle scripts and requires no build allowlist.
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
+uvx --from 'harness-agile==0.2.1' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+npx --yes --package='create-harness-agile@0.2.1' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
+pnpx 'create-harness-agile@0.2.1' \
   init my-project --name 'My Project' --one-liner 'What it does.' \
   --no-input --json --dry-run
 ```
 
-These are Git-source commands, not claims of npm/PyPI registry publication. Do not
-substitute an unverified same-name registry package. If the package manager blocks
-a Git build, use an authenticated checkout and the local route; preserve its policy.
+These commands install fixed versions from the official PyPI and npm registries.
+For a Git-source installation, replace the uvx source with
+`git+https://github.com/CXPhoenix/harness-agile.git@v0.2.1`, or the npm package
+specifier with `git+https://github.com/CXPhoenix/harness-agile.git#v0.2.1`.
 `HARNESS_PYTHON` can select an explicit Python executable for the Node wrapper.
 
 From an existing source checkout, without package installation:
 
 This means a separate, uninitialized checkout of the source repository. A generated
 project using `--keep-template-files` retains this guide and init tools, not the
-creator package; use a Git-source command above to start another project from it.
+creator package; use a registry command above to start another project from it.
 
 ```bash
 python3 -m harness_agile init /absolute/path/my-project \
@@ -68,7 +67,9 @@ Pass user values through argv; avoid constructing shell code from them.
 3. Report the source commit/content digest, dirty-source status, target, skill mode
    and count. Provenance is saved in `docs/agents/template-source.json`.
    Exported npm packages have no Git metadata, so commit and dirty status can be
-   `null`; also report the exact Git revision requested in the install command.
+   `null`. For registry installs, report the package name and pinned version.
+   Only Git-source installs should also report the requested Git revision;
+   do not infer an unknown commit from the package version.
    The content digest identifies the template bytes across all entry points.
 4. Open a fresh Claude Code or Codex session in the target. Keep account setup and
    Codex trust local. Use `grill-with-docs` to define the Project Charter.

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "harness-agile"
-version = "0.2.0"
+version = "0.2.1"
 description = "Create portable Claude Code and Codex project workspaces"
 requires-python = ">=3.11"
 dependencies = []
