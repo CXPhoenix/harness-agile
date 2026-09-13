@@ -9,8 +9,8 @@ Use the target directory, human-readable name and one-line description already
 supplied by the user. Ask together only for missing values. The target must be
 absent or empty, with an existing parent directory, outside the source checkout.
 
-Source: `https://github.com/CXPhoenix/harness-agile.git`, currently private.
-Use existing Git credentials and read access. The initial release tag is `v0.1.0`.
+Source: `https://github.com/CXPhoenix/harness-agile.git`.
+Use existing Git credentials if the source requires authentication. The initial release tag is `v0.1.0`.
 For automation, resolve the approved tag to its full commit with Git and use that
 commit in place of the tag below. When reading this guide from an authenticated
 checkout, use that checkout's `git rev-parse HEAD`.
@@ -88,7 +88,9 @@ For flattened Git links (such as Windows checkouts), run
 `python3 scripts/sync-skills.py --mode copy` before verification.
 
 `--date YYYY-MM-DD` selects adoption date. `--keep-template-files` retains template
-history and the original README; default init writes a product README and removes
-template-only tools. `--source PATH` selects a trusted local uninitialized source.
+history, both template READMEs, and the banner. Default init writes a product README,
+removes the template English README and artwork, and retains `docs/guide.md` for
+day-to-day collaboration. These documentation changes describe this checkout;
+a fixed release tag may contain an earlier layout. `--source PATH` selects a trusted local uninitialized source.
 `--no-input` and `--json` never prompt and require all values. Existing product
 adoption and updates are separate tasks; this creator refuses nonempty targets.

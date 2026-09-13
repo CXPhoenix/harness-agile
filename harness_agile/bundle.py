@@ -7,7 +7,7 @@ import subprocess
 
 SOURCE_URL = 'https://github.com/CXPhoenix/harness-agile'
 PATHS = (
-    'AGENTS.md', 'CLAUDE.md', 'README.md', 'INSTALL.md', 'bootstrap', '.gitignore', '.gitattributes', 'skills-lock.json',
+    'AGENTS.md', 'CLAUDE.md', 'README.md', 'README.en.md', 'INSTALL.md', 'bootstrap', '.gitignore', '.gitattributes', 'skills-lock.json',
     '.agents/skills', '.claude/agents', '.codex/agents', '.codex/config.toml',
     'docs', '.tmpl.docs', 'scripts/init-project.py', 'scripts/verify-project.py',
     'scripts/skill_links.py', 'scripts/sync-skills.py', 'scripts/project-readme.md', 'tests/test_init_project.py',

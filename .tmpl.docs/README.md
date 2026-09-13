@@ -1,29 +1,30 @@
-# 範本維護資料
+# 範本維護文件
 
-這裡保存 harness-agile-template 的設計背景、研究、改造計畫與維護歷程。新專案採用後必須遵守的規範保留在根目錄 `AGENTS.md` 與 `docs/`，不依賴這個資料夾。
+要建立新專案，先讀[採用指引](adoption.md)；要修改母範本，先讀[貢獻與維護](contributing.md)。這裡保存範本的設計背景與演變，採用後需要遵守的規範則放在 `AGENTS.md` 與 `docs/`。
 
-## 文件入口
+## 現行入口
 
-- [範本維護術語](CONTEXT.md)：開發助理、CC／Codex Skill、Plugin 與開發代理角色的定義。
-- [Codex Prompt／Skill 最佳化討論](research/2026-09-12-prompt-skill-optimization.md)：官方來源、盤點候選與已確認的範圍。
-- [Codex Prompt／Skill 最佳化計畫](plans/2026-09-12-codex-prompt-skill-optimization.md)：本輪共識、工作順序與六類行為驗收。
-- [Codex Prompt／Skill 最佳化結果](history/2026-09-12-codex-prompt-skill-optimization.md)：實際修改、回歸檢查、情境比較與證據限制。
-- [範本採用指引](adoption.md)：複製範本、初始化及保留選項。
-- [Claude Code／Codex 整合計畫](plans/2026-09-08-dual-agent-template.md)：雙工具設定、skills 攜入與驗收範圍。
-- [Claude Code／Codex 研究](research/2026-09-08-claude-code-codex.md)：官方來源、工具差異、設定依據與當時的實測結果。
-- [範本發布與快速建立研究](research/2026-09-08-template-distribution-bootstrap.md)：GitHub template、本機建立、npx／uvx 與 agent 安裝指引的官方依據、取捨與實測邊界。
-- [多入口建立器計畫](plans/2026-09-08-bootstrap-cli.md)：GitHub 發布、共用 CLI、skill 副本模式及套件驗收範圍。
-- [建立器實作與發布歷程](history/2026-09-08-bootstrap-cli.md)：實際改動、審查修正、套件驗證與發布範圍。
-- [本次文件搬移歷程](history/2026-09-08-template-docs-relocation.md)：搬移理由、取捨、實作與驗證結果。
+- [採用指引](adoption.md)：建立新目錄、初始化既有副本，以及保留範本的選項。
+- [貢獻與維護](contributing.md)：文件與程式放置位置、驗證方式、交付紀錄。
+- [範本維護術語](CONTEXT.md)：開發助理、Skill、Plugin 與代理角色的共用詞彙。
+- [Banner 設計與生成](assets/banner/README.md)：視覺概念、生成方法與重製方式。
+- [本輪文件整理紀錄](history/2026-09-13-docs-refresh.md)：閱讀入口、中英文 README 與 banner 的變更及驗證。
 
-## 存放原則
+## 設計與歷史證據
 
-「為什麼這個範本被做成這樣」放在這裡；「採用後要怎麼工作」放在 `docs/`。後續維護範本時，計畫放 `plans/`、研究放 `research/`、完成後的歷程放 `history/`。產品自己的文件仍依產品規範存放。
+以下記錄保留當時的決策與實測範圍；查閱目前操作方式時，使用上方現行入口。
 
-此目錄應隨母範本納入 Git，不加入 `.gitignore`。因為是隱藏目錄，列出檔案使用 `rg --files --hidden .tmpl.docs/`；文件中的程式碼路徑若未另註，皆以 repository 根目錄為基準。歷史報告記錄的是當時的狀態，後續變更另記歷程。
+| 主題 | 研究與計畫 | 結果 |
+| --- | --- | --- |
+| Codex Prompt／Skill 最佳化 | [討論](research/2026-09-12-prompt-skill-optimization.md) · [計畫](plans/2026-09-12-codex-prompt-skill-optimization.md) | [改造結果](history/2026-09-12-codex-prompt-skill-optimization.md) |
+| Claude Code／Codex 整合 | [研究](research/2026-09-08-claude-code-codex.md) · [計畫](plans/2026-09-08-dual-agent-template.md) | [建立器與發布歷程](history/2026-09-08-bootstrap-cli.md) |
+| 多入口建立器 | [研究](research/2026-09-08-template-distribution-bootstrap.md) · [計畫](plans/2026-09-08-bootstrap-cli.md) | [實作與驗證](history/2026-09-08-bootstrap-cli.md) |
+| 範本文件分離 | — | [搬移歷程](history/2026-09-08-template-docs-relocation.md) |
 
-## 初始化行為
+## 保存與初始化
 
-預設 init 會刪除整個 `.tmpl.docs/`，並移除根目錄 README 裡標記為 `TEMPLATE-DOCS` 的入口。加上 `--keep-template-files` 會保留兩者。
+此隱藏目錄隨母範本納入 Git。列出檔案使用 `rg --files --hidden .tmpl.docs/`；文件中的程式碼路徑若未另註，皆以 repository 根目錄為準。新計畫放 `plans/`、研究放 `research/`、完成紀錄放 `history/`。
 
-無論是否保留，初始化都不替換此目錄內的 placeholder。保留的研究範例或歷史記錄不會讓初始化誤判成尚未完成。新專案的執行規範不得連結到這些會被移除的檔案。
+預設初始化會移除此目錄與範本英文 README，並將根目錄 README 改成產品入口。`--keep-template-files` 會保留範本文件及素材。歷史內容中的 placeholders 不會被替換。
+
+採用後的執行規範只連結會保留的文件，避免新專案依賴已移除的範本歷史。

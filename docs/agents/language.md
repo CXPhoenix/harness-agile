@@ -13,7 +13,7 @@ Which language a document is written in follows from who has to accept it.
 | Ticket body | **English** | Drives implementation |
 | Ticket `## 給使用者（zh-TW）` section | **Traditional Chinese** | The user audits intent in this |
 | Commit messages, PR descriptions, release notes | **Traditional Chinese** | Produced by `/tw-emoji-*` |
-| README, TEMPLATE and research for the user | **Traditional Chinese** | Setup and evidence |
+| README, user guides and research for the user | **Traditional Chinese** | Setup and evidence; `README.en.md` is the English companion |
 | Standalone HTML reports | **Traditional Chinese** | Written for the user |
 | Conversation with the user | **Traditional Chinese** | |
 
