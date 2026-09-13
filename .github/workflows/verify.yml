@@ -50,4 +50,4 @@ jobs:
           shutil.rmtree('.agents/skills/archify/node_modules')
       - run: uv build --out-dir dist
       - run: npm pack --pack-destination dist
-      - run: python scripts/verify-distributions.py --wheel dist/harness_agile-0.2.0-py3-none-any.whl --npm dist/create-harness-agile-0.2.0.tgz
+      - run: python scripts/verify-distributions.py --wheel dist/harness_agile-0.2.1-py3-none-any.whl --npm dist/create-harness-agile-0.2.1.tgz

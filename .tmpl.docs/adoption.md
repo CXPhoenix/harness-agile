@@ -15,7 +15,7 @@ python3 -m harness_agile init /absolute/path/my-project \
   --source . --name '我的專案' --one-liner '它要解決的問題。' --no-input
 ```
 
-這條路線需要 Python 3.11+。目標須在來源目錄之外、不存在或為空，父目錄須已存在。`--keep-template-files` 產生的專案保留說明與 init 工具，並非完整建立器 checkout；從成品再建立另一個專案時，使用 README 的 Git URL 入口。
+這條路線需要 Python 3.11+。目標須在來源目錄之外、不存在或為空，父目錄須已存在。`--keep-template-files` 產生的專案保留說明與 init 工具，並非完整建立器 checkout；從成品再建立另一個專案時，使用 README 的 PyPI／npm 安裝入口。
 
 | 選項 | 何時使用 |
 | --- | --- |
