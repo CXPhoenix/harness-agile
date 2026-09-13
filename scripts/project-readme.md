@@ -27,3 +27,9 @@ python3 scripts/verify-project.py
 此命令檢查 skills、來源資料與工具設定。產品自己的 build／test 命令在 walking skeleton 完成後補上。
 
 每次 `git commit` 都使用專案的 `tw-emoji-commit`；PR 與 release 文案分別使用對應的 `tw-emoji-*` skill。
+
+## 範本授權
+
+沿用的 harness-agile 範本內容採 [MIT License](LICENSE)，第三方內容依[原有條款](THIRD_PARTY_NOTICES.md)保留聲明。新增產品內容的授權由產品維護者決定。
+
+Windows 的 Archify 自動開啟功能已停用；請手動開啟產物或預覽網址。詳見[停用範圍與驗證方式](docs/security/windows-opener.md)。

@@ -7,6 +7,11 @@ hidden: true
 
 # agent-browser
 
+Modified by CXPhoenix for harness-agile: compact discovery, evidence-equivalent
+native browser tools, and explicit authorization boundaries (2026-09-12).
+Upstream source and Apache-2.0 license: see LICENSE and docs/agents/skill-sources.json
+in the project root. License restoration: 2026-09-13.
+
 Fast browser automation CLI for AI agents. Chrome/Chromium via CDP with
 accessibility-tree snapshots and compact `@eN` element refs.
 

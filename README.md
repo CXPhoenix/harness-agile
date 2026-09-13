@@ -3,7 +3,7 @@
 ![多條探索路徑穿過檢查點，逐步收斂成可交付成果。](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.1.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.1.0)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.0)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
 [![Claude Code + Codex](https://img.shields.io/badge/Claude_Code_%2B_Codex-shared_workflow-d97757)](docs/agents/runtime.md)
 
@@ -26,7 +26,7 @@ harness-agile 是一份可攜的 AI 協作開發範本。從釐清需求到合�
 準備 Git 與 uv，然後在新專案的父目錄執行：
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.1.0' \
+uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
   harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 cd my-project
@@ -49,13 +49,13 @@ uv run --python 3.11 python scripts/verify-project.py
 需要 Node.js 18+，以及 Python 3.11+ 或 uv。
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   create-harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   init my-project --name '我的專案' --one-liner '它要解決的問題。' --no-input
 ```
 
@@ -99,10 +99,12 @@ python3 -m unittest discover -s tests -v
 
 ## 授權
 
-目前 repository 未提供專案整體的開源授權；`package.json` 標示為 `UNLICENSED`。內附第三方 skills 依各自的授權與[來源紀錄](docs/agents/skill-sources.json)管理。
+本專案採用 [MIT License](LICENSE)。內附第三方 skills、字型與品牌素材保留各自的授權；適用範圍及來源見[第三方聲明](THIRD_PARTY_NOTICES.md)與[來源紀錄](docs/agents/skill-sources.json)。
 
 <!-- TEMPLATE-DOCS:START -->
 ## 範本設計與歷程
 
 [維護文件索引](.tmpl.docs/README.md)保存設計背景、研究、計畫與歷史驗證。預設初始化會移除這些資料、範本 banner 與英文 README，並將本頁改為產品 README；`--keep-template-files` 可保留範本文件。
 <!-- TEMPLATE-DOCS:END -->
+
+Windows 的 Archify 自動開啟功能已停用；圖表產生與驗證仍可使用，請手動開啟產物。詳見[停用範圍與驗證方式](docs/security/windows-opener.md)。

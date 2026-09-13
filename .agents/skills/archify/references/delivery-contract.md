@@ -64,9 +64,18 @@ environmental failure through the supported command in a browser-capable
 execution context when practical. Keep the packaged transport unchanged unless
 the failure reproduces through that seam in a capable environment.
 
+## Windows automatic opening disabled
+
+Since 2026-09-13 this local distribution disables both artifact and preview opening
+on Windows before spawning any process. Receipts report `status: "disabled"`,
+`requested: true`, and `method: null`. Delivery and preview serving remain available;
+open the verified HTML or printed loopback URL manually. `--open` cannot override
+this gate. Re-enabling requires a reviewed replacement and native Windows verification.
+The earlier PowerShell implementation is not considered remediated or validated.
+
 ## Optional opening
 
-Add `--open` only when the user wants an immediate local preview. It runs after that atomic commit, uses one argument-array OS opener with a five-second bound, and records `open.status`. Keep it off for CI, unattended agents, and non-interactive environments. Failure or unsupported opening does not invalidate delivery; its status proves only whether the local opener invocation succeeded.
+Add `--open` only when the user wants an immediate local preview. On macOS and Linux it runs after that atomic commit, uses one argument-array OS opener with a five-second bound, and records `open.status`. Keep it off for CI, unattended agents, and non-interactive environments. Failure or unsupported opening does not invalidate delivery; its status proves only whether the local opener invocation succeeded.
 
 ## Last-Good Live Preview
 

@@ -8,6 +8,13 @@ metadata:
   based_on: Cocoon-AI/architecture-diagram-generator (MIT, v1.0)
 ---
 
+> Local Windows restriction (2026-09-13): automatic opening is disabled for both
+> `deliver --open` and `preview`. The receipt reports `status: "disabled"` and no
+> opener process is launched. Generate/check normally, then open the verified HTML
+> or printed loopback URL manually. Do not restore the PowerShell opener or add a
+> bypass; re-enabling requires a reviewed replacement and native Windows verification.
+> See `docs/security/windows-opener.md` in the project root.
+
 # Archify
 
 Create a self-contained, interactive HTML diagram from a small typed JSON specification. Static output is the default; enable motion only when the user asks for a demo or presentation.

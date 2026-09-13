@@ -10,7 +10,7 @@ supplied by the user. Ask together only for missing values. The target must be
 absent or empty, with an existing parent directory, outside the source checkout.
 
 Source: `https://github.com/CXPhoenix/harness-agile.git`.
-Use existing Git credentials if the source requires authentication. The initial release tag is `v0.1.0`.
+Use existing Git credentials if the source requires authentication. Use release tag `v0.2.0` for the current template; `v0.1.0` remains a historical snapshot.
 For automation, resolve the approved tag to its full commit with Git and use that
 commit in place of the tag below. When reading this guide from an authenticated
 checkout, use that checkout's `git rev-parse HEAD`.
@@ -23,19 +23,19 @@ the selected package: a wheel snapshot or regular files in the npm package. The
 npm package has no installation lifecycle scripts and requires no build allowlist.
 
 ```bash
-uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.1.0' \
+uvx --from 'git+https://github.com/CXPhoenix/harness-agile.git@v0.2.0' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+npx --yes --package='git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.1.0' \
+pnpx 'git+https://github.com/CXPhoenix/harness-agile.git#v0.2.0' \
   init my-project --name 'My Project' --one-liner 'What it does.' \
   --no-input --json --dry-run
 ```

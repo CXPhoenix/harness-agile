@@ -4,11 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "harness-agile"
-version = "0.1.0"
+version = "0.2.0"
 description = "Create portable Claude Code and Codex project workspaces"
 requires-python = ">=3.11"
 dependencies = []
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", ".agents/skills/*/LICENSE", ".agents/skills/archify/THIRD_PARTY_NOTICES.md", ".agents/skills/archify/assets/JetBrainsMono-OFL.txt"]
 
 [project.scripts]
 harness-agile = "harness_agile.cli:main"
@@ -17,7 +19,7 @@ harness-agile = "harness_agile.cli:main"
 packages = ["harness_agile"]
 
 [tool.hatch.build.targets.sdist]
-include = ["harness_agile", "pyproject.toml", "hatch_build.py", "README.md"]
+include = ["harness_agile", "pyproject.toml", "hatch_build.py", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", ".agents/skills/*/LICENSE", ".agents/skills/archify/THIRD_PARTY_NOTICES.md", ".agents/skills/archify/assets/JetBrainsMono-OFL.txt"]
 
 [tool.hatch.build.hooks.custom]
 path = "hatch_build.py"

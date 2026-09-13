@@ -12,23 +12,16 @@ const OPENERS = {
     method: 'xdg-open',
     args: (target) => [target],
   },
-  win32: {
-    command: 'powershell.exe',
-    method: 'powershell',
-    // Keep the command constant and pass the target through PowerShell's
-    // argument array. Paths are never interpolated into executable source.
-    args: (target) => [
-      '-NoProfile',
-      '-NonInteractive',
-      '-Command',
-      'Start-Process -FilePath $args[0]',
-      target,
-    ],
-  },
+
 };
 
 function launchTarget(target, options = {}) {
   const platform = options.platform || process.platform;
+  // Disabled pending a reviewed replacement and native Windows verification.
+  // This gate covers both artifact files and loopback preview URLs.
+  if (platform === 'win32') {
+    return { requested: true, status: 'disabled', target, method: null };
+  }
   const opener = OPENERS[platform];
   if (!opener) {
     return {

@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { openArtifact, openLoopbackUrl } from '../bin/open-artifact.mjs';
 
-const target = path.resolve("/tmp/-复杂 path 'quoted'/diagram.html");
+const target = path.resolve("/tmp/-複雜 path 'quoted'/diagram.html");
 
 test('open artifact: uses argument arrays without shell interpolation on every supported platform', () => {
   const cases = [
@@ -20,18 +20,7 @@ test('open artifact: uses argument arrays without shell interpolation on every s
       args: [target],
       method: 'xdg-open',
     },
-    {
-      platform: 'win32',
-      command: 'powershell.exe',
-      args: [
-        '-NoProfile',
-        '-NonInteractive',
-        '-Command',
-        'Start-Process -FilePath $args[0]',
-        target,
-      ],
-      method: 'powershell',
-    },
+
   ];
 
   for (const expected of cases) {
@@ -115,4 +104,22 @@ test('open artifact: live preview opens only an exact loopback HTTP root', () =>
   ]) {
     assert.throws(() => openLoopbackUrl(rejected), /loopback|valid/i, rejected);
   }
+});
+
+
+test('Windows automatic opening is disabled for artifacts and preview without spawning', () => {
+  let calls = 0;
+  const options = { platform: 'win32', spawn() { calls++; return { status: 0 }; } };
+  for (const input of ['diagram.html', "複雜 path 'quoted'/diagram.html", 'semi;colon.html', 'literal$(text).html']) {
+    const result = openArtifact(input, options);
+    assert.equal(calls, 0);
+    assert.deepEqual(result, {
+      requested: true, status: 'disabled', target: path.resolve(input), method: null,
+    });
+  }
+  assert.deepEqual(openLoopbackUrl('http://127.0.0.1:43127/', options), {
+    requested: true, status: 'disabled', target: 'http://127.0.0.1:43127/', method: null,
+  });
+  assert.throws(() => openLoopbackUrl('https://example.com/', options), /loopback/);
+  assert.equal(calls, 0);
 });
