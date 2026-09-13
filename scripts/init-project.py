@@ -28,7 +28,7 @@ TEXT_SUFFIXES = {".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".html", ".py
 
 # Removed after a successful run unless --keep-template-files is given.
 TEMPLATE_ONLY = (
-    ".tmpl.docs", "TEMPLATE.md", "scripts/init-project.py", "tests/test_init_project.py",
+    ".tmpl.docs", "TEMPLATE.md", "README.en.md", "scripts/init-project.py", "tests/test_init_project.py",
     ".claude/skills/init-template", ".agents/skills/init-template",
     "scripts/project-readme.md", "harness_agile", "bin", "hatch_build.py",
     "pyproject.toml", "package.json", "INSTALL.md", "bootstrap",
