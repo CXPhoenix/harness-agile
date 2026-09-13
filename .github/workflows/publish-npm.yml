@@ -39,4 +39,4 @@ jobs:
         with:
           name: npm-distribution
           path: dist
-      - run: npm publish dist/*.tgz --access public --ignore-scripts --provenance --registry https://registry.npmjs.org
+      - run: npm publish ./dist/*.tgz --access public --ignore-scripts --provenance --registry https://registry.npmjs.org
