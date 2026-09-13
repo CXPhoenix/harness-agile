@@ -35,6 +35,9 @@ TEMPLATE_ONLY = (
     "tests/test_bootstrap.py", "tests/test_skill_links.py", "tests/test_bundle.py",
     "scripts/verify-distributions.py",
     ".github/workflows/verify.yml",
+    ".github/workflows/build-release.yml",
+    ".github/workflows/publish-pypi.yml",
+    ".github/workflows/publish-npm.yml",
 )
 
 # The banner in shared instructions that only makes sense before initialisation.
