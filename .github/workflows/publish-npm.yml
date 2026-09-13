@@ -1,4 +1,4 @@
-name: Publish to npm
+name: Stage npm release for approval
 
 on:
   workflow_dispatch:
@@ -34,9 +34,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - run: npm install --global npm@11.14.0
+      - run: npm install --global npm@11.19.1
       - uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317
         with:
           name: npm-distribution
           path: dist
-      - run: npm publish ./dist/*.tgz --access public --ignore-scripts --provenance --registry https://registry.npmjs.org
+      - run: npm stage publish ./dist/*.tgz --access public --ignore-scripts --provenance --registry https://registry.npmjs.org
+      - name: Explain approval requirement
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+          ### npm release staged
+          This run uploads a candidate only. A maintainer must review and approve it with 2FA on npm before it becomes public.
+          Review staged releases: https://www.npmjs.com/package/create-harness-agile
+          SUMMARY
