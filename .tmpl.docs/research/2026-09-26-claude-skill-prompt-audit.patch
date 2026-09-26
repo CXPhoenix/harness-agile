@@ -192,21 +192,6 @@ index 98e9a44..eabee2a 100644
 -
 -If yes, send.
 +A reader who sees only the first and last line knows (a) what to do next and (b) what just happened. Hedge only where there is real uncertainty, and name literal actions instead of idioms.
-diff --git a/.claude/skills/implement/SKILL.md b/.claude/skills/implement/SKILL.md
-index 57fdbee..2bca6a0 100644
---- a/.claude/skills/implement/SKILL.md
-+++ b/.claude/skills/implement/SKILL.md
-@@ -13,8 +13,8 @@ behavior. Continue until the approved acceptance criteria are covered.
- 
- Run affected tests during the loop and the project's required checks at completion,
- including the full existing test suite once. Run typechecking when the project has
--it configured; do not add a toolchain merely to satisfy this instruction. After a
--failure or further edit, rerun affected checks. Record the coverage report table
-+it configured; do not add a toolchain merely to satisfy this instruction. After fixing a
-+failure, rerun the affected checks. Record the coverage report table
- required by workflow.md, including unmeasured or uncovered areas.
- 
- Use /code-review on the actual change, including staged, unstaged and relevant
 diff --git a/.claude/skills/improve-codebase-architecture/HTML-REPORT.md b/.claude/skills/improve-codebase-architecture/HTML-REPORT.md
 index e39e825..36759fa 100644
 --- a/.claude/skills/improve-codebase-architecture/HTML-REPORT.md
@@ -544,18 +529,10 @@ index e2943f8..c33124a 100644
  When user-invoked skills need shared guidance, put it in a referenced document or a model-invoked reference skill. Reuse authorized context without bypassing another skill's manual-only boundary.
  
 diff --git a/.claude/skills/writing-for-agents/SKILL.md b/.claude/skills/writing-for-agents/SKILL.md
-index a37608d..a9eb902 100644
+index a37608d..f4b8702 100644
 --- a/.claude/skills/writing-for-agents/SKILL.md
 +++ b/.claude/skills/writing-for-agents/SKILL.md
-@@ -71,11 +71,11 @@ Hunt for opportunities to refactor with leading words. A triad spelled out at th
- 
- You win twice: fewer tokens, and a sharper hook for the agent to hang its thinking on. Assume every document is carrying restatements that leading words retire. Go find them.
- 
--**Negation** is the failure mode beside this lever: steering by prohibition drags the forbidden behaviour into context and makes it _more_ available, not less. _Don't think of an elephant_, and the elephant is all there is; the negation is a weak modifier the strongly-activated concept overruns, so the ban half-reads as an instruction to do the thing. Prompt the **positive**: state the target behaviour ("write one-line comments") so the banned one is never spoken. A prohibition earns its place only as a hard guardrail you cannot phrase positively; even then, pair it with the positive target so attention lands on what to do.
-+**Negation** is the failure mode beside this lever: steering by prohibition drags the forbidden behaviour into context and makes it _more_ available, not less. _Don't think of an elephant_, and the elephant is all there is; the negation is a weak modifier the strongly-activated concept overruns, so the ban half-reads as an instruction to do the thing. Prompt the **positive**: state the target behaviour ("write one-line comments") so the banned one is never spoken. A prohibition earns its place only as a hard guardrail you cannot phrase positively; even then, pair it with the positive target so attention lands on what to do. One exception depends on the reader: for Claude Opus 5.5, visual or frontend direction works better as a list naming the specific default styles to avoid (a cream background, italic accent words, "01/02/03" labels, monospace labels, pill buttons); for Claude Opus 4.8 or Sonnet 5, give a concrete alternative spec or ask for several directions to choose from.
- 
- ## Pruning
- 
+@@ -78,4 +78,4 @@ You win twice: fewer tokens, and a sharper hook for the agent to hang its thinki
  - Keep each meaning in a **single source of truth**: one authoritative place, so changing the behaviour is a one-place edit. **Duplication** (the same meaning in more than one place) costs maintenance and tokens, and inflates a meaning's prominence on the ladder past its real rank. (The accidental inverse of a leading word, which repeats a token on purpose, never the meaning.)
  - The **environment** is a source of truth too (`package.json` scripts, config files, the directory layout, `--help` output), and a document that restates it is a **cache**: a copy of a lookup, earning its load only when the lookup is expensive. Cache what the agent cannot find by looking: the unwritten convention, the reason behind a choice, the gotcha no config confesses. Leave the one-file, one-command lookups to the environment, where they cannot go stale.
  - Check every line for **relevance**: does it still bear on what the document does? A line loses relevance by never bearing on the task (mere exposition, or a branch that should be disclosed) or by going stale as the behaviour or world it describes changes. Shorter documents are easier to keep relevant. Without a pruning discipline the default fate is **sediment**: stale layers that settle because adding feels safe and removing feels risky, until you must core down through them to find what is still live.

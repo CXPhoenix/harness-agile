@@ -2,7 +2,7 @@
 
 日期：2026-09-26。依 `/claude-api prompt-audit` 流程執行；只提出修改，未套用到 repo。
 
-> **修訂**：經 `harness-reviewer` 紅隊審查後，A1、A2、A3、A5、B2、C1、C7、C13 已修正，並新增 C7b。下表是修訂後的版本；修訂理由見[方法評估](2026-09-26-claude-skill-tuning-method.md)。
+> **修訂**：經 `harness-reviewer` 紅隊審查後，A1、A2、A3、B2、C1、C7 已修正，並新增 C7b；經 `harness-challenger` 挑戰後，撤回 A5 與 C13，D5 暫緩。下表是修訂後的版本，被撤回的項目以刪除線標示；修訂理由見[方法評估](2026-09-26-claude-skill-tuning-method.md)。
 
 ## 前提
 
@@ -35,7 +35,7 @@
 | A2 | code-review/SKILL.md:55 | 1f 字數上限 | 400 字上限會讓 reviewer 捨棄 findings；Opus 會照字面遵守 | Medium | rewrite：列出全部 findings，包含不確定的，附證據、confidence 與嚴重度，並說明此階段的任務是 coverage |
 | A3 | security-review/SKILL.md:49 | severity filter | 在找候選問題時就套用 HIGH／MEDIUM 門檻會壓低找出的數量；門檻應只在最後過濾時使用 | Medium | rewrite：明文覆蓋 upstream 方法論中的不報告門檻 |
 | A4 | diagnosing-bugs/SKILL.md:22 | 1a 加壓 | 「Be aggressive…Refuse to give up」會套用過度，並與「建不出 loop 就停下來問」互相衝突 | Medium | rewrite |
-| A5 | implement/SKILL.md:16-17 | 過度驗證 | 「further edit 後重跑」是 Codex 那批加入的 | Medium | rewrite：保留「修正失敗後重跑」 |
+| ~~A5~~（撤回） | implement/SKILL.md:16-17 | 過度驗證 | 「further edit 後重跑」是 Codex 那批加入的 | Medium | rewrite：保留「修正失敗後重跑」 |
 | A6 | security-review/SKILL.md:31-33 | 1d fossil | 說明理由寫的是 Codex 行為 | Medium | rewrite |
 | B2 | grilling/SKILL.md:28 | scope 擴張 | 「proceed」會把 stage 1 直接推進到實作，跳過 spec、審查與 tickets | Medium | rewrite：確認後只延續已授權的工作 |
 | B3 | research/SKILL.md:6-12 | 過度委派＋契約不符 | 無條件開 background agent；`harness-researcher` 無法寫檔 | Medium | rewrite |
@@ -57,12 +57,12 @@
 | C9 | i-have-adhd/SKILL.md:130-142 | 自我檢查陷阱 | 每次回覆前的刪除清單，與前面的規則重複 | Medium | rewrite：只保留判準 |
 | C11 | teach/SKILL.md:41 | 1a hedge | 「Try to」會被當成可以不做到 | Medium | rewrite |
 | C12 | writing-for-agents/SKILL.md:81 | 1a | 教作者用更強烈的字眼加重語氣 | Medium | rewrite |
-| C13 | writing-for-agents/SKILL.md:74 | keep list #11（新模型需要補充指引） | 「只用正向描述」會讓作者刪掉前端的點名避免清單 | Medium | add：依讀者模型分流（Opus 5.5 用點名清單；4.8／Sonnet 5 用具體規格） |
+| ~~C13~~（撤回） | writing-for-agents/SKILL.md:74 | keep list #11（新模型需要補充指引） | 「只用正向描述」會讓作者刪掉前端的點名避免清單 | Medium | add：依讀者模型分流（Opus 5.5 用點名清單；4.8／Sonnet 5 用具體規格） |
 | D1 | tw-emoji-pr-note:53-54; release-note:62-63 | 1d update suppressor | 停在 code block，沒有接著執行 gh／CHANGELOG | Medium | rewrite |
 | D2 | tw-emoji-commit/SKILL.md:36 | 1d update suppressor | 與同檔第 57-62 行的 commit 流程衝突 | Medium | rewrite |
 | D3 | 三個 tw-emoji 的 sanitize 範例 | Group 2 自由度錯置 | 雙引號裡的反引號會觸發指令替換；應固定為一種安全寫法 | Medium | rewrite |
 | D4 | evidence-report/SKILL.md:74-77 | Opus 5.5 前端預設 | 點名清單的形式是對的，但缺少 Opus 5.5 自己常用的預設風格 | Medium | add |
-| D5 | agent-browser/SKILL.md:3 | Group 3 觸發描述 | Codex 那批把描述從 925 字元砍到 199 字元，失去 stage 8 的觸發點 | Medium | rewrite |
+| D5（暫緩） | agent-browser/SKILL.md:3 | Group 3 觸發描述 | Codex 那批把描述從 925 字元砍到 199 字元，失去 stage 8 的觸發點 | Medium | rewrite |
 | D6 | agent-browser/SKILL.md:54-61 | 1c padding | 推銷段落與第 18 行「優先用原生工具」互相矛盾 | Medium | remove |
 | D7 | evidence-report/SKILL.md:79-83 | 過度驗證 | 交付前的開檔核對步驟 | Medium | rewrite：保留層級要誠實的品質底線 |
 | D8 | evidence-report/SKILL.md:46-55 | 書面產出偏長 | 七段固定結構，卻沒有長度指引 | Medium | add |
@@ -108,6 +108,6 @@
 
 ## Patch 與驗證
 
-- 合併 patch：[2026-09-26-claude-skill-prompt-audit.patch](2026-09-26-claude-skill-prompt-audit.patch)。修訂後共 46 項修改、27 個檔案，+70／−86；在目前的 HEAD `244c555` 上執行 `git apply --check` 通過。
-- 逐項 patch：46 個 `git format-patch` 檔案，放在本 session 的 scratchpad `patches3/`，屬於暫存。
+- 合併 patch：[2026-09-26-claude-skill-prompt-audit.patch](2026-09-26-claude-skill-prompt-audit.patch)。修訂後共 44 項修改、26 個檔案，+67／−83；在目前的 HEAD `244c555` 上執行 `git apply --check` 通過。
+- 逐項 patch：44 個 `git format-patch` 檔案，放在本 session 的 scratchpad `patches4/`，屬於暫存。D5 仍在 patch 中，確認 agent-browser 的載入來源之前不要套用。
 - **尚未驗證**：修改後的行為。依 prompt-audit Step 7，移除只是假設；建議每次套一小批，實際跑對應的 skill（例如 `/code-review`、`/tw-emoji-pr-note`、`/research`），比較套用前後的行為。

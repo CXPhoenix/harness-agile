@@ -23,10 +23,10 @@
 | --- | --- | --- |
 | 初步立場 | 主 session | 主張「以每個 skill 的角色決定讀者模型」 |
 | Red team | `harness-reviewer` | 已執行並回報 22 項 findings。該角色在本 session 中途才改為固定 `claude-opus-5`，**實際使用的模型未經確認** |
-| Devil's advocacy／替代方案 | `harness-challenger`（Opus 4.8） | **未執行**。新增的角色檔沒有被這個 session 偵測到，需要重開 session |
+| Devil's advocacy／替代方案 | `harness-challenger`（Opus 4.8） | 第一輪時新角色未被偵測；之後角色出現，已補跑並回報（見下節）。**實際使用的模型同樣未經確認** |
 | 修改 | `harness-executor`（Sonnet 5） | **未執行**，原因同上。patch 的修訂由主 session 在 scratch 副本上完成 |
 
-因此這次評估只有一位 critic；加上主 session 同時寫了稽核與立場，結論可能有偏誤。建議重開 session 後，讓 `harness-challenger` 以同一份材料再挑戰一次。
+兩位 critic 都已執行，但實際模型都未經確認，而且稽核與立場都出自主 session，結論仍可能有偏誤。
 
 ## 主 session 對 red team findings 的裁決
 
@@ -46,6 +46,31 @@
 | F13–F22 orchestration 文件的缺口 | 採納 | 見下節 |
 
 修訂後的 patch 共 46 項修改，涉及 27 個檔案（+70／−86），`git apply --check` 通過。
+
+## Challenger（Opus 4.8）的挑戰與裁決
+
+| 項目 | 裁決 | 處理 |
+| --- | --- | --- |
+| O1 subagent 不會載入 skills 缺少依據 | 部分採納 | 依據是角色的 `tools:` 沒有 Skill、也沒有 `skills:` 預載；orchestration 文件改寫為這個具體條件 |
+| O2 skill 步驟會經 handoff 轉述給 executor | 採納 | orchestration 文件要求 handoff 依讀者撰寫（例如給 executor 時明寫 scope） |
+| O3、O4 主 session 模型可切換；範本採用者的模型未知 | 採納 | skill 本文不寫模型名；主模型改變時重跑 prompt audit；採用者也照做 |
+| O5 第一輪只有一位 critic | 採納 | 本輪補跑 |
+| A1 探針通過才套用 | 採納 | 維持「分批套用並實跑」的建議，不整批套用 |
+| A2、A3 依 stage 分流；改用委派模板 | 部分採納 | 以 handoff 依讀者撰寫處理；獨立的委派模板檔暫不新增 |
+| A4、E1 5.5 的 code review 比 5 強 | 使用者已決定 | reviewer 改用 `claude-opus-5-5`、effort `high` |
+| E2 目標是 5.5、基準卻用 5 的行為 | 採納 | 以 5 的行為為基準的刪改（例如 D8）應依 5.5 頁面重新確認 |
+| A5 hunk 仍有回歸風險 | 採納 | 已查證 `/tdd` 沒寫要執行測試，**撤回 A5** |
+| D10 `visual-check` 是否涵蓋四種尺寸 | 駁回 | delivery-contract.md:44-46 明載四種尺寸都會量測 |
+| D5 可能被使用者層級同名 skill 覆蓋 | 採納 | D5 暫緩，先確認 Claude Code 實際載入的是哪一份 agent-browser |
+| C13 在 skill 本文寫入模型名 | 採納 | **撤回 C13**，模型相關的前端指引只放在 orchestration 文件 |
+| C7b 底色 | 保留 | 信心低，套用時確認 report 想要的美學 |
+| D1、D2 與全域「skill 只產生、Claude 另外執行」規則的措辭有張力 | 交由使用者決定 | 見下方 |
+
+撤回 A5、C13 後，patch 為 44 項修改、26 個檔案（+67／−83），`git apply --check` 通過。
+
+**需要使用者決定：**
+1. ~~reviewer 的模型~~：已決定改用 Opus 5.5、effort `high`（`effort:` frontmatter 經 Claude Code sub-agents 文件確認支援）。模型多樣性改由 challenger（Opus 4.8）提供。
+2. tw-emoji skills 是否可以把 `git commit`／`gh` 執行步驟寫在 skill 裡。全域規則描述的是「skill 產生、Claude 另外執行」。
 
 ## Orchestration 設定（已寫入 repo）
 
