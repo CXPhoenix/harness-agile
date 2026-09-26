@@ -58,8 +58,8 @@
 | C11 | teach/SKILL.md:41 | 1a hedge | 「Try to」會被當成可以不做到 | Medium | rewrite |
 | C12 | writing-for-agents/SKILL.md:81 | 1a | 教作者用更強烈的字眼加重語氣 | Medium | rewrite |
 | ~~C13~~（撤回） | writing-for-agents/SKILL.md:74 | keep list #11（新模型需要補充指引） | 「只用正向描述」會讓作者刪掉前端的點名避免清單 | Medium | add：依讀者模型分流（Opus 5.5 用點名清單；4.8／Sonnet 5 用具體規格） |
-| D1 | tw-emoji-pr-note:53-54; release-note:62-63 | 1d update suppressor | 停在 code block，沒有接著執行 gh／CHANGELOG | Medium | rewrite |
-| D2 | tw-emoji-commit/SKILL.md:36 | 1d update suppressor | 與同檔第 57-62 行的 commit 流程衝突 | Medium | rewrite |
+| D1 | tw-emoji-pr-note:54; release-note:63 | 1d update suppressor | 「Output only」會讓模型把 code block 當成整個回合的終點 | Medium | rewrite：改為「code block 是 skill 的完整輸出，開 PR／發 release 不在此 skill 範圍」（依使用者決定，不寫執行步驟） |
+| D2 | tw-emoji-commit/SKILL.md:36, :57-62 | 1d update suppressor | 「Output only」與同檔第 57-62 行的 commit 流程衝突 | Medium | rewrite＋remove：輸出範圍比照 D1，並移除第 57-62 行的 commit 執行段，改為指向 AGENTS.md 的 commit 規則（依使用者決定） |
 | D3 | 三個 tw-emoji 的 sanitize 範例 | Group 2 自由度錯置 | 雙引號裡的反引號會觸發指令替換；應固定為一種安全寫法 | Medium | rewrite |
 | D4 | evidence-report/SKILL.md:74-77 | Opus 5.5 前端預設 | 點名清單的形式是對的，但缺少 Opus 5.5 自己常用的預設風格 | Medium | add |
 | D5（暫緩） | agent-browser/SKILL.md:3 | Group 3 觸發描述 | Codex 那批把描述從 925 字元砍到 199 字元，失去 stage 8 的觸發點 | Medium | rewrite |
@@ -108,6 +108,6 @@
 
 ## Patch 與驗證
 
-- 合併 patch：[2026-09-26-claude-skill-prompt-audit.patch](2026-09-26-claude-skill-prompt-audit.patch)。修訂後共 44 項修改、26 個檔案，+67／−83；在目前的 HEAD `244c555` 上執行 `git apply --check` 通過。
-- 逐項 patch：44 個 `git format-patch` 檔案，放在本 session 的 scratchpad `patches4/`，屬於暫存。D5 仍在 patch 中，確認 agent-browser 的載入來源之前不要套用。
+- 合併 patch：[2026-09-26-claude-skill-prompt-audit.patch](2026-09-26-claude-skill-prompt-audit.patch)。修訂後共 45 項修改、26 個檔案，+67／−87；在目前的 HEAD `244c555` 上執行 `git apply --check` 通過。
+- 逐項 patch：45 個 `git format-patch` 檔案，放在本 session 的 scratchpad `patches5/`，屬於暫存。D5 仍在 patch 中，確認 agent-browser 的載入來源之前不要套用。
 - **尚未驗證**：修改後的行為。依 prompt-audit Step 7，移除只是假設；建議每次套一小批，實際跑對應的 skill（例如 `/code-review`、`/tw-emoji-pr-note`、`/research`），比較套用前後的行為。

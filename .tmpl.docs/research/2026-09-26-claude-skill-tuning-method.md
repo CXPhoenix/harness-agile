@@ -64,13 +64,13 @@
 | D5 可能被使用者層級同名 skill 覆蓋 | 採納 | D5 暫緩，先確認 Claude Code 實際載入的是哪一份 agent-browser |
 | C13 在 skill 本文寫入模型名 | 採納 | **撤回 C13**，模型相關的前端指引只放在 orchestration 文件 |
 | C7b 底色 | 保留 | 信心低，套用時確認 report 想要的美學 |
-| D1、D2 與全域「skill 只產生、Claude 另外執行」規則的措辭有張力 | 交由使用者決定 | 見下方 |
+| D1、D2 與全域「skill 只產生、Claude 另外執行」規則的措辭有張力 | 使用者已決定 | tw-emoji skills 不寫 commit／gh 執行步驟；D1、D2 改為只界定輸出範圍，並移除 commit skill 原有的執行段 |
 
-撤回 A5、C13 後，patch 為 44 項修改、26 個檔案（+67／−83），`git apply --check` 通過。
+撤回 A5、C13 並依使用者決定改寫 D1、D2 後，patch 為 45 項修改、26 個檔案（+67／−87），`git apply --check` 通過。
 
 **需要使用者決定：**
 1. ~~reviewer 的模型~~：已決定改用 Opus 5.5、effort `high`（`effort:` frontmatter 經 Claude Code sub-agents 文件確認支援）。模型多樣性改由 challenger（Opus 4.8）提供。
-2. tw-emoji skills 是否可以把 `git commit`／`gh` 執行步驟寫在 skill 裡。全域規則描述的是「skill 產生、Claude 另外執行」。
+2. ~~tw-emoji skills 是否寫入執行步驟~~：已決定不寫。skill 只產生並 sanitize 訊息，執行規則留在 AGENTS.md 與全域 CLAUDE.md。
 
 ## Orchestration 設定（已寫入 repo）
 

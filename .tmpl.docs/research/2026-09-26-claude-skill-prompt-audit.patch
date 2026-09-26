@@ -395,7 +395,7 @@ index e868c83..9675004 100644
  Do NOT close or modify any parent issue.
  
 diff --git a/.claude/skills/tw-emoji-commit/SKILL.md b/.claude/skills/tw-emoji-commit/SKILL.md
-index d658a08..daf2c19 100644
+index d658a08..9d79f9f 100644
 --- a/.claude/skills/tw-emoji-commit/SKILL.md
 +++ b/.claude/skills/tw-emoji-commit/SKILL.md
 @@ -33,7 +33,7 @@ command consumes it; preserve actual newlines. Fail if the sanitizer is missing.
@@ -403,7 +403,7 @@ index d658a08..daf2c19 100644
  4. **Sanitize the draft** by running the sanitize script (see **Output Sanitization** section).
  5. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
 -6. Output **only** the code block. No conversational text before or after.
-+6. For a message-only request, the code block is the whole reply. When a commit was authorized, continue with the commit flow under Output Sanitization and report the resulting commit hash.
++6. The code block is this skill's whole output. Committing with it is outside this skill.
  
  ---
  
@@ -422,8 +422,23 @@ index d658a08..daf2c19 100644
  Where `SANITIZE_SCRIPT` is the resolved absolute path from the **Script Resolution** section above.
  
  The script will replace any leaked IDE internal links matching the pattern:
+@@ -54,12 +54,8 @@ The script will replace any leaked IDE internal links matching the pattern:
+ 
+ This prevents private file paths from being exposed in the commit message.
+ 
+-When the user has authorized a commit (rather than only requesting a message),
+-save the sanitized message to a temporary UTF-8 file and execute
+-`git commit --file <message-file>` for the approved staged changes. For an explicitly
+-requested amend, retain the requested amend option and use the same message-file
+-flow. Verify Git's result. Message-only requests retain the code-block output above;
+-the skill itself does not authorize staging unrelated changes or publishing them.
++This skill produces the message only; the project's commit rule in AGENTS.md governs
++committing with it. The skill does not authorize staging or publishing anything.
+ 
+ ---
+ 
 diff --git a/.claude/skills/tw-emoji-pr-note/SKILL.md b/.claude/skills/tw-emoji-pr-note/SKILL.md
-index 34f57eb..99e9d45 100644
+index 34f57eb..de5637b 100644
 --- a/.claude/skills/tw-emoji-pr-note/SKILL.md
 +++ b/.claude/skills/tw-emoji-pr-note/SKILL.md
 @@ -43,15 +43,15 @@ command consumes it; preserve actual newlines. Fail if the sanitizer is missing.
@@ -440,15 +455,14 @@ index 34f57eb..99e9d45 100644
 +
     Where `SANITIZE_SCRIPT` is the resolved absolute path from the **Script Resolution** section above.
  
--5. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
+ 5. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
 -6. Output **only** the code block. No conversational text before or after.
-+5. Wrap the sanitized result in a Markdown code block (` ```markdown `). For a draft-only request, that block is the whole reply.
-+6. When the user asked to open or edit the PR, write the sanitized text to a UTF-8 file, use its first line as the title and the rest as the body, run `gh pr create --base <base> --title <title> --body-file <file>` (or `gh pr edit <n> --title <title> --body-file <file>`), and report the PR URL.
++6. The code block is this skill's whole output. Opening or editing a PR with it is outside this skill.
  
  ---
  
 diff --git a/.claude/skills/tw-emoji-release-note/SKILL.md b/.claude/skills/tw-emoji-release-note/SKILL.md
-index cd152df..865990b 100644
+index cd152df..75bf0fc 100644
 --- a/.claude/skills/tw-emoji-release-note/SKILL.md
 +++ b/.claude/skills/tw-emoji-release-note/SKILL.md
 @@ -52,15 +52,15 @@ If no release tag exists, describe this as the first release and inspect history
@@ -465,10 +479,9 @@ index cd152df..865990b 100644
 +
     Where `SANITIZE_SCRIPT` is the resolved absolute path from the **Script Resolution** section above.
  
--6. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
+ 6. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
 -7. Output **only** the code block. No conversational text before or after.
-+6. Wrap the sanitized result in a Markdown code block (` ```markdown `). For a draft-only request, that block is the whole reply.
-+7. When the user authorized the release, use the sanitized file with `gh release create <tag> --notes-file <file>`, or insert it into `CHANGELOG.md` and commit through tw-emoji-commit, and report the result. Creating or pushing a tag still needs the user's authorization.
++7. The code block is this skill's whole output. Tagging, publishing or editing CHANGELOG.md with it is outside this skill.
  
  ---
  
