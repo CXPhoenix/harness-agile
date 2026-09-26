@@ -64,7 +64,7 @@ then wait.
 
 ### Stage 7: per-ticket, diff-scoped
 
-Use the project `.agents/skills/security-review/SKILL.md`, then fix confirmed
+Use the project `security-review` skill (`.claude/skills/` or `.agents/skills/`), then fix confirmed
 findings and verify those fixes. Claude's built-in command has the same name;
 explicitly load the project file so both runtimes apply the same scope and policy.
 The parent captures the diff and persists the report; delegated reviewers stay read-only.

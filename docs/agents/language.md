@@ -7,7 +7,7 @@ Which language a document is written in follows from who has to accept it.
 | Document | Language | Why |
 |---|---|---|
 | `AGENTS.md`, `CLAUDE.md`, `docs/agents/*`, `docs/adr/*` | **English** | Read by agents only |
-| `.agents/skills/*/SKILL.md` | **English** | Read by agents only |
+| `.agents/skills/*/SKILL.md`, `.claude/skills/*/SKILL.md` | **English** | Read by agents only |
 | `spec.en.md` | **English** | Source of truth for implementation |
 | `spec.zh-TW.md` | **Traditional Chinese** | The user audits the spec in this |
 | Ticket body | **English** | Drives implementation |

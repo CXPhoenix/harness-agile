@@ -9,13 +9,14 @@
 | 使用者第一次接觸專案 | 根目錄 `README.md` 與 `README.en.md` |
 | 採用後仍需要的操作說明 | `docs/guide.md` |
 | 開發助理共用規範 | `AGENTS.md` 與 `docs/agents/` |
-| Skills 正本 | `.agents/skills/` |
+| Claude Code skills | `.claude/skills/` |
+| Codex skills | `.agents/skills/` |
 | 範本研究、計畫與歷程 | `.tmpl.docs/research/`、`plans/`、`history/` |
 | 範本視覺素材 | `.tmpl.docs/assets/` |
 
 使用者文件依 Quill & Grill 的讀者優先原則撰寫：先交代讀者要完成的事，再給必要步驟、預期結果與限制。中英文 README 同次更新，指令、數字與行為說明保持一致。歷史研究保留當時的證據與日期；新的結論另記歷程。
 
-開發助理文件以英文維護。`CLAUDE.md` 保持匯入入口，skills 的共用規則見 [runtime.md](../docs/agents/runtime.md)。改動正本後，檢閱差異，再執行 `python3 scripts/sync-skills.py --refresh`。
+開發助理文件以英文維護。`CLAUDE.md` 保持匯入入口，skills 的共用規則見 [runtime.md](../docs/agents/runtime.md)。Claude 與 Codex 的 skills 分開維護，依各自官方的 prompt 建議調整；行為層面的修改需要兩邊都套用時，逐一移植並檢閱差異。
 
 ## 驗證修改
 

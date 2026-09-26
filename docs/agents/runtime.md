@@ -7,8 +7,14 @@ needed by an adopted project and is independent of removable template history.
 
 ## Shared skill contract
 
-`.agents/skills/<name>/` is the complete project copy. `.claude/skills/<name>` is a
-relative symlink or verified byte-identical copy of it. Read the canonical project copy when a user-level skill has the same
+Each runtime owns a complete, independent skill tree: `.claude/skills/<name>/` for
+Claude Code and `.agents/skills/<name>/` for Codex. Anthropic and OpenAI publish
+different prompting guidance, so a same-named skill may be worded differently per
+tree; edit the tree for the runtime being tuned, and port a behavior change to the
+other tree deliberately. Each tree carries only its own runtime's metadata (Claude
+frontmatter such as `disable-model-invocation`; Codex `agents/openai.yaml`). A skill
+may exist in one tree only; the skills named in the pipeline and hard rules exist in both.
+Read the project copy for the active runtime when a user-level skill has the same
 name; helper paths resolve relative to that loaded SKILL.md. Keep reference files
 and scripts with their skill. Provenance: [skill-sources.json](skill-sources.json).
 `skills-lock.json` records the upstream installer snapshot; local adaptations are
@@ -23,8 +29,9 @@ listed in the provenance file and must be preserved or reapplied during updates.
 | WebSearch / WebFetch | Native web tools | Native search/browser tools, with primary sources |
 | AskUserQuestion | Native question tool | Available question tool or ordinary conversation |
 
-Manual-only skills retain both `disable-model-invocation: true` and
-`agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Ask for the
+A skill present in both trees keeps one invocation policy: Claude
+`disable-model-invocation: true` pairs with Codex `agents/openai.yaml`
+`policy.allow_implicit_invocation: false`. Ask for the
 user's explicit invocation when required; an existing explicit instruction carries
 forward. Other skills remain discoverable. Do not interpret Claude-specific shell
 injection syntax or frontmatter as a Codex permission grant.
@@ -39,10 +46,8 @@ unless a project adapter or the user states otherwise.
 
 `CLAUDE.md` imports `@AGENTS.md`; use `/memory` to inspect loaded instructions.
 Use `/skills` and `/agents` to inspect discovery after a fresh session. Project
-skills use relative links or synchronized real directories. After reviewing canonical
-skill edits, run `python3 scripts/sync-skills.py --refresh`; verification rejects divergent
-copies. `--mode copy` avoids filesystem symlink requirements. Git checkouts may contain
-flattened link text files; `sync-skills.py` repairs those before verification. Existing user or managed
+skills are real directories in `.claude/skills/`, tuned for Claude; edit them in place
+and run `python3 scripts/verify-project.py`. Existing user or managed
 permissions continue to apply; the template does not enable permission bypass.
 
 Project roles in `.claude/agents/`:
@@ -57,7 +62,7 @@ Claude model through native controls. Model brands are not cross-runtime workflo
 requirements. Native plan mode and interactive requirement interviews fit stage 1;
 native agents can independently review the resulting evidence.
 
-For security review, explicitly read `.agents/skills/security-review/SKILL.md`.
+For security review, explicitly read `.claude/skills/security-review/SKILL.md`.
 The built-in `/security-review` remains a host capability, not proof that this
 project's adapted skill was loaded. Optional built-ins and installed MCP tools can
 supplement the shared workflow; record what they actually verified.

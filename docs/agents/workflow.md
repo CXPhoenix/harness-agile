@@ -109,7 +109,7 @@ command when available or review the proposed cleanup directly.
 
 ## Stage 7 — Security review
 
-Load the project `.agents/skills/security-review/SKILL.md` on the diff. The cross-cutting chain analysis is not part of this stage; it
+Load the active runtime's project `security-review/SKILL.md` on the diff. The cross-cutting chain analysis is not part of this stage; it
 runs at epic close-out. See [review.md](review.md).
 
 ## Stage 8 — End-to-end

@@ -19,9 +19,9 @@ It is designed for individuals and teams who want their AI development workflow 
 
 ## What you get
 
-- **One shared contract.** `AGENTS.md` holds the project purpose and workflow. Both tools use canonical skills while keeping their native tools and role configurations.
+- **One shared contract.** `AGENTS.md` holds the project purpose and workflow. Each tool has its own skill copies, tuned to its vendor's prompting guidance, and keeps its native tools and role configurations.
 - **Traceable delivery.** Requirements become specs, acceptance criteria lead to tickets, and reviews, tests, and unresolved questions stay in the repository.
-- **Portable projects.** The creator ships its template data, supports relative symlinks or full skill copies, and records the source and content digest.
+- **Portable projects.** The creator ships its template data, stores skills as real directories, and records the source and content digest.
 
 ## Quick start
 
