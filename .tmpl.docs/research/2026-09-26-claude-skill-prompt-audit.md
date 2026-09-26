@@ -37,8 +37,8 @@
 | A4 | diagnosing-bugs/SKILL.md:22 | 1a 加壓 | 「Be aggressive…Refuse to give up」會套用過度，並與「建不出 loop 就停下來問」互相衝突 | Medium | rewrite |
 | ~~A5~~（撤回） | implement/SKILL.md:16-17 | 過度驗證 | 「further edit 後重跑」是 Codex 那批加入的 | Medium | rewrite：保留「修正失敗後重跑」 |
 | A6 | security-review/SKILL.md:31-33 | 1d fossil | 說明理由寫的是 Codex 行為 | Medium | rewrite |
-| B2 | grilling/SKILL.md:28 | scope 擴張 | 「proceed」會把 stage 1 直接推進到實作，跳過 spec、審查與 tickets | Medium | rewrite：確認後只延續已授權的工作 |
-| B3 | research/SKILL.md:6-12 | 過度委派＋契約不符 | 無條件開 background agent；`harness-researcher` 無法寫檔 | Medium | rewrite |
+| B2 | grilling/SKILL.md:28 | scope 擴張 | 「proceed」會把 stage 1 直接推進到實作，跳過 spec、審查與 tickets | Medium | rewrite：確認後只延續已授權的工作；實測結果為 inconclusive，依文字清晰度決定 |
+| B3 | research/SKILL.md:6-12 | 過度委派＋契約不符 | 無條件開 background agent；`harness-researcher` 無法寫檔 | Medium | rewrite；已實測：小型查詢時行為上有支持，並依實驗補上輸出格式（[實驗結果](2026-09-26-skill-behavior-experiment/README.md)） |
 | B4 | wayfinder/SKILL.md:77,115 | 過度委派 | 每張 ticket 開一個 subagent，裡面又呼叫會開 agent 的 research | Medium | rewrite |
 | B5 | wayfinder/SKILL.md:124 | 1a「If in doubt, use…」 | 預設叫用 skill 的寫法會造成過度觸發 | Medium | rewrite |
 | B6 | to-tickets/SKILL.md:11 | Group 2 重複內容不一致 | upstream 的 `.scratch/` 範例與專案 tracker 設定衝突 | Medium | rewrite：指向 issue-tracker.md |
