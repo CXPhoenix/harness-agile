@@ -1,6 +1,13 @@
 {
   "version": 1,
   "copied_on": "2026-09-08",
+  "runtime_trees": {
+    "split_on": "2026-09-26",
+    "claude": ".claude/skills",
+    "codex": ".agents/skills",
+    "basis": "Claude copies were forked from the Codex tree's tracked files; each tree may then be tuned to its vendor's prompting guidance. Provenance and licensing below apply to both trees; record runtime-specific adaptations with the runtime named.",
+    "metadata_split": "Claude copies drop agents/*; Codex copies drop disable-model-invocation. Shared names keep one invocation policy."
+  },
   "skills": {
     "agent-browser": {
       "source": ".claude/skills/agent-browser in template commit 501c8a2",

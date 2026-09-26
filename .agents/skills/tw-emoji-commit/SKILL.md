@@ -15,8 +15,7 @@ Analyze the current staged changes (`git diff --cached`) and generate a structur
 
 # Script Resolution
 
-Resolve `scripts/sanitize_commit.py` relative to this loaded SKILL.md, including when
-the skill directory was reached through a symlink. In this project its path is
+Resolve `scripts/sanitize_commit.py` relative to this loaded SKILL.md. In this project its path is
 `.agents/skills/tw-emoji-commit/scripts/sanitize_commit.py` relative to the repository root.
 Verify that file exists, then use its absolute path for this invocation. This
 project copy is self-contained; no user-level skill installation is required.

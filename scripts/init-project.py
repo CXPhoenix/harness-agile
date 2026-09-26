@@ -32,7 +32,7 @@ TEMPLATE_ONLY = (
     ".claude/skills/init-template", ".agents/skills/init-template",
     "scripts/project-readme.md", "harness_agile", "bin", "hatch_build.py",
     "pyproject.toml", "package.json", "INSTALL.md", "bootstrap",
-    "tests/test_bootstrap.py", "tests/test_skill_links.py", "tests/test_bundle.py",
+    "tests/test_bootstrap.py", "tests/test_bundle.py", "tests/test_verify_project.py",
     "scripts/verify-distributions.py",
     ".github/workflows/verify.yml",
     ".github/workflows/build-release.yml",
@@ -94,7 +94,7 @@ def main() -> int:
     ap.add_argument("--one-liner", help="One sentence saying what the project does")
     ap.add_argument("--date", default=_dt.date.today().isoformat(), help="ADR adoption date (default: today)")
     ap.add_argument("--dry-run", action="store_true", help="Print the plan and change nothing")
-    ap.add_argument("--skill-mode", choices=("auto", "symlink", "copy"), default="auto", help="Claude skill transport: auto falls back to verified copies")
+    ap.add_argument("--skill-mode", choices=("auto", "symlink", "copy"), help="Deprecated and ignored: Claude and Codex keep separate skill copies")
     ap.add_argument("--keep-template-files", action="store_true", help="Keep template documentation, its README link, initializer, test, and init skill entries")
     args = ap.parse_args()
 
@@ -122,16 +122,8 @@ def main() -> int:
         print(f"--date must be a valid YYYY-MM-DD date, got {args.date!r}", file=sys.stderr)
         return 2
 
-    # Validate all entries before token writes or template cleanup. Importing this
-    # helper should not create a cache during dry-run or a rejected initialization.
-    sys.dont_write_bytecode = True
-    if (root / "scripts/skill_links.py").is_file():
-        from skill_links import sync
-        try:
-            print(f"Skills synchronized ({sync(root, args.skill_mode, dry_run=args.dry_run)}).")
-        except (OSError, ValueError) as error:
-            print(f"Skill sync failed: {error}", file=sys.stderr)
-            return 4
+    if args.skill_mode:
+        print("Warning: --skill-mode is deprecated and ignored; .claude/skills and .agents/skills are separate copies.", file=sys.stderr)
 
     replacements = {
         "{{PROJECT_NAME}}": args.name,

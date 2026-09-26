@@ -22,12 +22,14 @@ class BootstrapTests(unittest.TestCase):
             args += ['--name', '測試專案', '--one-liner', '保留 $() 與 `literal` 引數。']
         return subprocess.run([*args, *extra], cwd=ROOT, capture_output=True, text=True)
 
-    def test_creates_verified_copy_mode_project(self):
-        result = self.run_cli('--skill-mode', 'copy')
+    def test_creates_project_with_separate_runtime_skill_copies(self):
+        result = self.run_cli('--skill-mode', 'symlink')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('deprecated', result.stderr)
         output = json.loads(result.stdout)
-        self.assertEqual(output['skills'], 31)
+        self.assertEqual((output['skills'], output['codex_skills']), (31, 31))
         self.assertEqual(output['skill_mode'], 'copy')
+        self.assertFalse(any(p.is_symlink() for p in (self.target / '.claude/skills').iterdir()))
         self.assertFalse((self.target / '.git').exists())
         self.assertFalse((self.target / '.tmpl.docs').exists())
         self.assertIn('保留 $() 與 `literal` 引數。', (self.target / 'AGENTS.md').read_text())

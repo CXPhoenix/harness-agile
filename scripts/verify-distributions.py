@@ -57,16 +57,16 @@ def main():
         shutil.copyfile(npm, fresh_npm)
         rows = []
         commands = [
-            ('uvx', ['uvx', '--from', str(wheel), 'harness-agile'], 'auto'),
-            ('npx', ['npx', '--yes', '--package', str(fresh_npm), 'create-harness-agile'], 'copy'),
-            ('pnpx', ['pnpx', str(fresh_npm)], 'copy'),
+            ('uvx', ['uvx', '--from', str(wheel), 'harness-agile']),
+            ('npx', ['npx', '--yes', '--package', str(fresh_npm), 'create-harness-agile']),
+            ('pnpx', ['pnpx', str(fresh_npm)]),
         ]
-        for label, command, mode in commands:
+        for label, command in commands:
             target = parent / (label + ' 專案 with spaces')
-            output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--skill-mode', mode, '--no-input', '--json'], parent)
+            output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--no-input', '--json'], parent)
             report = json.loads(output.strip().splitlines()[-1])
             assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
-            assert report['skills'] == 31, report
+            assert report['skills'] == report['codex_skills'] == 31, report
             for name in notice_paths:
                 assert (target / name).read_bytes() == base64.b64decode(python_bundle['files'][name]), (label, name)
             assert not (target / 'CHANGELOG.md').exists()
@@ -76,7 +76,7 @@ def main():
             assert not (target / '.tmpl.docs').exists()
             assert '保留 $() 與 `literal`。' in (target / 'AGENTS.md').read_text(encoding='utf-8')
             run([sys.executable, '-B', str(target / 'scripts/verify-project.py')], parent)
-            rows.append({'entry': label, 'skills': report['skills'], 'mode': report['skill_mode'], 'passed': True})
+            rows.append({'entry': label, 'claude_skills': report['skills'], 'codex_skills': report['codex_skills'], 'passed': True})
         print(json.dumps({'platform': sys.platform, 'python': sys.version.split()[0], 'source': python_bundle['source'], 'checks': rows}, ensure_ascii=False, indent=2))
 
 
