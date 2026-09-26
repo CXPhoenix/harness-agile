@@ -8,6 +8,8 @@ __pycache__/
 .scratch/
 node_modules/
 dist/
+# Local uv runs create this; the project does not lock dependencies with uv.
+uv.lock
 harness_agile/data/template.json
 *.egg-info/
 
