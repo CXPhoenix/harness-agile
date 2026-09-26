@@ -54,12 +54,16 @@ Project roles in `.claude/agents/`:
 
 - `harness-reviewer`: file-reading tools; the parent supplies the exact Git diff,
   base, HEAD, uncommitted changes and untracked inventory. One axis per invocation.
+- `harness-challenger`: devil's advocacy and alternative analysis on plans,
+  decisions and findings; returns evidence only.
+- `harness-executor`: applies an approved, fully specified change and runs the
+  named checks; it has no Skill tool, so the parent transcribes any skill steps.
 - `harness-researcher`: primary-source research with native web and file tools;
   returns citations so the parent can save the research artifact.
 
-Both inherit the current model. The user can select Opus or another available
-Claude model through native controls. Model brands are not cross-runtime workflow
-requirements. Native plan mode and interactive requirement interviews fit stage 1;
+Role models and when to delegate are in [claude-orchestration.md](claude-orchestration.md).
+The main session keeps the user's model choice; model brands are not
+cross-runtime workflow requirements. Native plan mode and interactive requirement interviews fit stage 1;
 native agents can independently review the resulting evidence.
 
 For security review, explicitly read `.claude/skills/security-review/SKILL.md`.

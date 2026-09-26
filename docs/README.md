@@ -13,6 +13,7 @@
 | Spec 與 tickets 放哪裡？狀態怎麼判定？ | [Issue tracker](agents/issue-tracker.md) |
 | 四軸 review 與安全審查如何進行？ | [審查規則](agents/review.md) |
 | Claude Code 與 Codex 如何共用 skills、交接？ | [Runtime adapters](agents/runtime.md) |
+| Claude 各角色用哪個模型？何時委派？ | [Claude 模型分工](agents/claude-orchestration.md) |
 | Codex 如何區分 prompt、skill 與宿主能力？ | [Codex 執行指引](agents/codex.md) |
 | 哪些文件用英文？中英文規格如何同步？ | [語言規則](agents/language.md) |
 | 探索程式碼前，如何閱讀領域模型？ | [領域文件指引](agents/domain.md) |

@@ -6,10 +6,12 @@ Use the shared rules above. Before using runtime-specific tools, read
 `docs/agents/runtime.md` (Claude Code section). Claude's project skills live in
 `.claude/skills/`, a Claude-tuned copy; `.agents/skills/` belongs to Codex.
 
-Use the native `Agent` tool with `harness-reviewer` or `harness-researcher` for
-bounded independent work. The parent captures Git diffs and saves reports; these
-roles return evidence without changing the reviewed checkout. Model selection
-inherits this session and may be overridden by the user in Claude's own controls.
+Project roles in `.claude/agents/` run on assigned Claude models: `harness-reviewer`
+(red team), `harness-challenger` (devil's advocacy, alternatives), `harness-executor`
+(applies approved changes) and `harness-researcher` (inherits this session's model).
+Before delegating, read `docs/agents/claude-orchestration.md` for when to use each
+role and how findings reach the user. The parent captures Git diffs and saves
+reports; only the executor changes the checkout, and only as approved.
 
 For pipeline stage 7, read `.claude/skills/security-review/SKILL.md` explicitly:
 Claude's built-in `/security-review` can have the same command name.

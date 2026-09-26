@@ -7,8 +7,9 @@ chain analysis at epic close-out).
 ## Adversarial review
 
 Four independent reviewers, one per axis, at most two rounds. Select the active
-runtime's `harness-reviewer` role; inherit its available model unless the user
-chooses another. Batch within actual concurrency limits. Supply identical captured
+runtime's `harness-reviewer` role. Claude's role runs on the model assigned in
+[claude-orchestration.md](claude-orchestration.md); Codex's inherits the session
+model. Batch within actual concurrency limits. Supply identical captured
 scope and the frozen prompt to each pass; do not replace missing axes with a vote.
 
 ### The four axes
