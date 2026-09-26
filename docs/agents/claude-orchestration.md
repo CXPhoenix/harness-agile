@@ -75,7 +75,9 @@ The differences that most often change the text:
 ## Changing the assignment
 
 Model IDs live in each role's `model:` frontmatter; Claude Code accepts an alias,
-a full model ID or `inherit`. After adding or renaming a role, start a new
+a full model ID or `inherit`. A full model ID only works on a Claude Code version
+that recognizes it; an older version fails the delegation with an unrecognized
+model error, so update Claude Code or fall back to `inherit`. After adding or renaming a role, start a new
 session and confirm it in `/agents`: a running session may not see new role
 files. If an account lacks a pinned model, or the model is retired, set that role
 to `inherit` or a current model and update the table above. A role's `effort:`
