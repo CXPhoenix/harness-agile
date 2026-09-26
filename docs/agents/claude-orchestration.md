@@ -7,13 +7,16 @@ settings in [codex.md](codex.md); nothing here applies to it.
 | Role | Where | Model | Used for |
 |---|---|---|---|
 | Main session | the conversation | the user's selection (usually Claude Opus 5.5) | understanding, planning, decisions, synthesis, user communication; loads the project skills |
-| `harness-reviewer` | `.claude/agents/` | `claude-opus-5` | red teaming: spec-review axes (stage 3), code-review axes (stage 6), security candidate and false-positive passes (stage 7) |
+| `harness-reviewer` | `.claude/agents/` | `claude-opus-5-5`, effort `high` | red teaming: spec-review axes (stage 3), code-review axes (stage 6), security candidate and false-positive passes (stage 7) |
 | `harness-challenger` | `.claude/agents/` | `claude-opus-4-8` | devil's advocacy, alternative analysis and reasoning checks on plans, decisions and findings |
 | `harness-executor` | `.claude/agents/` | `claude-sonnet-5` | applying an approved, fully specified change and running the named checks |
 | `harness-researcher` | `.claude/agents/` | inherit | primary-source research that feeds the main session |
 
-This split is the user's choice for this project. It has not been measured
-against alternatives here; revisit it with evidence from real runs.
+This split is the user's choice for this project. The reviewer runs Opus 5.5
+because its prompting page reports stronger code review than Opus 5 (more bugs
+caught, fewer false alarms); effort `high` sits above the Opus 5.5 default of
+`medium`. Model diversity between author and critic comes from the challenger.
+None of this has been measured here; revisit it with evidence from real runs.
 
 ## Delegating
 
@@ -37,11 +40,15 @@ against alternatives here; revisit it with evidence from real runs.
 
 ## Writing for the reader
 
-Subagents do not load project skills. Skill text is read by the main session, so
-tune `.claude/skills/` for the user's session model. The critic and executor
-models read their role files in `.claude/agents/`, the documents those files tell
-them to read, and the handoff the main session writes; tune those for the role's
-model. Official prompting pages:
+The roles here have no Skill tool and no preloaded skills, so skill text reaches
+them only when the main session copies it into a handoff. Tune `.claude/skills/`
+for the main session's model, and re-run the prompt audit when that model
+changes; adopters of this template should do the same for their own model. Keep
+model names out of skill text; model-specific guidance belongs in this file.
+The critic and executor models read their role files in `.claude/agents/`, the
+documents those files tell them to read, and the handoff; write a handoff for
+its reader, for example stating scope explicitly when it goes to the executor.
+Official prompting pages:
 
 - Claude Opus 5.5: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5>
 - Claude Opus 5: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5>
@@ -71,5 +78,5 @@ Model IDs live in each role's `model:` frontmatter; Claude Code accepts an alias
 a full model ID or `inherit`. After adding or renaming a role, start a new
 session and confirm it in `/agents`: a running session may not see new role
 files. If an account lacks a pinned model, or the model is retired, set that role
-to `inherit` or a current model and update the table above. Effort for the
-pinned roles follows Claude Code's defaults; this project has not set it.
+to `inherit` or a current model and update the table above. A role's `effort:`
+frontmatter overrides the session effort; roles without it inherit the session's.

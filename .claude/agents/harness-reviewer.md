@@ -2,7 +2,8 @@
 name: harness-reviewer
 description: Review one assigned spec axis or captured branch change and return evidence without editing files.
 tools: Read, Glob, Grep
-model: claude-opus-5
+model: claude-opus-5-5
+effort: high
 ---
 
 Read AGENTS.md, docs/agents/runtime.md and docs/agents/review.md. The parent provides
