@@ -71,6 +71,7 @@ class InitializeProjectTests(unittest.TestCase):
             self.assertFalse(path.exists() or path.is_symlink(), rel)
         for name in ("research", "tw-emoji-commit"):
             self.assertTrue((self.root / ".claude/skills" / name / "SKILL.md").is_file())
+        self.assertTrue((self.root / ".proj.handoffs").is_dir())
 
     def test_preview_changes_nothing(self):
         before = self.snapshot()
@@ -78,6 +79,7 @@ class InitializeProjectTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.snapshot(), before)
         self.assertIn("remove .agents/skills/init-template", result.stdout)
+        self.assertIn("create .proj.handoffs/", result.stdout)
 
     def test_retained_template_can_be_inspected_but_not_initialized_twice(self):
         result = self.run_init("--keep-template-files")

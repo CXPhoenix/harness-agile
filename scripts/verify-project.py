@@ -31,6 +31,9 @@ def verify(root):
     check(shared.is_file(), "AGENTS.md is missing")
     check(claude.is_file() and "@AGENTS.md" in claude.read_text(encoding="utf-8"), "CLAUDE.md must import @AGENTS.md")
     uninitialized = shared.exists() and ("{{" + "PROJECT_NAME}}") in shared.read_text(encoding="utf-8")
+    ignore = root / ".gitignore"
+    ignored = ignore.read_text(encoding="utf-8").splitlines() if ignore.is_file() else []
+    check(any(line.strip() in {"/.proj.handoffs/", ".proj.handoffs/"} for line in ignored), ".gitignore must exclude /.proj.handoffs/")
 
     # Each runtime owns an independent skill tree; contents may diverge.
     trees = {"Codex": root / ".agents/skills", "Claude": root / ".claude/skills"}

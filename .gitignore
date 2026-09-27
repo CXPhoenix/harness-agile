@@ -20,3 +20,6 @@ harness_agile/data/template.json
 
 # Local standalone vulnerability reproduction repositories.
 /.proj.vuln.recur/
+
+# Session handoffs expire and stay local; init creates the directory.
+/.proj.handoffs/

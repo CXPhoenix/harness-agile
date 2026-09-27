@@ -40,6 +40,9 @@ TEMPLATE_ONLY = (
     ".github/workflows/publish-npm.yml",
 )
 
+# Session handoffs; gitignored, so initialisation creates the directory.
+HANDOFFS_DIR = ".proj.handoffs"
+
 # The banner in shared instructions that only makes sense before initialisation.
 BANNER = re.compile(
     r"\n\n<!-- TEMPLATE:.*?-->\n",
@@ -172,6 +175,12 @@ def main() -> int:
         if scripts_dir.is_dir() and not args.dry_run and not any(scripts_dir.iterdir()):
             scripts_dir.rmdir()
             print("remove scripts/ (now empty)")
+
+    handoffs = root / HANDOFFS_DIR
+    if not handoffs.is_dir():
+        print(f"{prefix}create {HANDOFFS_DIR}/")
+        if not args.dry_run:
+            handoffs.mkdir()
 
     if args.dry_run:
         print("\n[dry-run] nothing was written.")

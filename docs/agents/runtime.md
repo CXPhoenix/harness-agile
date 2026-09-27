@@ -1,7 +1,7 @@
 # Runtime adapters
 
 Use the shared contract and active-runtime section for skills, delegation and tools;
-read the handoff section when transferring work. Reuse unchanged context already loaded.
+read the handoff section when writing or resuming from a handoff. Reuse unchanged context already loaded.
 The shared rules live in `AGENTS.md`. This document contains the operational rules
 needed by an adopted project and is independent of removable template history.
 
@@ -105,18 +105,21 @@ branches/worktrees. Independent readers may share a checkout only while the writ
 keeps its captured review surface stable. Do not automatically create a reviewer
 worktree: its default starting ref might omit the change being reviewed.
 
-Use the project `handoff` skill to create the local transfer document. Its temporary
-path is suitable for another session on the same machine; for another machine,
-ask it to save to the user-selected project path (for example
-`.proj.specs/<epic>/handoffs/<ticket-id>.md`). Link existing artifacts instead of
-copying their contents. Include:
+Use the project `handoff` skill to create the transfer document in `.proj.handoffs/`.
+That directory is gitignored and local to one checkout, so a handoff for another
+machine or worktree travels by the user copying the file. Link existing artifacts
+instead of copying their contents. Include:
 
 - Ticket, spec and traceability paths; intended outcome and approved decisions.
 - Repository/worktree path, branch, base and HEAD; tracked and untracked changes.
 - Checks actually run, results, unverified areas, remaining actions and blockers.
 - Project skills needed next, using the receiving host's invocation syntax.
 
-The receiving agent reads AGENTS.md, verifies `git status` and HEAD, then resumes.
+The receiving agent first checks the handoff's frontmatter. It is expired once the
+current time is past `expires.at`, or once `sessions_used` has reached
+`expires.sessions`; report an expired handoff to the user and resume from it only
+on their confirmation. Otherwise increment `sessions_used` in the file, read
+AGENTS.md, verify `git status` and HEAD, then resume.
 Do not transfer credentials or assume conversation history crosses products.
 
 ## Verification and updates

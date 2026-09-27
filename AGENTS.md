@@ -2,8 +2,8 @@
 
 Shared project instructions for the coding assistants Claude Code and Codex. Use the
 shared contract and active-runtime section of [docs/agents/runtime.md](docs/agents/runtime.md)
-when invoking skills, delegating, or configuring tools; use its handoff section for
-cross-runtime work. Reuse context already read unless it changed. Each runtime owns its project
+when invoking skills, delegating, or configuring tools; use its handoff section when
+writing or resuming from a handoff. Reuse context already read unless it changed. Each runtime owns its project
 skills: Claude Code `.claude/skills/`, Codex `.agents/skills/`. Same-named skills may differ,
 tuned to each vendor's prompting guidance; resolve helpers relative to the loaded skill.
 Claude Code imports this file through `CLAUDE.md`; keep project rules here.
@@ -107,6 +107,7 @@ Document language and bilingual sync rules: [docs/agents/language.md](docs/agent
     review/round-N.md             findings, graded P0 / P1 / P2
     reports/*.html                standalone evidence reports
   _reports/*.html                 project-level reports
+.proj.handoffs/                   session handoffs; local only, gitignored
 .proj.tickets/
   NNNN-<epic-slug>/
     T-NNNN-<slug>.md              status lives in frontmatter, not in the path
@@ -115,7 +116,7 @@ docs/agents/                      the docs this file points at
 ```
 
 Both `.proj.specs/` and `.proj.tickets/` are committed: they are the evidence chain behind every
-review and every deferral.
+review and every deferral. `.proj.handoffs/` is not: a handoff expires, so it stays out of history.
 
 ## Build and test commands
 

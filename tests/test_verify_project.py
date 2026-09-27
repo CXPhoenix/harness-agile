@@ -29,6 +29,11 @@ class RuntimeSkillTreeTests(unittest.TestCase):
         (self.claude / 'research/SKILL.md').write_text('---\nname: research\ndescription: Claude-tuned.\n---\n')
         self.assertEqual(self.errors(), [])
 
+    def test_handoff_directory_must_stay_ignored(self):
+        ignore = self.root / '.gitignore'
+        ignore.write_text(ignore.read_text().replace('/.proj.handoffs/\n', ''))
+        self.assertIn('.gitignore must exclude /.proj.handoffs/', self.errors())
+
     def test_runtime_exclusive_skill_is_allowed_but_required_skills_are_not(self):
         shutil.copytree(self.claude / 'research', self.claude / 'claude-only')
         (self.claude / 'claude-only/SKILL.md').write_text('---\nname: claude-only\ndescription: Claude only.\n---\n')
