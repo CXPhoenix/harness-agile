@@ -1,6 +1,6 @@
 # 依使用者的主模型重新調校 skills（計畫）
 
-日期：2026-09-28。狀態：已核准。Claude 版已完成（`.claude/skills/tune-skills`，2026-09-28）；Codex 版待研究 OpenAI 官方文件後再做。
+日期：2026-09-28。狀態：已核准。Claude 版已完成（`.claude/skills/tune-skills`，2026-09-28）；Codex 版也已完成（`.agents/skills/tune-skills`），判準取自 OpenAI 的 GPT-6 Astra 文章，暫時當作 GPT-6 系列的通則（`references/gpt-6.md`）。
 
 ## 背景
 

@@ -54,3 +54,7 @@ Two things worth telling the user in the same breath, because both are cheap now
 - **Vendored skills** — `i-have-adhd` and `agent-browser` (in both skill trees) shipped with
   the template and may be behind their upstream. Their provenance is recorded in `docs/agents/skill-sources.json`;
   external CLIs still need their own installation.
+- **User's model** — the Codex skills are tuned for the model recorded in
+  `docs/agents/skill-sources.json` (`runtime_trees.codex_tuned_for`). Ask which
+  model the user runs; if it differs, suggest `$tune-skills`. Leave running it to
+  the user: it spends agent time and needs their approval.

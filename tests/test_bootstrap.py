@@ -27,7 +27,7 @@ class BootstrapTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn('deprecated', result.stderr)
         output = json.loads(result.stdout)
-        self.assertEqual((output['skills'], output['codex_skills']), (32, 31))
+        self.assertEqual((output['skills'], output['codex_skills']), (32, 32))
         self.assertEqual(output['skill_mode'], 'copy')
         self.assertFalse(any(p.is_symlink() for p in (self.target / '.claude/skills').iterdir()))
         self.assertFalse((self.target / '.git').exists())

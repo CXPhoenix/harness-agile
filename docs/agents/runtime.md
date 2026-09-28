@@ -73,7 +73,9 @@ supplement the shared workflow; record what they actually verified.
 
 ## Codex
 
-For Codex prompt and skill execution boundaries, use [codex.md](codex.md).
+For Codex prompt and skill execution boundaries, use [codex.md](codex.md). When the
+user's model differs from `runtime_trees.codex_tuned_for` in the provenance file,
+re-tune the Codex surfaces with `$tune-skills`.
 
 Codex reads `AGENTS.md` and discovers project skills in `.agents/skills/`.
 `.codex/config.toml` supplies project defaults only after the user trusts this

@@ -17,11 +17,11 @@ Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。�
 
 ## 找到適合的 skill
 
-目前 checkout 初始化後，Claude 樹保留 32 個 skills，Codex 樹保留 31 個（`tune-skills` 目前只有 Claude 版）；母範本兩棵樹各另外有 `init-template`。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
+目前 checkout 初始化後保留 32 個 skills；母範本另外有 `init-template`，共 33 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
 
 | 工作 | Skills |
 | --- | --- |
-| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依主模型重新調校 Claude skills，手動觸發） |
+| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依使用者的模型重新調校自己 runtime 的 skills，手動觸發） |
 | 需求與決策 | `grilling`、`grill-me`、`grill-with-docs`、`wayfinder`、`to-questionnaire` |
 | 規格與實作 | `to-spec`、`to-tickets`、`implement`、`tdd`、`prototype` |
 | 架構與診斷 | `codebase-design`、`domain-modeling`、`diagnosing-bugs`、`improve-codebase-architecture`、`archify` |

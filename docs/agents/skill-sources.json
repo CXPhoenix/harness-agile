@@ -14,6 +14,12 @@
       "report": ".tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md",
       "retune_with": "tune-skills (Claude tree only)"
     },
+    "codex_tuned_for": {
+      "model": "unrecorded (Codex prompt/skill optimization before GPT-6)",
+      "on": "2026-09-12",
+      "report": ".tmpl.docs/history/2026-09-12-codex-prompt-skill-optimization.md",
+      "retune_with": "tune-skills (Codex tree, references/gpt-6.md for the GPT-6 family)"
+    },
     "claude_prompt_audit": "2026-09-26: Claude-tree edits from the prompt audit (.tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md, IDs A1-D12, D5 excluded) and its follow-up review apply to agent-browser, archify, code-review, codebase-design, diagnosing-bugs, evidence-report, grilling, i-have-adhd, improve-codebase-architecture, init-template, prototype, research, security-review, teach, to-spec, to-tickets, tw-emoji-commit, tw-emoji-pr-note, tw-emoji-release-note, wayfinder and writing-for-agents; reapply them after upstream updates. local_adaptations and adaptations entries that name no runtime describe the Codex tree."
   },
   "skills": {
@@ -84,7 +90,7 @@
       }
     },
     "tune-skills": {
-      "source": "Written for this template on 2026-09-28 (Claude tree only; the Codex counterpart is planned)",
+      "source": "Written for this template on 2026-09-28. Each tree has its own version: Claude uses /claude-api prompt-audit; Codex audits against references/gpt-6.md, paraphrased from OpenAI's GPT-6 Astra article (read 2026-09-28).",
       "adaptations": [],
       "licensing": {
         "status": "maintainer-confirmed-project-origin",

@@ -20,8 +20,9 @@ default). When model and effort match the record, report that and stop.
 
 Sort any habits the user mentions (language, delegation appetite, commit style,
 verbosity) into project instructions rather than skill rewrites: propose the
-line for `AGENTS.md` (shared) or `CLAUDE.md` (Claude only) and apply it once the
-user approves. Only model differences reach step 2.
+line for `AGENTS.md` or `CLAUDE.md` and apply it once the user approves.
+`AGENTS.md` is also read by Codex, so keep lines there runtime-neutral and put
+Claude-only guidance in `CLAUDE.md`. Only model differences reach step 2.
 
 ## 2. Agree the budget
 
