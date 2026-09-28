@@ -143,8 +143,9 @@ ticket ids. Creating a decision map does not satisfy the product spec gate.
   map's Decisions so far. An out-of-scope closure records its reason and links from
   Out of scope instead. `pending` carries the same reason/evidence/revisit fields
   as implementation tickets.
-- **Research:** the installed project `research` skill delegates primary-source
-  reading; the parent saves returned evidence beside the decision and links it.
+- **Research:** resolve with the project `research` skill (it decides whether to
+  delegate the reading); the main session saves the findings beside the decision
+  and links it.
 
 Map labels and issue assignments in upstream wayfinder instructions map to these
 frontmatter fields. Use these paths rather than its generic `.scratch/` examples.

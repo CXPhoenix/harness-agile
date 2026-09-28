@@ -19,7 +19,6 @@ class InitializeProjectTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "scripts").mkdir()
         shutil.copy2(SOURCE / "scripts/init-project.py", self.root / "scripts/init-project.py")
-        shutil.copy2(SOURCE / "scripts/skill_links.py", self.root / "scripts/skill_links.py")
         (self.root / "AGENTS.md").write_text(
             "# Instructions\n\n<!-- TEMPLATE: {{PROJECT_NAME}} -->\n"
             "\n## Project Charter\n**{{PROJECT_NAME}}** — {{PROJECT_ONE_LINER}}\n"
@@ -39,15 +38,10 @@ class InitializeProjectTests(unittest.TestCase):
         (self.root / "docs/adr").mkdir(parents=True)
         (self.root / "docs/adr/0001-test.md").write_text("date: {{INIT_DATE}}\n", encoding="utf-8")
         for name in ("init-template", "research", "tw-emoji-commit"):
-            skill = self.root / ".agents/skills" / name
-            skill.mkdir(parents=True)
-            (skill / "SKILL.md").write_text(f"# {name}\n", encoding="utf-8")
-            link = self.root / ".claude/skills" / name
-            link.parent.mkdir(parents=True, exist_ok=True)
-            try:
-                link.symlink_to(f"../../.agents/skills/{name}", target_is_directory=True)
-            except OSError:
-                shutil.copytree(skill, link)
+            for tree in (".agents/skills", ".claude/skills"):
+                skill = self.root / tree / name
+                skill.mkdir(parents=True)
+                (skill / "SKILL.md").write_text(f"# {name} ({tree})\n", encoding="utf-8")
 
     def run_init(self, *extra):
         return subprocess.run(
@@ -77,6 +71,7 @@ class InitializeProjectTests(unittest.TestCase):
             self.assertFalse(path.exists() or path.is_symlink(), rel)
         for name in ("research", "tw-emoji-commit"):
             self.assertTrue((self.root / ".claude/skills" / name / "SKILL.md").is_file())
+        self.assertTrue((self.root / ".proj.handoffs").is_dir())
 
     def test_preview_changes_nothing(self):
         before = self.snapshot()
@@ -84,6 +79,7 @@ class InitializeProjectTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.snapshot(), before)
         self.assertIn("remove .agents/skills/init-template", result.stdout)
+        self.assertIn("create .proj.handoffs/", result.stdout)
 
     def test_retained_template_can_be_inspected_but_not_initialized_twice(self):
         result = self.run_init("--keep-template-files")
@@ -101,16 +97,14 @@ class InitializeProjectTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
         self.assertEqual(self.snapshot(), before)
 
-    def test_divergent_copy_fails_before_changing_project_or_removing_history(self):
-        entry = self.root / '.claude/skills/research'
-        if entry.is_symlink():
-            entry.unlink()
-            shutil.copytree(self.root / '.agents/skills/research', entry)
-        (entry / 'SKILL.md').write_text('local edit', encoding='utf-8')
-        before = self.snapshot()
-        result = self.run_init()
-        self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(self.snapshot(), before)
+    def test_runtime_tuned_skills_survive_initialization(self):
+        entry = self.root / '.claude/skills/research/SKILL.md'
+        entry.write_text('Claude-tuned', encoding='utf-8')
+        result = self.run_init('--skill-mode', 'copy')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('deprecated', result.stderr)
+        self.assertEqual(entry.read_text(encoding='utf-8'), 'Claude-tuned')
+        self.assertEqual((self.root / '.agents/skills/research/SKILL.md').read_text(encoding='utf-8'), '# research (.agents/skills)\n')
 
     def test_default_init_removes_template_history_and_its_readme_link(self):
         result = self.run_init()

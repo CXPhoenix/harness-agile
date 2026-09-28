@@ -1,14 +1,20 @@
 # Runtime adapters
 
 Use the shared contract and active-runtime section for skills, delegation and tools;
-read the handoff section when transferring work. Reuse unchanged context already loaded.
+read the handoff section when writing or resuming from a handoff. Reuse unchanged context already loaded.
 The shared rules live in `AGENTS.md`. This document contains the operational rules
 needed by an adopted project and is independent of removable template history.
 
 ## Shared skill contract
 
-`.agents/skills/<name>/` is the complete project copy. `.claude/skills/<name>` is a
-relative symlink or verified byte-identical copy of it. Read the canonical project copy when a user-level skill has the same
+Each runtime owns a complete, independent skill tree: `.claude/skills/<name>/` for
+Claude Code and `.agents/skills/<name>/` for Codex. Anthropic and OpenAI publish
+different prompting guidance, so a same-named skill may be worded differently per
+tree; edit the tree for the runtime being tuned, and port a behavior change to the
+other tree deliberately. Each tree carries only its own runtime's metadata (Claude
+frontmatter such as `disable-model-invocation`; Codex `agents/openai.yaml`). A skill
+may exist in one tree only; the skills named in the pipeline and hard rules exist in both.
+Read the project copy for the active runtime when a user-level skill has the same
 name; helper paths resolve relative to that loaded SKILL.md. Keep reference files
 and scripts with their skill. Provenance: [skill-sources.json](skill-sources.json).
 `skills-lock.json` records the upstream installer snapshot; local adaptations are
@@ -23,8 +29,9 @@ listed in the provenance file and must be preserved or reapplied during updates.
 | WebSearch / WebFetch | Native web tools | Native search/browser tools, with primary sources |
 | AskUserQuestion | Native question tool | Available question tool or ordinary conversation |
 
-Manual-only skills retain both `disable-model-invocation: true` and
-`agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Ask for the
+A skill present in both trees keeps one invocation policy: Claude
+`disable-model-invocation: true` pairs with Codex `agents/openai.yaml`
+`policy.allow_implicit_invocation: false`. Ask for the
 user's explicit invocation when required; an existing explicit instruction carries
 forward. Other skills remain discoverable. Do not interpret Claude-specific shell
 injection syntax or frontmatter as a Codex permission grant.
@@ -39,32 +46,36 @@ unless a project adapter or the user states otherwise.
 
 `CLAUDE.md` imports `@AGENTS.md`; use `/memory` to inspect loaded instructions.
 Use `/skills` and `/agents` to inspect discovery after a fresh session. Project
-skills use relative links or synchronized real directories. After reviewing canonical
-skill edits, run `python3 scripts/sync-skills.py --refresh`; verification rejects divergent
-copies. `--mode copy` avoids filesystem symlink requirements. Git checkouts may contain
-flattened link text files; `sync-skills.py` repairs those before verification. Existing user or managed
+skills are real directories in `.claude/skills/`, tuned for Claude; edit them in place
+and run `python3 scripts/verify-project.py`. Existing user or managed
 permissions continue to apply; the template does not enable permission bypass.
 
 Project roles in `.claude/agents/`:
 
 - `harness-reviewer`: file-reading tools; the parent supplies the exact Git diff,
   base, HEAD, uncommitted changes and untracked inventory. One axis per invocation.
+- `harness-challenger`: devil's advocacy and alternative analysis on plans,
+  decisions and findings; returns evidence only.
+- `harness-executor`: applies an approved, fully specified change and runs the
+  named checks; it has no Skill tool, so the parent transcribes any skill steps.
 - `harness-researcher`: primary-source research with native web and file tools;
   returns citations so the parent can save the research artifact.
 
-Both inherit the current model. The user can select Opus or another available
-Claude model through native controls. Model brands are not cross-runtime workflow
-requirements. Native plan mode and interactive requirement interviews fit stage 1;
+Role models and when to delegate are in [claude-orchestration.md](claude-orchestration.md).
+The main session keeps the user's model choice; model brands are not
+cross-runtime workflow requirements. Native plan mode and interactive requirement interviews fit stage 1;
 native agents can independently review the resulting evidence.
 
-For security review, explicitly read `.agents/skills/security-review/SKILL.md`.
+For security review, explicitly read `.claude/skills/security-review/SKILL.md`.
 The built-in `/security-review` remains a host capability, not proof that this
 project's adapted skill was loaded. Optional built-ins and installed MCP tools can
 supplement the shared workflow; record what they actually verified.
 
 ## Codex
 
-For Codex prompt and skill execution boundaries, use [codex.md](codex.md).
+For Codex prompt and skill execution boundaries, use [codex.md](codex.md). When the
+user's model differs from `runtime_trees.codex_tuned_for` in the provenance file,
+re-tune the Codex surfaces with `$tune-skills`.
 
 Codex reads `AGENTS.md` and discovers project skills in `.agents/skills/`.
 `.codex/config.toml` supplies project defaults only after the user trusts this
@@ -96,18 +107,21 @@ branches/worktrees. Independent readers may share a checkout only while the writ
 keeps its captured review surface stable. Do not automatically create a reviewer
 worktree: its default starting ref might omit the change being reviewed.
 
-Use the project `handoff` skill to create the local transfer document. Its temporary
-path is suitable for another session on the same machine; for another machine,
-ask it to save to the user-selected project path (for example
-`.proj.specs/<epic>/handoffs/<ticket-id>.md`). Link existing artifacts instead of
-copying their contents. Include:
+Use the project `handoff` skill to create the transfer document in `.proj.handoffs/`.
+That directory is gitignored and local to one checkout, so a handoff for another
+machine or worktree travels by the user copying the file. Link existing artifacts
+instead of copying their contents. Include:
 
 - Ticket, spec and traceability paths; intended outcome and approved decisions.
 - Repository/worktree path, branch, base and HEAD; tracked and untracked changes.
 - Checks actually run, results, unverified areas, remaining actions and blockers.
 - Project skills needed next, using the receiving host's invocation syntax.
 
-The receiving agent reads AGENTS.md, verifies `git status` and HEAD, then resumes.
+The receiving agent first checks the handoff's frontmatter. It is expired once the
+current time is past `expires.at`, or once `sessions_used` has reached
+`expires.sessions`; report an expired handoff to the user and resume from it only
+on their confirmation. Otherwise increment `sessions_used` in the file, read
+AGENTS.md, verify `git status` and HEAD, then resume.
 Do not transfer credentials or assume conversation history crosses products.
 
 ## Verification and updates

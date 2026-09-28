@@ -1,0 +1,1 @@
+Read .claude/skills/research/SKILL.md and follow it for this request: what does the `disable-model-invocation` frontmatter field do for Claude Code skills? Use the official Claude Code documentation.

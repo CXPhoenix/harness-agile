@@ -22,7 +22,6 @@ python3 -m harness_agile init /absolute/path/my-project \
 | `--dry-run` | 預覽來源與目標，不寫入成品 |
 | `--no-input` | 已提供必要值，不需要互動提問 |
 | `--json` | 讓開發助理或 CI 讀取結果；缺少必要值時失敗、不詢問 |
-| `--skill-mode copy` | 環境不使用 symlink；預設 `auto` 在連結不可用時改用副本 |
 | `--date YYYY-MM-DD` | 指定採用日期 |
 | `--keep-template-files` | 保留範本歷史、初始化工具、中英文 README 與 banner |
 | `--source PATH` | 從指定的本機母範本建立 |
@@ -38,11 +37,10 @@ python3 -m harness_agile init /absolute/path/my-project \
 gh repo create MY_ACCOUNT/my-project \
   --template CXPhoenix/harness-agile --private --clone
 cd my-project
-python3 scripts/sync-skills.py
 python3 scripts/verify-project.py
 ```
 
-這條路線需要 Git、Python 3.11+；GitHub 指令另外需要已登入的 `gh` 與來源存取權限。同步與驗證成功後，在副本中開啟開發助理：
+這條路線需要 Git、Python 3.11+；GitHub 指令另外需要已登入的 `gh` 與來源存取權限。驗證成功後，在副本中開啟開發助理：
 
 | Claude Code | Codex |
 | --- | --- |
@@ -57,7 +55,7 @@ python3 scripts/init-project.py --name '我的專案' --one-liner '它要解決�
 
 ## 初始化後會留下什麼
 
-目前 checkout 預設會填入專案名稱、描述與 ADR 日期，將根目錄 README 改為產品入口，保留共用規範、31 個 skills、協作指南、同步與驗證工具。範本歷史、banner、英文範本 README、建立器、初始化工具及其專用測試則會移除。固定 tag 的內容可能不同，以該版本的驗證結果為準。
+目前 checkout 預設會填入專案名稱、描述與 ADR 日期，將根目錄 README 改為產品入口，保留共用規範、Claude 與 Codex 各 31 個 skills、協作指南與驗證工具。範本歷史、banner、英文範本 README、建立器、初始化工具及其專用測試則會移除。固定 tag 的內容可能不同，以該版本的驗證結果為準。
 
 `--keep-template-files` 保留範本文件與初始化工具，包含中英文 README。歷史文件中的 placeholders 不會替換，因為它們記錄的是母範本的設計背景。
 

@@ -8,6 +8,8 @@ __pycache__/
 .scratch/
 node_modules/
 dist/
+# Local uv runs create this; the project does not lock dependencies with uv.
+uv.lock
 harness_agile/data/template.json
 *.egg-info/
 
@@ -18,3 +20,6 @@ harness_agile/data/template.json
 
 # Local standalone vulnerability reproduction repositories.
 /.proj.vuln.recur/
+
+# Session handoffs expire and stay local; init creates the directory.
+/.proj.handoffs/

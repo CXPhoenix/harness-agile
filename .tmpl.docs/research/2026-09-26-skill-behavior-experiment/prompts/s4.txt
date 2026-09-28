@@ -1,0 +1,14 @@
+Read .claude/skills/grilling/SKILL.md and follow it. The grilling session below already happened; continue from its end.
+
+<transcript>
+Assistant: What should a due date look like on the command line?
+User: `add "text" --due 2026-10-01`, ISO dates only.
+Assistant: Where is it stored?
+User: As a "due" string field in each todos.json entry; entries without it stay valid.
+Assistant: What does `list` show?
+User: The due date in brackets after the text, and overdue items marked with "!".
+Assistant: What happens with an invalid date?
+User: Print an error and exit with status 2; nothing is saved.
+Assistant: Summary of our shared understanding: `add` accepts an optional `--due YYYY-MM-DD`; it is stored as an optional "due" field; `list` shows "[YYYY-MM-DD]" and a "!" for overdue items; an invalid date prints an error, exits 2 and saves nothing. Deferred: time zones and recurring tasks. Is this right?
+User: 確認，這就是我們的共識。
+</transcript>

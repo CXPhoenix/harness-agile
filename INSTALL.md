@@ -1,7 +1,7 @@
 # Create a harness-agile project
 
 Use this guide for a **new project**. For an already copied template, follow its
-`.agents/skills/init-template/SKILL.md`. Preserve the source during maintenance.
+`init-template` skill (`.claude/skills/` or `.agents/skills/`). Preserve the source during maintenance.
 
 ## Inputs and version
 
@@ -78,15 +78,12 @@ The one-liner is not an approved Charter. Default init creates no Git repository
 commit or remote. `--git` creates an independent repo without committing; all later
 commits must use the project's `tw-emoji-commit` skill.
 
-## Options and skill transport
+## Options and skill trees
 
-`--skill-mode auto` uses relative links, with a verified-copy fallback when links
-are unavailable. `--skill-mode copy` avoids symlinks entirely. Edit canonical skills
-in `.agents/skills`, review changes, run `python3 scripts/sync-skills.py --refresh`,
-then verify. Divergent copies and unmanaged entries require review.
-
-For flattened Git links (such as Windows checkouts), run
-`python3 scripts/sync-skills.py --mode copy` before verification.
+Claude Code skills live in `.claude/skills` and Codex skills in `.agents/skills`.
+They are separate copies, so each can follow its vendor's prompting guidance; edit
+the tree for the runtime you are tuning, then run `python3 scripts/verify-project.py`.
+`--skill-mode` is deprecated and ignored.
 
 `--date YYYY-MM-DD` selects adoption date. `--keep-template-files` retains template
 history, both template READMEs, and the banner. Default init writes a product README,

@@ -59,13 +59,15 @@ def create(args):
         staging = Path(temp) / 'project'
         staging.mkdir()
         unpack(bundle, staging)
-        command = [sys.executable, '-B', 'scripts/init-project.py', '--name', args.name, '--one-liner', args.one_liner, '--date', args.date, '--skill-mode', args.skill_mode]
+        command = [sys.executable, '-B', 'scripts/init-project.py', '--name', args.name, '--one-liner', args.one_liner, '--date', args.date]
+        if args.skill_mode:
+            print('Warning: --skill-mode is deprecated and ignored; each runtime keeps its own skill copies.', file=sys.stderr)
         if args.keep_template_files:
             command.append('--keep-template-files')
         run(command, staging)
         run([sys.executable, '-B', 'scripts/verify-project.py'], staging)
-        entries = list((staging / '.claude/skills').iterdir())
-        result.update(skills=len(entries), skill_mode='+'.join(sorted({'symlink' if p.is_symlink() else 'copy' for p in entries})))
+        # skill_mode stays for JSON compatibility; runtimes now keep separate copies.
+        result.update(skills=sum(p.is_dir() for p in (staging / '.claude/skills').iterdir()), codex_skills=sum(p.is_dir() for p in (staging / '.agents/skills').iterdir()), skill_mode='copy')
         result['next_step'] = 'Open this directory in Claude Code or Codex and use grill-with-docs to define the Project Charter.'
         provenance = {**bundle['source'], 'generator_version': __version__, 'initialized_on': args.date, 'skill_mode': result['skill_mode']}
         (staging / 'docs/agents/template-source.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
@@ -91,7 +93,7 @@ def main(argv=None):
     init.add_argument('--one-liner')
     init.add_argument('--date', default=datetime.date.today().isoformat())
     init.add_argument('--source', help='Explicit local uninitialized template source; otherwise use the bundled version')
-    init.add_argument('--skill-mode', choices=['auto', 'symlink', 'copy'], default='auto')
+    init.add_argument('--skill-mode', choices=['auto', 'symlink', 'copy'], help='Deprecated and ignored; each runtime keeps its own skill copies')
     for flag in ('keep-template-files', 'no-input', 'json', 'dry-run', 'git'):
         init.add_argument('--' + flag, action='store_true')
     args = parser.parse_args(argv)
@@ -109,6 +111,6 @@ def main(argv=None):
         print(('Dry run: ' if args.dry_run else 'Created: ') + result['target'])
         print('Template content: ' + result['source']['content_sha256'])
         if not args.dry_run:
-            print(f'Verified {result["skills"]} skills ({result["skill_mode"]}).')
+            print(f'Verified skills: {result["skills"]} Claude, {result["codex_skills"]} Codex.')
             print(result['next_step'])
     return 0

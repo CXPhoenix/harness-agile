@@ -4,6 +4,8 @@
 
 ## 現行入口
 
+- [Claude／Codex skills 分離](history/2026-09-26-runtime-skill-split.md)：兩套獨立 skill 目錄、驗證規則與 `--skill-mode` 停用。
+
 - [evidence-report 來源查核](research/2026-09-13-evidence-report-upstream-search.md)：網路查詢、同名候選排除與設計段落的新線索。
 
 - [Windows 自動開啟已停用](../docs/security/windows-opener.md)：兩個入口、自行驗證與暫緩實驗的範圍。

@@ -7,8 +7,9 @@ chain analysis at epic close-out).
 ## Adversarial review
 
 Four independent reviewers, one per axis, at most two rounds. Select the active
-runtime's `harness-reviewer` role; inherit its available model unless the user
-chooses another. Batch within actual concurrency limits. Supply identical captured
+runtime's `harness-reviewer` role. Claude's role runs on the model assigned in
+[claude-orchestration.md](claude-orchestration.md); Codex's inherits the session
+model. Batch within actual concurrency limits. Supply identical captured
 scope and the frozen prompt to each pass; do not replace missing axes with a vote.
 
 ### The four axes
@@ -64,7 +65,7 @@ then wait.
 
 ### Stage 7: per-ticket, diff-scoped
 
-Use the project `.agents/skills/security-review/SKILL.md`, then fix confirmed
+Use the project `security-review` skill (`.claude/skills/` or `.agents/skills/`), then fix confirmed
 findings and verify those fixes. Claude's built-in command has the same name;
 explicitly load the project file so both runtimes apply the same scope and policy.
 The parent captures the diff and persists the report; delegated reviewers stay read-only.

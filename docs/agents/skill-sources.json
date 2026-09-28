@@ -1,6 +1,27 @@
 {
   "version": 1,
   "copied_on": "2026-09-08",
+  "runtime_trees": {
+    "split_on": "2026-09-26",
+    "claude": ".claude/skills",
+    "codex": ".agents/skills",
+    "basis": "Claude copies were forked from the Codex tree's tracked files; each tree may then be tuned to its vendor's prompting guidance. Provenance and licensing below apply to both trees; record runtime-specific adaptations with the runtime named.",
+    "metadata_split": "Claude copies drop agents/*; Codex copies drop disable-model-invocation. Shared names keep one invocation policy.",
+    "claude_tuned_for": {
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "on": "2026-09-26",
+      "report": ".tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md",
+      "retune_with": "tune-skills (Claude tree only)"
+    },
+    "codex_tuned_for": {
+      "model": "unrecorded (Codex prompt/skill optimization before GPT-6)",
+      "on": "2026-09-12",
+      "report": ".tmpl.docs/history/2026-09-12-codex-prompt-skill-optimization.md",
+      "retune_with": "tune-skills (Codex tree, references/gpt-6.md for the GPT-6 family)"
+    },
+    "claude_prompt_audit": "2026-09-26: Claude-tree edits from the prompt audit (.tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md, IDs A1-D12, D5 excluded) and its follow-up review apply to agent-browser, archify, code-review, codebase-design, diagnosing-bugs, evidence-report, grilling, i-have-adhd, improve-codebase-architecture, init-template, prototype, research, security-review, teach, to-spec, to-tickets, tw-emoji-commit, tw-emoji-pr-note, tw-emoji-release-note, wayfinder and writing-for-agents; reapply them after upstream updates. local_adaptations and adaptations entries that name no runtime describe the Codex tree."
+  },
   "skills": {
     "agent-browser": {
       "source": ".claude/skills/agent-browser in template commit 501c8a2",
@@ -68,6 +89,17 @@
         "source_evidence": "Compared upstream SKILL.md against the project copy; common body confirms provenance, with local/version differences retained."
       }
     },
+    "tune-skills": {
+      "source": "Written for this template on 2026-09-28. Each tree has its own version: Claude uses /claude-api prompt-audit; Codex audits against references/gpt-6.md, paraphrased from OpenAI's GPT-6 Astra article (read 2026-09-28).",
+      "adaptations": [],
+      "licensing": {
+        "status": "maintainer-confirmed-project-origin",
+        "license": "MIT",
+        "license_location": "LICENSE",
+        "confirmed_on": "2026-09-28",
+        "evidence": "Authored with Claude Code in this project at the maintainer's request. Covered by the maintainer-selected root MIT license."
+      }
+    },
     "init-template": {
       "source": ".claude/skills/init-template in template commit 501c8a2",
       "adaptations": [
@@ -93,7 +125,7 @@
         "Resolve the sanitizer from the loaded project skill.",
         "Use Taiwan vocabulary.",
         "Resolve Git bases and first-release context when relevant.",
-        "Execute an already-authorized commit using the sanitized UTF-8 message file."
+        "Codex tree: execute an already-authorized commit using the sanitized UTF-8 message file. Claude tree: message only; committing follows AGENTS.md hard rule 5."
       ],
       "licensing": {
         "status": "maintainer-confirmed-project-origin",
@@ -164,7 +196,7 @@
     "tdd": "Reuse approved test plans and seams; load examples on demand.",
     "init-template": "Trigger on requested adoption, not placeholder presence alone.",
     "agent-browser": "Compact branch-specific discovery and permit evidence-equivalent native tools. Restore Apache-2.0 text and add a prominent modification notice without changing execution guidance.",
-    "writing-for-agents": "Describe manual invocation as host policy rather than zero-cost metadata invisibility."
+    "writing-for-agents": "Codex tree: describe manual invocation as host policy rather than zero-cost metadata invisibility. Claude tree: disable-model-invocation keeps the description out of context (Claude Code skills docs, 2026-09-26)."
   },
   "licensing": {
     "verified_on": "2026-09-13",

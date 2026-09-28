@@ -17,11 +17,11 @@ Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。�
 
 ## 找到適合的 skill
 
-目前 checkout 初始化後保留 31 個 skills；母範本另外有 `init-template`，共 32 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
+目前 checkout 初始化後保留 32 個 skills；母範本另外有 `init-template`，共 33 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
 
 | 工作 | Skills |
 | --- | --- |
-| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard` |
+| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依使用者的模型重新調校自己 runtime 的 skills，手動觸發） |
 | 需求與決策 | `grilling`、`grill-me`、`grill-with-docs`、`wayfinder`、`to-questionnaire` |
 | 規格與實作 | `to-spec`、`to-tickets`、`implement`、`tdd`、`prototype` |
 | 架構與診斷 | `codebase-design`、`domain-modeling`、`diagnosing-bugs`、`improve-codebase-architecture`、`archify` |
@@ -31,24 +31,23 @@ Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。�
 
 這份專案已設定 `.proj.specs/` 與 `.proj.tickets/`。需要更換 tracker 時才使用 `setup-matt-pocock-skills` 調整，避免重新套入通用 `.scratch/` 預設。標示為手動觸發的 skills 需明確呼叫，包含 `i-have-adhd`。
 
-Claude Code 有同名的原生 `/security-review`。要使用專案版本，可明確要求「讀取並執行 `.agents/skills/security-review/SKILL.md`」；Codex 使用 `$security-review` 選擇專案版本。
+Claude Code 有同名的原生 `/security-review`。要使用專案版本，可明確要求「讀取並執行 `.claude/skills/security-review/SKILL.md`」；Codex 使用 `$security-review` 選擇專案版本。
 
 ## 兩套工具如何共用工作
 
-`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。`.agents/skills/` 保存 skills 正本，Claude 的入口使用相對 symlink 或經驗證一致的副本。兩套工具各自保留 reviewer／researcher 角色設定，模型預設繼承當前 session。
+`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。skills 依工具分開保存：Claude Code 使用 `.claude/skills/`，Codex 使用 `.agents/skills/`。Anthropic 與 OpenAI 的 prompt 撰寫建議不同，同名 skill 可以各自調整措辭。兩套工具各自保留 reviewer／researcher 角色設定，模型預設繼承當前 session。
 
-切換工具前，使用 `handoff` 保存工作目標、spec／ticket 路徑、branch／HEAD、未提交變更、驗證結果與下一步。接手者確認 Git 狀態後再繼續。同一張 ticket 維持一位寫入者；並行實作使用不同 worktree。完整對應見 [runtime.md](agents/runtime.md)。
+切換工具前，使用 `handoff` 保存工作目標、spec／ticket 路徑、branch／HEAD、未提交變更、驗證結果與下一步。交接文件存放在 `.proj.handoffs/`，不進版控，frontmatter 標註以 session 數或時間計算的到期條件。接手者先確認文件未過期，再確認 Git 狀態後繼續。同一張 ticket 維持一位寫入者；並行實作使用不同 worktree。完整對應見 [runtime.md](agents/runtime.md)。
 
 ## 更新與搬移 skills
 
-修改 `.agents/skills/` 正本並檢閱差異，再同步 Claude 入口：
+依要調整的工具修改對應目錄：Claude Code 改 `.claude/skills/`，Codex 改 `.agents/skills/`。兩邊內容不會自動同步；行為層面的修改（流程、輸出位置、gate）需要兩邊都套用時，逐一移植並依各自的官方建議調整措辭。改完後執行：
 
 ```bash
-python3 scripts/sync-skills.py --refresh
 python3 scripts/verify-project.py
 ```
 
-如果搬移後出現失效連結，先執行 `python3 scripts/sync-skills.py`。不使用 symlink 的環境可加 `--mode copy`。副本若與正本不同，先確認差異來源再更新，避免覆蓋未整理的修改。
+驗證會確認兩邊都有必要 skills、同名 skill 的觸發政策一致，且各自只保留自己工具的設定檔。
 
 ## 確認工作真的完成
 
@@ -58,7 +57,7 @@ python3 scripts/verify-project.py
 python3 scripts/verify-project.py
 ```
 
-這會檢查共用入口、skills 連結或副本、觸發政策、sanitizer、來源 checksum 與角色設定。它驗證協作設定，產品的 build／test 命令由 walking skeleton 建立。
+這會檢查共用入口、兩套 skills 目錄、觸發政策、sanitizer、來源 checksum 與角色設定。它驗證協作設定，產品的 build／test 命令由 walking skeleton 建立。
 
 瀏覽器功能可用 `agent-browser`，或宿主提供且符合驗證需求的瀏覽器工具；原生應用程式、CLI 與 daemon 需要對應的 e2e harness。GitHub／GitLab CLI、MCP 連線與服務登入按需設定。回報結果時，說明實際驗證了哪個介面。
 

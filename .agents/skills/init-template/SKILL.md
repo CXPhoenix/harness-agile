@@ -29,13 +29,11 @@ Keep the human-readable name distinct from the directory name.
 python3 scripts/init-project.py --dry-run --name "<name>" --one-liner "<one sentence>"
 ```
 
-Read the plan, then drop `--dry-run` to apply it. `--skill-mode copy` avoids symlinks;
-the default `auto` uses relative symlinks with a verified-copy fallback. For flattened
-Git links, run `python3 scripts/sync-skills.py` before structural verification.
+Read the plan, then drop `--dry-run` to apply it.
 The script fills the three tokens, strips the
 template banner from `AGENTS.md`, and removes `.tmpl.docs/`, its marked README entry,
-the initializer, creator packaging and template tests, and both this shared skill directory and its Claude
-entry. It writes a product README and synchronizes remaining skills.
+the initializer, creator packaging and template tests, and this skill from both
+`.agents/skills/` and `.claude/skills/`. It writes a product README.
 `--keep-template-files` preserves template files and the original README; historical
 tokens inside `.tmpl.docs/` are always left untouched. It exits non-zero and names
 the files if any project token survives.
@@ -53,6 +51,10 @@ Two things worth telling the user in the same breath, because both are cheap now
 
 - **`git remote`** — with a remote, pipeline stage 9 lands work through PRs; without one it falls
   back to `git merge --no-ff`. `git remote -v` says which mode this clone is in.
-- **Vendored skills** — `.claude/skills/i-have-adhd` and `.claude/skills/agent-browser` shipped with
+- **Vendored skills** — `i-have-adhd` and `agent-browser` (in both skill trees) shipped with
   the template and may be behind their upstream. Their provenance is recorded in `docs/agents/skill-sources.json`;
   external CLIs still need their own installation.
+- **User's model** — the Codex skills are tuned for the model recorded in
+  `docs/agents/skill-sources.json` (`runtime_trees.codex_tuned_for`). Ask which
+  model the user runs; if it differs, suggest `$tune-skills`. Leave running it to
+  the user: it spends agent time and needs their approval.

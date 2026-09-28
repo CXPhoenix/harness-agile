@@ -29,6 +29,7 @@
     ".gitattributes",
     "skills-lock.json",
     ".agents/skills",
+    ".claude/skills",
     ".claude/agents",
     ".codex/agents",
     ".codex/config.toml",
@@ -36,8 +37,6 @@
     ".tmpl.docs",
     "scripts/init-project.py",
     "scripts/verify-project.py",
-    "scripts/skill_links.py",
-    "scripts/sync-skills.py",
     "scripts/project-readme.md",
     "tests/test_init_project.py"
   ],

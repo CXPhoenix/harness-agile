@@ -15,8 +15,7 @@ Analyze commits since the last release tag and generate a structured, human-read
 
 # Script Resolution
 
-Resolve `scripts/sanitize_release_note.py` relative to this loaded SKILL.md, including when
-the skill directory was reached through a symlink. In this project its path is
+Resolve `scripts/sanitize_release_note.py` relative to this loaded SKILL.md. In this project its path is
 `.agents/skills/tw-emoji-release-note/scripts/sanitize_release_note.py` relative to the repository root.
 Verify that file exists, then use its absolute path for this invocation. This
 project copy is self-contained; no user-level skill installation is required.

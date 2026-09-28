@@ -1,0 +1,52 @@
+{
+  "totals": {
+    "trials": 20,
+    "cost_usd": 8.270140399999999
+  },
+  "by_scenario_condition": {
+    "s3/patched": {
+      "trials": 5,
+      "ok": 5,
+      "timeout": 0,
+      "error": 0,
+      "budget_stop": 0,
+      "cost_usd": 2.062017,
+      "top_level_spawns_sum": 0,
+      "web_calls_sum": 11,
+      "product_changes_sum": 0
+    },
+    "s3/baseline": {
+      "trials": 5,
+      "ok": 5,
+      "timeout": 0,
+      "error": 0,
+      "budget_stop": 0,
+      "cost_usd": 4.5216064,
+      "top_level_spawns_sum": 5,
+      "web_calls_sum": 2,
+      "product_changes_sum": 0
+    },
+    "s4/baseline": {
+      "trials": 5,
+      "ok": 5,
+      "timeout": 0,
+      "error": 0,
+      "budget_stop": 0,
+      "cost_usd": 0.9722200000000001,
+      "top_level_spawns_sum": 0,
+      "web_calls_sum": 0,
+      "product_changes_sum": 1
+    },
+    "s4/patched": {
+      "trials": 5,
+      "ok": 5,
+      "timeout": 0,
+      "error": 0,
+      "budget_stop": 0,
+      "cost_usd": 0.714297,
+      "top_level_spawns_sum": 0,
+      "web_calls_sum": 0,
+      "product_changes_sum": 0
+    }
+  }
+}
