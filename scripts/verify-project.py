@@ -40,7 +40,8 @@ def verify(root):
     policies = {}
     for runtime, skills_root in trees.items():
         check(not skills_root.is_symlink() and not skills_root.parent.is_symlink(), f"{runtime} skill root must be a real directory")
-        skills = sorted(p for p in skills_root.iterdir() if p.is_dir()) if skills_root.exists() else []
+        # is_symlink: on Windows a directory link may not report is_dir.
+        skills = sorted(p for p in skills_root.iterdir() if p.is_dir() or p.is_symlink()) if skills_root.exists() else []
         names = {p.name for p in skills}
         for name in REQUIRED:
             check(name in names, f"Required {runtime} skill is missing: {name}")

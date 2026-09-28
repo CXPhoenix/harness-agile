@@ -35,6 +35,7 @@ def main():
                     name.endswith('/LICENSE') or name.endswith('/THIRD_PARTY_NOTICES.md') or
                     name.endswith('/JetBrainsMono-OFL.txt')]
     assert '.agents/skills/evidence-report/LICENSE' in notice_paths
+    assert '.claude/skills/evidence-report/LICENSE' in notice_paths
     assert not any(any(part in {'.proj.vuln.recur', 'node_modules'} for part in name.split('/'))
                    for name in python_bundle['files']), 'Private lab or development dependencies in bundle'
     with zipfile.ZipFile(wheel) as archive:
@@ -66,7 +67,7 @@ def main():
             output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--no-input', '--json'], parent)
             report = json.loads(output.strip().splitlines()[-1])
             assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
-            assert report['skills'] == report['codex_skills'] == 31, report
+            assert report['skills'] == report['codex_skills'] == 32, report
             for name in notice_paths:
                 assert (target / name).read_bytes() == base64.b64decode(python_bundle['files'][name]), (label, name)
             assert not (target / 'CHANGELOG.md').exists()
