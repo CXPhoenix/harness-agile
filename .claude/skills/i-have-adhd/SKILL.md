@@ -127,16 +127,6 @@ Override the defaults when:
 5. A rule fights the task. When a rule would delete the answer itself, the task wins; the shape stays. Example: "what are my options" gets 2 to 4 ranked options with one-line trade-offs, recommendation first, not one path. The options are the answer.
 6. A rule fights the harness. Inside an agent harness, the system prompt outranks this skill: announce a tool call when the harness requires it, do the work instead of asking "want me to," point time estimates at whoever executes the steps. Same principle as 5: the constraint wins, the shape stays.
 
-## Pre-send check
+## The test
 
-Before sending, delete:
-
-1. The first sentence if it announces what you are about to do.
-2. The last sentence if it asks "anything else?" or recaps what just happened.
-3. Any "by the way" sidebar.
-4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
-5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
-
-Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
-
-If yes, send.
+A reader who sees only the first and last line knows (a) what to do next and (b) what just happened. Hedge only where there is real uncertainty, and name literal actions instead of idioms.

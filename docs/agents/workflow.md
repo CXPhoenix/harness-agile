@@ -141,10 +141,11 @@ Inspect the actual remote host and intended base first.
   `tw-emoji-pr-note` skill and pass its UTF-8 file with `--body-file`.
 - GitLab or another host: use that host's supported PR/MR tool and the same description
   skill. A remote existing does not imply GitHub.
-- No remote: merge into local `main` with `git merge --no-ff --no-commit`, then use
-  `tw-emoji-commit` to generate, sanitize and execute the merge commit. Resolve any
-  conflicts before generating the final message. The merge command itself does not
-  generate a separate message outside that skill.
+- No remote: merge into local `main` with `git merge --no-ff --no-commit`, then
+  generate and sanitize the message with `tw-emoji-commit` and run `git commit
+  --file <sanitized message file>`. Resolve any conflicts before generating the
+  final message. The merge command itself does not generate a separate message
+  outside that skill.
 
 Every `git commit` variant uses `tw-emoji-commit`. Existing user authorization for
 landing work remains valid; report unresolved decisions instead of silently choosing

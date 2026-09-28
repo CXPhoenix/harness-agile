@@ -43,7 +43,7 @@ are dated when this project adopts them, not when they were first written.
 
 ## 4. Hand over
 
-Report what changed, then give the user the one next step: **use `grill-with-docs` (`/grill-with-docs` in Claude Code, `$grill-with-docs` in Codex) to write the
+Report what changed, then give the user the one next step: **run `/grill-with-docs` to write the
 Project Charter.** Until that section of `AGENTS.md` is written, its gate blocks specs, tickets, and
 implementation code — the walking skeleton is the only work it permits.
 

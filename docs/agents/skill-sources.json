@@ -6,7 +6,8 @@
     "claude": ".claude/skills",
     "codex": ".agents/skills",
     "basis": "Claude copies were forked from the Codex tree's tracked files; each tree may then be tuned to its vendor's prompting guidance. Provenance and licensing below apply to both trees; record runtime-specific adaptations with the runtime named.",
-    "metadata_split": "Claude copies drop agents/*; Codex copies drop disable-model-invocation. Shared names keep one invocation policy."
+    "metadata_split": "Claude copies drop agents/*; Codex copies drop disable-model-invocation. Shared names keep one invocation policy.",
+    "claude_prompt_audit": "2026-09-26: Claude-tree edits from the prompt audit (.tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md, IDs A1-D12, D5 excluded) and its follow-up review apply to agent-browser, archify, code-review, codebase-design, diagnosing-bugs, evidence-report, grilling, i-have-adhd, improve-codebase-architecture, init-template, prototype, research, security-review, teach, to-spec, to-tickets, tw-emoji-commit, tw-emoji-pr-note, tw-emoji-release-note, wayfinder and writing-for-agents; reapply them after upstream updates. local_adaptations and adaptations entries that name no runtime describe the Codex tree."
   },
   "skills": {
     "agent-browser": {
@@ -100,7 +101,7 @@
         "Resolve the sanitizer from the loaded project skill.",
         "Use Taiwan vocabulary.",
         "Resolve Git bases and first-release context when relevant.",
-        "Execute an already-authorized commit using the sanitized UTF-8 message file."
+        "Codex tree: execute an already-authorized commit using the sanitized UTF-8 message file. Claude tree: message only; committing follows AGENTS.md hard rule 5."
       ],
       "licensing": {
         "status": "maintainer-confirmed-project-origin",
@@ -171,7 +172,7 @@
     "tdd": "Reuse approved test plans and seams; load examples on demand.",
     "init-template": "Trigger on requested adoption, not placeholder presence alone.",
     "agent-browser": "Compact branch-specific discovery and permit evidence-equivalent native tools. Restore Apache-2.0 text and add a prominent modification notice without changing execution guidance.",
-    "writing-for-agents": "Describe manual invocation as host policy rather than zero-cost metadata invisibility."
+    "writing-for-agents": "Codex tree: describe manual invocation as host policy rather than zero-cost metadata invisibility. Claude tree: disable-model-invocation keeps the description out of context (Claude Code skills docs, 2026-09-26)."
   },
   "licensing": {
     "verified_on": "2026-09-13",

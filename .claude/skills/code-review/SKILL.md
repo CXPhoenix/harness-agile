@@ -38,7 +38,8 @@ documented repository standards override them. Skip checks already enforced by t
 
 ## 3. Run independent reviews
 
-Run Standards and Spec as parallel read-only subagents using the runtime adapter.
+Run Standards and Spec as parallel read-only subagents: the `Agent` tool with
+`harness-reviewer`, one axis each.
 Give both the same captured diffs, relevant file contents, scope manifest,
 base/HEAD IDs and commit list. A diff command alone is not a snapshot.
 Keep the checkout stable while they read surrounding context.
@@ -52,8 +53,10 @@ the relevant hunk. Explain the impact; repository rules override the baseline.
 unrequested scope, and incorrect implementations. Cite the requirement and the
 captured file:line for each finding, explaining the impact.
 
-Ask each reviewer for a concise report (normally under 400 words); preserve the
-evidence needed to assess each finding. If Spec has no source, run only Standards.
+Ask each reviewer to report every finding, including uncertain or low-severity
+ones, with its evidence, confidence and severity (high, medium or low impact).
+At this stage the job is coverage; the user decides what to act on. If Spec has
+no source, run only Standards.
 If independent contexts are unavailable, use isolated passes and disclose that limit.
 
 ## 4. Report

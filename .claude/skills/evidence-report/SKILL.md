@@ -27,7 +27,8 @@ where a reader needs to check the reasoning. Prose in the terminal is right for 
 
 ## The evidence table
 
-Every report ends with a table listing each factual claim, its source, and its tier. Three tiers,
+Every report ends with a table listing each factual claim, its source, and its tier; every row maps
+to a claim made in the body. Three tiers,
 and the distinction between them is the point of the report:
 
 | Tier | Meaning |
@@ -54,6 +55,10 @@ Two rules make the tiering worth trusting:
 6. **The evidence table**, plus the out-of-scope note.
 7. **The decision the user has to make**, stated as a question they can answer in one line.
 
+Match length to the decision: cover the substance, and merge sections 2–4 when they would only
+restate each other, and add no filler sections or extra summaries. The answer, the cost, the
+evidence table and the out-of-scope note always appear.
+
 ## Design
 
 Design the page for its subject. The report is read once, carefully, by one person deciding
@@ -71,15 +76,14 @@ decoration.
   only definition sits inside a media query renders one theme's text on the other theme's ground.
 - **Wide content scrolls in its own container.** Tables and diagrams get `overflow-x: auto`; the page
   body never scrolls sideways.
-- **Avoid the generated look.** Cream grounds with a serif display and terracotta accent, near-black
-  with one acid-green pop, purple-to-blue gradient heroes, Inter or Space Grotesk as the safe face,
-  emoji as section markers, everything centred, rounded cards with an accent rail. Where the user
-  names a direction, follow it exactly.
+- **Avoid the generated look.** Cream grounds with a serif display and terracotta accent, an
+  off-white page background, near-black with one acid-green pop, purple-to-blue gradient heroes,
+  Inter or Space Grotesk as the safe face, emoji as section markers, everything centred, rounded
+  cards with an accent rail, italic accent words in headings, numbered "01/02/03" section labels,
+  monospace eyebrow labels, pill-shaped badges or buttons. Where the user names a direction, follow
+  it exactly.
 
-## Before handing it over
+## Handing it over
 
-Open the file and confirm: it renders with no network, the evidence table's every row maps to a claim
-in the body, and each tier is honest — an inference labelled 已驗證 is the one failure that makes the
-whole report worthless.
-
-Give the user the file path.
+Each tier must be honest: an inference labelled 已驗證 is the one failure that makes the whole report
+worthless. Give the user the file path.

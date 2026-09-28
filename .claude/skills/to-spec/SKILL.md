@@ -4,7 +4,7 @@ description: "Turn the current conversation into a spec and publish it to the pr
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+This skill takes the current conversation context and codebase understanding and produces a spec. Synthesize the spec from what has already been discussed rather than interviewing the user; the only question to raise is confirming new or changed seams (step 2).
 
 Read `docs/agents/issue-tracker.md` for paths, statuses and publication rules, and
 `docs/agents/language.md` for spec language and translation timing. If the tracker

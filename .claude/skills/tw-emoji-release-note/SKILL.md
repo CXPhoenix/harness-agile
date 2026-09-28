@@ -20,9 +20,10 @@ Resolve `scripts/sanitize_release_note.py` relative to this loaded SKILL.md. In 
 Verify that file exists, then use its absolute path for this invocation. This
 project copy is self-contained; no user-level skill installation is required.
 
-Pass the draft via stdin or a temporary UTF-8 file, using the host's shell-safe
-argument handling. Save the sanitized output to a UTF-8 file when another Git
-command consumes it; preserve actual newlines. Fail if the sanitizer is missing.
+Pass the draft to the sanitizer through a temporary UTF-8 file (see the
+sanitize step); never put the draft in a shell argument. Save the sanitized
+output to a UTF-8 file when another Git command consumes it; preserve actual
+newlines. Fail if the sanitizer is missing.
 
 ---
 
@@ -52,15 +53,19 @@ If no release tag exists, describe this as the first release and inspect history
 5. **Sanitize the draft** by running the sanitize script:
 
    ```bash
-   python3 SANITIZE_SCRIPT "<your draft here>"
-   # or via stdin:
-   echo "$DRAFT" | python3 SANITIZE_SCRIPT
+   python3 SANITIZE_SCRIPT < DRAFT_FILE > SANITIZED_FILE
    ```
+
+   Write the draft to a temporary UTF-8 file outside the working tree (the
+   session scratchpad or `mktemp`) with the file-writing tool or a quoted
+   heredoc (`<<'EOF'`), and use that path as DRAFT_FILE; drafts contain
+   backticks, which a double-quoted argument or an unquoted heredoc would
+   execute.
 
    Where `SANITIZE_SCRIPT` is the resolved absolute path from the **Script Resolution** section above.
 
 6. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
-7. Output **only** the code block. No conversational text before or after.
+7. The code block is this skill's whole output. Tagging, publishing or editing CHANGELOG.md with it is outside this skill; the invoking request decides that next step.
 
 ---
 
@@ -175,4 +180,4 @@ Given a version `MAJOR.MINOR.PATCH`:
 - **附上 PR 連結**：每條變更盡可能附上 `([#PR_number])` 參考，方便追溯。
 - **Breaking Changes 必須詳細**：包含舊行為、新行為、以及遷移步驟。
 - **省略噪音**：`chore`、merge commit、typo fix 不應出現在 release note 中。
-- **保持一致性**：若專案已有 `CHANGELOG.md`，本次產出應與其格式對齊後直接插入 `## [Unreleased]` 區塊下方。
+- **保持一致性**：若專案已有 `CHANGELOG.md`，本次產出應與其格式對齊，讓之後寫入 `## [Unreleased]` 區塊時不需再改寫。

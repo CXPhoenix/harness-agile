@@ -23,7 +23,7 @@ The architectural review is rendered as a single self-contained HTML file in the
       .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
     </style>
   </head>
-  <body class="bg-stone-50 text-slate-900 font-sans">
+  <body class="bg-white text-slate-900 font-sans">
     <main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
       <header>...</header>
       <section id="candidates" class="space-y-10">...</section>
@@ -49,7 +49,7 @@ Each candidate is one `<article>`:
 - **Before / After diagram**: the centrepiece. Two columns, side by side. See patterns below.
 - **Problem**: one sentence. What hurts.
 - **Solution**: one sentence. What changes.
-- **Wins**: bullets, ≤6 words each. e.g. "Tests hit one interface", "Pricing logic stops leaking", "Delete 4 shallow wrappers".
+- **Wins**: bullets, each a short phrase in glossary terms. e.g. "Tests hit one interface", "Pricing logic stops leaking", "Delete 4 shallow wrappers".
 - **ADR callout** (if applicable): one line in an amber-tinted box.
 
 No paragraphs of explanation. If the diagram needs a paragraph to be understood, redraw the diagram.
@@ -93,7 +93,7 @@ Before: a tree of function calls rendered as nested boxes. After: the same tree 
 
 ## Style guidance
 
-- Lean editorial, not corporate-dashboard. Generous whitespace. Serif optional for headings (`font-serif` works well with stone/slate).
+- Editorial rather than dashboard: generous whitespace, no KPI tiles, no card grid of stats, no gradient hero, and no cream or off-white page background, italic accent words in headings or pill-shaped badges or buttons. Serif optional for headings (`font-serif` on a white page with slate text).
 - Colour sparingly: one accent (emerald or indigo) plus red for leakage and amber for warnings.
 - Keep diagrams ~320px tall so before/after sits comfortably side by side without scrolling.
 - Use `text-xs uppercase tracking-wider` for module labels inside diagrams, so they read as schematic, not as UI.
@@ -120,4 +120,4 @@ Plain English, concise, but the architectural nouns and verbs come straight from
 
 **Wins bullets** name the gain in glossary terms: *"locality: bugs concentrate in one module"*, *"leverage: one interface, N call sites"*, *"interface shrinks; implementation absorbs the wrappers"*. Don't write *"easier to maintain"* or *"cleaner code"*, because those terms aren't in the glossary and don't earn their place.
 
-No hedging, no throat-clearing, no "it's worth noting that…". If a sentence could be a bullet, make it a bullet. If a bullet could be cut, cut it. If a term isn't in the `/codebase-design` glossary, reach for one that is before inventing a new one.
+State each point once, plainly, in glossary terms; let the diagrams carry the detail. If a term isn't in the `/codebase-design` glossary, reach for one that is before inventing a new one.

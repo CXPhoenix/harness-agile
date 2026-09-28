@@ -20,20 +20,24 @@ Resolve `scripts/sanitize_commit.py` relative to this loaded SKILL.md. In this p
 Verify that file exists, then use its absolute path for this invocation. This
 project copy is self-contained; no user-level skill installation is required.
 
-Pass the draft via stdin or a temporary UTF-8 file, using the host's shell-safe
-argument handling. Save the sanitized output to a UTF-8 file when another Git
-command consumes it; preserve actual newlines. Fail if the sanitizer is missing.
+Pass the draft to the sanitizer through a temporary UTF-8 file (see the
+sanitize step); never put the draft in a shell argument. Save the sanitized
+output to a UTF-8 file when another Git command consumes it; preserve actual
+newlines. Fail if the sanitizer is missing.
 
 ---
 
 # Execution Steps
 
-1. Run `git diff --cached` in the terminal to retrieve staged changes.
+1. Run `git diff --cached` in the terminal to retrieve staged changes. For an
+   amend, describe the amended commit as a whole: `git diff --cached HEAD~1`.
 2. Analyze the logic and intent behind the code changes.
 3. Draft the commit message following the **Commit Format** below.
 4. **Sanitize the draft** by running the sanitize script (see **Output Sanitization** section).
 5. Wrap the sanitized result in a Markdown code block (` ```markdown `) and output it.
-6. Output **only** the code block. No conversational text before or after.
+6. The code block is this skill's whole output. Committing with it is outside
+   this skill: the project's commit rule in AGENTS.md governs that, and the skill
+   does not authorize staging or publishing anything.
 
 ---
 
@@ -42,10 +46,14 @@ command consumes it; preserve actual newlines. Fail if the sanitizer is missing.
 Before presenting the result to the user, pipe the draft through the sanitize script:
 
 ```bash
-python3 SANITIZE_SCRIPT "<your draft here>"
-# or via stdin:
-echo "$DRAFT" | python3 SANITIZE_SCRIPT
+python3 SANITIZE_SCRIPT < DRAFT_FILE > SANITIZED_FILE
 ```
+
+Write the draft to a temporary UTF-8 file outside the working tree (the
+session scratchpad or `mktemp`) with the file-writing tool or a quoted
+heredoc (`<<'EOF'`), and use that path as DRAFT_FILE; drafts contain
+backticks, which a double-quoted argument or an unquoted heredoc would
+execute.
 
 Where `SANITIZE_SCRIPT` is the resolved absolute path from the **Script Resolution** section above.
 
@@ -53,13 +61,6 @@ The script will replace any leaked IDE internal links matching the pattern:
 `[text](cci:...)` → `` `text` ``
 
 This prevents private file paths from being exposed in the commit message.
-
-When the user has authorized a commit (rather than only requesting a message),
-save the sanitized message to a temporary UTF-8 file and execute
-`git commit --file <message-file>` for the approved staged changes. For an explicitly
-requested amend, retain the requested amend option and use the same message-file
-flow. Verify Git's result. Message-only requests retain the code-block output above;
-the skill itself does not authorize staging unrelated changes or publishing them.
 
 ---
 
