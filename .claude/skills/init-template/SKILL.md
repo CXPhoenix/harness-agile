@@ -54,3 +54,7 @@ Two things worth telling the user in the same breath, because both are cheap now
 - **Vendored skills** — `i-have-adhd` and `agent-browser` (in both skill trees) shipped with
   the template and may be behind their upstream. Their provenance is recorded in `docs/agents/skill-sources.json`;
   external CLIs still need their own installation.
+- **Main-session model** — the Claude skills are tuned for the model recorded in
+  `docs/agents/skill-sources.json` (`runtime_trees.claude_tuned_for`). Ask which
+  model the user usually runs; if it differs, suggest `/tune-skills`. Do not run
+  it yourself: it costs subagent time and needs their approval.

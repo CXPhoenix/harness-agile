@@ -42,8 +42,9 @@ None of this has been measured here; revisit it with evidence from real runs.
 
 The roles here have no Skill tool and no preloaded skills, so skill text reaches
 them only when the main session copies it into a handoff. Tune `.claude/skills/`
-for the main session's model, and re-run the prompt audit when that model
-changes; adopters of this template should do the same for their own model. Keep
+for the main session's model (recorded as `runtime_trees.claude_tuned_for` in
+`skill-sources.json`), and run `/tune-skills` when that model changes; adopters
+of this template should do the same for their own model. Keep
 model names out of skill text; model-specific guidance belongs in this file.
 The critic and executor models read their role files in `.claude/agents/`, the
 documents those files tell them to read, and the handoff; write a handoff for

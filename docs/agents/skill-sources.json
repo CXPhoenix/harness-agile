@@ -7,6 +7,13 @@
     "codex": ".agents/skills",
     "basis": "Claude copies were forked from the Codex tree's tracked files; each tree may then be tuned to its vendor's prompting guidance. Provenance and licensing below apply to both trees; record runtime-specific adaptations with the runtime named.",
     "metadata_split": "Claude copies drop agents/*; Codex copies drop disable-model-invocation. Shared names keep one invocation policy.",
+    "claude_tuned_for": {
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "on": "2026-09-26",
+      "report": ".tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md",
+      "retune_with": "tune-skills (Claude tree only)"
+    },
     "claude_prompt_audit": "2026-09-26: Claude-tree edits from the prompt audit (.tmpl.docs/research/2026-09-26-claude-skill-prompt-audit.md, IDs A1-D12, D5 excluded) and its follow-up review apply to agent-browser, archify, code-review, codebase-design, diagnosing-bugs, evidence-report, grilling, i-have-adhd, improve-codebase-architecture, init-template, prototype, research, security-review, teach, to-spec, to-tickets, tw-emoji-commit, tw-emoji-pr-note, tw-emoji-release-note, wayfinder and writing-for-agents; reapply them after upstream updates. local_adaptations and adaptations entries that name no runtime describe the Codex tree."
   },
   "skills": {
@@ -74,6 +81,17 @@
         "license": "MIT",
         "license_location": ".agents/skills/i-have-adhd/LICENSE",
         "source_evidence": "Compared upstream SKILL.md against the project copy; common body confirms provenance, with local/version differences retained."
+      }
+    },
+    "tune-skills": {
+      "source": "Written for this template on 2026-09-28 (Claude tree only; the Codex counterpart is planned)",
+      "adaptations": [],
+      "licensing": {
+        "status": "maintainer-confirmed-project-origin",
+        "license": "MIT",
+        "license_location": "LICENSE",
+        "confirmed_on": "2026-09-28",
+        "evidence": "Authored with Claude Code in this project at the maintainer's request. Covered by the maintainer-selected root MIT license."
       }
     },
     "init-template": {
