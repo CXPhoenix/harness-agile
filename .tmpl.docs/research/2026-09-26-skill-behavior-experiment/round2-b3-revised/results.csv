@@ -1,0 +1,6 @@
+scenario,condition,trial,status,cost_usd,top_level_spawns,web_calls,product_changes,changed_paths
+s3,patched,4,ok,0.3599086,0,1,0,docs/research/skill-disable-model-invocation.md;stderr.txt;transcript.jsonl
+s3,patched,2,ok,0.3629288,0,1,0,docs/research/disable-model-invocation.md;stderr.txt;transcript.jsonl
+s3,patched,3,ok,0.33867440000000004,0,1,0,docs/research/disable-model-invocation.md;stderr.txt;transcript.jsonl
+s3,patched,5,ok,0.328504,0,2,0,docs/research/disable-model-invocation.md;stderr.txt;transcript.jsonl
+s3,patched,1,ok,0.41685679999999997,0,1,0,docs/research/claude-code-disable-model-invocation.md;stderr.txt;transcript.jsonl

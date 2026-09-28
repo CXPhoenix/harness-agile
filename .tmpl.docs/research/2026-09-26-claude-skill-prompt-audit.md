@@ -1,6 +1,6 @@
 # Claude skills prompt audit
 
-日期：2026-09-26。依 `/claude-api prompt-audit` 流程執行；只提出修改，未套用到 repo。
+日期：2026-09-26。依 `/claude-api prompt-audit` 流程執行。2026-09-28 已套用最終版 patch 與審查後的修正（見文末「套用與審查」）。
 
 > **修訂**：經 `harness-reviewer` 紅隊審查後，A1、A2、A3、B2、C1、C7 已修正，並新增 C7b；經 `harness-challenger` 挑戰後，撤回 A5 與 C13，D5 暫緩。下表是修訂後的版本，被撤回的項目以刪除線標示；修訂理由見[方法評估](2026-09-26-claude-skill-tuning-method.md)。
 
@@ -46,7 +46,7 @@
 | B8 | to-spec/SKILL.md:7 | 1a 大寫加壓 | 與第 19 行「確認 seam」互相矛盾 | Medium | rewrite |
 | B9 | to-tickets/SKILL.md:31 | 1a 大寫加壓 | 規則本身正確，只是語氣過重 | Medium | rewrite |
 | B10 | wayfinder/SKILL.md:57 | Group 2 會過時的具體細節 | 「100K token」綁定舊的 session 大小 | Medium | rewrite |
-| C1 | writing-for-agents/SKILL-MECHANICS.md:10-14 | 1d fossil | Codex 時期的但書；Claude 樹裡已沒有 `agents/` 資料夾 | Medium | rewrite：保留原本較保守的 context 成本說法 |
+| C1 | writing-for-agents/SKILL-MECHANICS.md:10-14 | 1d fossil | Codex 時期的但書；Claude 樹裡已沒有 `agents/` 資料夾 | Medium | rewrite：最終版改回較強的寫法，因為 Claude Code skills 文件確認 `disable-model-invocation: true` 會讓 description 不進入 context |
 | C2 | codebase-design/DESIGN-IT-TWICE.md:21 | 過度委派 | 「3+」沒有上限 | Medium | rewrite |
 | C3 | improve-codebase-architecture/SKILL.md:27 | 過度委派 | 強制交給 subagent，連「感受到的摩擦」這種判斷也外包出去 | Medium | rewrite |
 | C4 | prototype/LOGIC.md:50 | Opus 5.5 前端預設 | 「beautiful but restrained」太模糊，改成點名要避免的風格 | Medium | rewrite |
@@ -62,7 +62,7 @@
 | D2 | tw-emoji-commit/SKILL.md:36, :57-62 | 1d update suppressor | 「Output only」與同檔第 57-62 行的 commit 流程衝突 | Medium | rewrite＋remove：輸出範圍比照 D1，並移除第 57-62 行的 commit 執行段，改為指向 AGENTS.md 的 commit 規則（依使用者決定） |
 | D3 | 三個 tw-emoji 的 sanitize 範例 | Group 2 自由度錯置 | 雙引號裡的反引號會觸發指令替換；應固定為一種安全寫法 | Medium | rewrite |
 | D4 | evidence-report/SKILL.md:74-77 | Opus 5.5 前端預設 | 點名清單的形式是對的，但缺少 Opus 5.5 自己常用的預設風格 | Medium | add |
-| D5（暫緩） | agent-browser/SKILL.md:3 | Group 3 觸發描述 | Codex 那批把描述從 925 字元砍到 199 字元，失去 stage 8 的觸發點 | Medium | rewrite |
+| ~~D5~~（排除） | agent-browser/SKILL.md:3 | Group 3 觸發描述 | Codex 那批把描述從 925 字元砍到 199 字元，失去 stage 8 的觸發點 | Medium | rewrite |
 | D6 | agent-browser/SKILL.md:54-61 | 1c padding | 推銷段落與第 18 行「優先用原生工具」互相矛盾 | Medium | remove |
 | D7 | evidence-report/SKILL.md:79-83 | 過度驗證 | 交付前的開檔核對步驟 | Medium | rewrite：保留層級要誠實的品質底線 |
 | D8 | evidence-report/SKILL.md:46-55 | 書面產出偏長 | 七段固定結構，卻沒有長度指引 | Medium | add |
@@ -111,3 +111,45 @@
 - 合併 patch：[2026-09-26-claude-skill-prompt-audit.patch](2026-09-26-claude-skill-prompt-audit.patch)。修訂後共 45 項修改、26 個檔案，+67／−87；在目前的 HEAD `244c555` 上執行 `git apply --check` 通過。
 - 逐項 patch：45 個 `git format-patch` 檔案，放在本 session 的 scratchpad `patches5/`，屬於暫存。D5 仍在 patch 中，確認 agent-browser 的載入來源之前不要套用。
 - **尚未驗證**：修改後的行為。依 prompt-audit Step 7，移除只是假設；建議每次套一小批，實際跑對應的 skill（例如 `/code-review`、`/tw-emoji-pr-note`、`/research`），比較套用前後的行為。
+
+## 套用與審查（2026-09-28）
+
+- **套用的版本**：[最終版 patch](2026-09-26-claude-skill-prompt-audit.final.patch)，共 44 項修改、26 個檔案。與上方 patch 的差異：
+  - **排除 D5**：使用者層級同名的 agent-browser 優先於專案版本，改了也不會生效。
+  - **C1 改回較強的寫法**。
+  - **C8 拆成 C8a、C8b**。
+- **審查**：分 4 批、每批 2 個角度（意圖與回歸、跨檔一致性），由 `harness-reviewer` 審查，共 113 項 finding。沒有 P0，P1 17 項，P2 96 項。
+  - **原設計**：每項派 3 位 `harness-challenger` 反駁。
+  - **實際進度**：跑了約 40 次就因成本停止；已完成的反駁大多判定 finding 不成立。
+  - **後續處理**：改由主 session 讀原始檔裁決。
+- **採納並修正**：修正由 `harness-executor` 套用，主 session 再整理措辭。
+  - **archify**：補回測試逐字鎖定的句子與四種視窗尺寸（D9、D10a）。這兩個測試檔的失敗數曾因此從 17 增加到 19，其中 17 個在 HEAD 就會失敗，原因是缺少 `benchmarks/`。
+  - **commit 相關的文件與 skills**：
+    - `workflow.md` stage 9 改為由 Claude 執行 commit。
+    - release-note skill 移除「直接插入 CHANGELOG」這句自相矛盾的說法。
+    - tw-emoji skills 的 sanitizer 改為只接受暫存檔輸入，並補上 amend 的說明。
+  - **wayfinder**：修正步驟標題、research 證據的存放位置，以及 Notes 與 ticket 類型 skill 的關係。
+  - **research**：筆記語言依 `language.md`；`issue-tracker.md` 的委派描述同步修改。
+  - **evidence-report**：必備段落不可刪，evidence table 不可有孤立列。
+  - **security-review、code-review 的一致性修正**。
+  - **前端避免清單的適用範圍與措辭**（C5、C6、C7、C11 等）。
+  - **provenance**：`skill-sources.json` 新增 `claude_prompt_audit`，記錄 Claude 樹的改動，並把 writing-for-agents、tw-emoji-commit 的 adaptation 依 runtime 分開寫。
+- **駁回**：
+  - A3（舊版一樣不報告低於門檻的 finding，不是回歸）。
+  - A6 的 `!` 注入疑慮（官方文件規定 `!` 要在行首或空白後才會觸發）。
+  - B8、B2、B6（反駁幾乎全部成立）。
+  - A4。
+- **暫緩**（其餘 P2，不再逐項處理）：
+  - 避免清單重複出現在 5 個檔案。
+  - Codex 樹是否也移植這些行為修正。
+  - subagent 角色的指名。
+  - C12 與 grilling 的 leading word。
+  - i-have-adhd（使用者層級的同名 skill 會蓋過專案版本）。
+- **檢查**：
+  - `verify-project.py` 只有已知的 `.agents/skills/.DS_Store` 失敗。
+  - 單元測試 22 個全部通過。
+  - archify 兩個測試檔回到 7 pass／17 fail，與 HEAD 相同。
+- **成本教訓**：用「多 agent × 3 票反駁」審查措辭類修改，花費和效益不成比例。審查報出大量 P2，大多被推翻；真正抓到回歸的是本機測試和讀原始檔。之後改用輕量流程：
+  1. 先做確定性檢查。
+  2. 只有高風險的行為改動才派一位 reviewer。
+  3. 由主 session 裁決。
