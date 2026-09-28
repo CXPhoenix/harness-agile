@@ -49,6 +49,13 @@
 - Codex 版的流程依據：先研究 OpenAI 的官方文件，再決定。
 - tune-skills 的 `disable-model-invocation`：建議設為 `true`，只由使用者或 init-template 叫用。
 
+## 測試狀態
+
+| 項目 | 狀態 | 建議的測法 |
+| --- | --- | --- |
+| Claude 版 `/tune-skills` | **待測** | 以不同的主模型設定（例如 Sonnet 5）跑到第 4 步，只產出報告，不套用 |
+| Codex 版 `$tune-skills` | **待測** | 在 Codex 用 GPT-6 跑到第 4 步，只產出報告，不套用 |
+
 ## 範圍外
 
 - 暫緩的 P2 項目，見[稽核報告](../research/2026-09-26-claude-skill-prompt-audit.md)。
