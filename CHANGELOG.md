@@ -1,5 +1,36 @@
 # 更新紀錄
 
+## ✨ [0.3.0] - 2026-10-16
+
+這一版把 Claude Code 與 Codex 的 skills 拆成兩份獨立副本，各自依自家模型的 prompting 指引調校，並新增 tune-skills，讓採用者可以依自己的主模型重新調校。
+
+### ✨ 新增
+- 新增 `tune-skills`，Claude 版與 Codex 版各一份，只能手動叫用。主模型和記錄的調校目標不同時，可以用它稽核自己 runtime 的 skills，產出報告與 patch，經使用者核准後才套用 ([#8], [#9])。
+- 新增 Claude 的模型分工設定：`harness-reviewer`、`harness-challenger`、`harness-executor`、`harness-researcher` 四個角色各自指定模型，並附上委派時機與 findings 回報原則 ([#8])。
+- handoff 改存到 repository 根目錄的 `.proj.handoffs/`，不進版控；文件開頭用 frontmatter 標註到期條件，接手時會先檢查有沒有過期 ([#8])。
+
+### 🔄 變更
+- `.claude/skills/` 不再是 `.agents/skills/` 的 symlink 或同步副本，改為兩份獨立目錄，各自調校。Claude 那份依 Opus 5.5 的 prompting 指引稽核並調整過 ([#8])。
+- `--skill-mode` 保留為不再有作用的旗標，使用時會印出棄用警告。CLI JSON 的 `skills` 與 `skill_mode` 欄位維持相容，另新增 `codex_skills` ([#8])。
+
+### 🐛 修復
+- 補上拆成兩份副本後 wheel 缺少的 Claude 樹授權檔；Windows 上 skill 目錄若是 symlink，現在會正確回報「必須是實體目錄」([#8])。
+- 明確指定 npm 發布產物的本機路徑 ([#6])。
+
+### 🔒 安全性
+- Archify 開發依賴 fast-uri 更新至 3.1.8，修正 GHSA-qw65-cvwx-89v3、GHSA-58mr-gqgx-xq4g（high）與 GHSA-hrr3-gc8f-f4qj（medium）。fast-uri 只在開發時用來產生驗證器，重新產生的驗證器內容不變 ([#9])。
+- npm 改用 staged publishing：CI 只上傳待審版本，由維護者在 npm 完成 2FA 核准後才公開 ([#7])。
+
+### 使用注意
+- 用舊版範本建立的專案若要沿用新的 handoff 規則，請在 `.gitignore` 加入 `/.proj.handoffs/`，否則新版 `verify-project.py` 會失敗。跨機器交接不再透過 Git 傳遞，需要自行複製檔案。
+- 兩份 skills 不再自動同步；修改流程、gate 或輸出位置時，需要手動移植到另一份。
+- 套件內含兩份 Archify，安裝體積比 0.2.1 大。
+
+[#6]: https://github.com/CXPhoenix/harness-agile/pull/6
+[#7]: https://github.com/CXPhoenix/harness-agile/pull/7
+[#8]: https://github.com/CXPhoenix/harness-agile/pull/8
+[#9]: https://github.com/CXPhoenix/harness-agile/pull/9
+
 ## 🐛 [0.2.1] - 2026-09-13
 
 更新正式套件安裝入口，並納入可驗證的 registry 發布流程。

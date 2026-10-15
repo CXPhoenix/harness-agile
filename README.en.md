@@ -3,7 +3,7 @@
 ![Exploration paths pass through checkpoints and converge into a deliverable.](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.1-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.1)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.3.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.3.0)
 [![PyPI](https://img.shields.io/pypi/v/harness-agile)](https://pypi.org/project/harness-agile/)
 [![npm](https://img.shields.io/npm/v/create-harness-agile)](https://www.npmjs.com/package/create-harness-agile)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
@@ -28,7 +28,7 @@ It is designed for individuals and teams who want their AI development workflow 
 With uv available, run this from the parent directory of your new project:
 
 ```bash
-uvx --from 'harness-agile==0.2.1' \
+uvx --from 'harness-agile==0.3.0' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 cd my-project
@@ -51,13 +51,13 @@ Next, open Claude Code or Codex in the new directory and run `grill-with-docs` t
 Requires Node.js 18+ and either Python 3.11+ or uv.
 
 ```bash
-npx --yes --package='create-harness-agile@0.2.1' \
+npx --yes --package='create-harness-agile@0.3.0' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'The problem it solves.' --no-input
 ```
 
 ```bash
-pnpx 'create-harness-agile@0.2.1' \
+pnpx 'create-harness-agile@0.3.0' \
   init my-project --name 'My Project' --one-liner 'The problem it solves.' --no-input
 ```
 
