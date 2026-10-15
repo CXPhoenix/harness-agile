@@ -39,8 +39,11 @@ source URL and date, and have the user confirm it before auditing.
    and stop. Habits the user mentions (language, delegation, commit style) become
    proposed lines in `AGENTS.md` or `codex.md`, not skill rewrites.
 2. **Budget.** Agree a spending cap before any Codex Agent runs.
-3. **Audit** every file in scope against the model reference. Record each finding
-   with an ID, file:line, the guidance it follows and the proposed text. Keep
+3. **Audit** every file in scope against the model reference. When the record
+   names an earlier report, use it as the baseline: keep its model-independent
+   conclusions, audit for the guidance that differs between the recorded model
+   and the new one, and say so in the report. Record each finding with an ID,
+   file:line, the guidance it follows and the proposed text. Keep
    intact, whatever the reference says:
    - project gates (the two test tables, frozen review prompt, zero P0, stage-6
      axes, security false-positive filtering, the ticket approval loop): these are
@@ -50,8 +53,9 @@ source URL and date, and have the user confirm it before auditing.
    - commit, PR, release, spec, ticket, ADR and CONTEXT templates;
    - license and modification notices of vendored skills.
 4. **Approval.** Save the report and combined patch to
-   `docs/agents/skill-tuning/<YYYY-MM-DD>-<model>.md` (patch beside it) and let the
-   user approve per skill.
+   `docs/agents/skill-tuning/<YYYY-MM-DD>-<model>.md` (patch beside it; under
+   `.tmpl.docs/research/` while `.tmpl.docs/` exists) and let the user approve per
+   skill.
 5. **Apply and check.** Apply the approved patch. You may run these checks and
    fix failures your edits caused without asking at each step; they are local and
    touch no external system:

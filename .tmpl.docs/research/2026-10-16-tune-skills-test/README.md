@@ -79,7 +79,7 @@
 | 4 核准 | 報告與 patch 已產出，`git apply --check` 通過，停在核准點，沒有套用 |
 | 5／6 | 沒有執行。不過在暫時套用 patch 的狀態下跑過確定性檢查，結果見下方「驗證」，跑完已還原 |
 
-**流程缺口**（建議修改 tune-skills，這次不改）：
+**流程缺口**（已在 `claude/fix-tune-skills` 修正：Claude 版 M1–M5 全部修改；Codex 版只移植 M2、M3，因為 M1 已有「找不到 reference 時先研究」的步驟，M4 只比對模型，M5 的預算句本來就只在有 Codex Agent 時才適用）：
 
 - **M1**：第 3 步假設讀者模型的頁面已列在 `claude-orchestration.md`。建議補一句：沒有列出時，從 Claude 文件找出該頁，並在第 6 步把連結補進清單。
 - **M2**：第 4 步把報告固定存到 `docs/agents/skill-tuning/`。但在母範本中，AGENTS.md 規定範本研究要放在 `.tmpl.docs/`，這次因此改存 `.tmpl.docs/research/`。建議補一句：`.tmpl.docs/` 存在時，存到 `.tmpl.docs/research/`。

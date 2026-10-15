@@ -16,7 +16,8 @@ Codex tree has its own copy of this job.
 
 Read `runtime_trees.claude_tuned_for`. Ask the user which model and effort they
 usually run the main session on (offer the current session's model as the
-default). When model and effort match the record, report that and stop.
+default; always ask for the effort, which a session cannot see). When model and
+effort match the record, report that and stop.
 
 Sort any habits the user mentions (language, delegation appetite, commit style,
 verbosity) into project instructions rather than skill rewrites: propose the
@@ -29,7 +30,8 @@ Claude-only guidance in `CLAUDE.md`. Only model differences reach step 2.
 Before any subagent runs, state the plan and ask the user for a spending cap:
 the audit in step 3, and a reviewer in step 5 only for edits that change
 behaviour. Behaviour probes (running a skill before and after in a headless
-session) cost the most; offer them only for the edits the user names.
+session) cost the most; offer them only for the edits the user names. When the
+plan runs no subagent, say so and go on to step 3.
 
 ## 3. Audit
 
@@ -42,7 +44,9 @@ Give it the reader of each surface:
   own model, per `docs/agents/claude-orchestration.md`.
 
 Judge each surface against its reader's official prompting page (links in
-`claude-orchestration.md`) and the all-models best-practices page. Keep, and
+`claude-orchestration.md`) and the all-models best-practices page. When the
+reader's page is not listed, find it in the Claude docs and cite its URL and
+read date in the report. Keep, and
 pass to the audit as its keep list:
 
 - Project gates: the two test tables, the frozen review prompt, zero P0, the
@@ -54,6 +58,10 @@ pass to the audit as its keep list:
 - Commit, PR, release, spec, ticket, ADR and CONTEXT templates.
 - License and modification notices of vendored skills.
 
+When the record names an earlier report, use it as the baseline: keep its
+model-independent conclusions, audit every file for the patterns that differ
+between the recorded model and the new one, and say so in the report.
+
 Model names stay out of skill text; model-specific guidance goes in
 `claude-orchestration.md`. The audit is complete when every file under the
 surfaces is either listed clean or has findings with a proposed hunk.
@@ -62,7 +70,9 @@ surfaces is either listed clean or has findings with a proposed hunk.
 
 Save the report (finding ID, file:line, reason, proposed text) to
 `docs/agents/skill-tuning/<YYYY-MM-DD>-<model>.md` and the combined patch beside
-it. Walk the user through it grouped by skill; apply only the hunks they approve.
+it; while `.tmpl.docs/` exists (the template source), save them under
+`.tmpl.docs/research/` instead. Walk the user through it grouped by skill; apply
+only the hunks they approve.
 
 ## 5. Apply and verify
 
@@ -83,7 +93,8 @@ Apply the approved patch (`git apply --check` first). Then, in this order:
 
 ## 6. Record and hand over
 
-Update `runtime_trees.claude_tuned_for` (model, effort, date, report path) and
+Update `runtime_trees.claude_tuned_for` (model, effort, date, report path), add
+any prompting page found in step 3 to the list in `claude-orchestration.md`, and
 add the changed skills to the Claude-tree adaptation note in
 `docs/agents/skill-sources.json`, so upstream updates reapply the edits. Report
 the checks with their result lines. Committing follows AGENTS.md hard rule 5.
