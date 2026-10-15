@@ -53,7 +53,7 @@
 
 | 項目 | 狀態 | 建議的測法 |
 | --- | --- | --- |
-| Claude 版 `/tune-skills` | **待測** | 以不同的主模型設定（例如 Sonnet 5）跑到第 4 步，只產出報告，不套用 |
+| Claude 版 `/tune-skills` | **已測（2026-10-16，流程層）**：以 Sonnet 5.5／`high` 跑到第 4 步，產出 7 項修改的 patch，停在核准點，未套用；另找出 5 個流程缺口（M1–M5） | 結果見[實測報告](../research/2026-10-16-tune-skills-test/README.md)。尚未測 Sonnet 5.5 實際讀到修改後的 skill 會不會改變行為 |
 | Codex 版 `$tune-skills` | **待測** | 在 Codex 用 GPT-6 跑到第 4 步，只產出報告，不套用 |
 
 ## 範圍外
