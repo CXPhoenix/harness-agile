@@ -3,7 +3,7 @@
 ![多條探索路徑穿過檢查點，逐步收斂成可交付成果。](.tmpl.docs/assets/banner/banner.png)
 
 [![CI](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml/badge.svg)](https://github.com/CXPhoenix/harness-agile/actions/workflows/verify.yml)
-[![Git tag](https://img.shields.io/badge/Git_tag-v0.2.1-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.2.1)
+[![Git tag](https://img.shields.io/badge/Git_tag-v0.3.0-476c63)](https://github.com/CXPhoenix/harness-agile/tree/v0.3.0)
 [![PyPI](https://img.shields.io/pypi/v/harness-agile)](https://pypi.org/project/harness-agile/)
 [![npm](https://img.shields.io/npm/v/create-harness-agile)](https://www.npmjs.com/package/create-harness-agile)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://github.com/CXPhoenix/harness-agile/blob/main/pyproject.toml)
@@ -28,7 +28,7 @@ harness-agile 是一份可攜的 AI 協作開發範本。從釐清需求到合�
 準備 uv，然後在新專案的父目錄執行：
 
 ```bash
-uvx --from 'harness-agile==0.2.1' \
+uvx --from 'harness-agile==0.3.0' \
   harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 cd my-project
@@ -51,13 +51,13 @@ uv run --python 3.11 python scripts/verify-project.py
 需要 Node.js 18+，以及 Python 3.11+ 或 uv。
 
 ```bash
-npx --yes --package='create-harness-agile@0.2.1' \
+npx --yes --package='create-harness-agile@0.3.0' \
   create-harness-agile init my-project --name '我的專案' \
   --one-liner '它要解決的問題。' --no-input
 ```
 
 ```bash
-pnpx 'create-harness-agile@0.2.1' \
+pnpx 'create-harness-agile@0.3.0' \
   init my-project --name '我的專案' --one-liner '它要解決的問題。' --no-input
 ```
 
