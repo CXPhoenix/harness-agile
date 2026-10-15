@@ -1,0 +1,88 @@
+diff --git a/.claude/skills/implement/SKILL.md b/.claude/skills/implement/SKILL.md
+index 57fdbee..93e3a47 100644
+--- a/.claude/skills/implement/SKILL.md
++++ b/.claude/skills/implement/SKILL.md
+@@ -19,7 +19,9 @@ required by workflow.md, including unmeasured or uncovered areas.
+ 
+ Use /code-review on the actual change, including staged, unstaged and relevant
+ untracked files before committing. Resolve findings within the approved scope;
+-raise material scope changes. Follow workflow.md for security and end-to-end gates.
++raise material scope changes. Add no features, tests, files, docs or refactors that
++the approved tickets and test plan do not call for; name any you think would help
++in the report. Follow workflow.md for security and end-to-end gates.
+ 
+ For the workflow's commit, load the project /tw-emoji-commit skill and use its
+ sanitized UTF-8 message file. A commit is not evidence that later gates or landing
+diff --git a/.claude/skills/prototype/UI.md b/.claude/skills/prototype/UI.md
+index 38a66d7..b68aebe 100644
+--- a/.claude/skills/prototype/UI.md
++++ b/.claude/skills/prototype/UI.md
+@@ -51,7 +51,7 @@ Draft each variant. Hold each one to:
+ - The project's component library / styling system (TailwindCSS, shadcn, MUI, plain CSS, whatever).
+ - A clear exported component name, e.g. `VariantA`, `VariantB`, `VariantC`.
+ 
+-Variants must be **structurally different**: different layout, different information hierarchy, different primary affordance, not just different colours. Three slightly-tweaked card grids isn't a UI prototype, it's wallpaper. If two drafts come out too similar, redo one with explicit "do not use a card grid" guidance. Where the project has no design system, keep the variants (not the floating switcher) from sharing a default skin: avoid a cream or off-white background, italic accent words in headlines, numbered "01/02/03" section labels, monospace labels, and pill-shaped buttons, and extend this list with whatever the first draft reached for.
++Variants must be **structurally different**: different layout, different information hierarchy, different primary affordance, not just different colours. Three slightly-tweaked card grids isn't a UI prototype, it's wallpaper. If two drafts come out too similar, redo one with explicit "do not use a card grid" guidance. Where the project has no design system, give each variant its own direction before drafting it (background hex, accent hex, typeface), and keep the variants (not the floating switcher) from sharing a default skin: avoid a cream or off-white background, italic accent words in headlines, numbered "01/02/03" section labels, monospace labels, and pill-shaped buttons, and extend this list with whatever the first draft reached for.
+ 
+ ### 3. Wire them together
+ 
+diff --git a/.claude/skills/teach/SKILL.md b/.claude/skills/teach/SKILL.md
+index 17f2927..c3c6b1a 100644
+--- a/.claude/skills/teach/SKILL.md
++++ b/.claude/skills/teach/SKILL.md
+@@ -27,7 +27,7 @@ To learn at a deep level, the user needs three things:
+ - **Skills**, acquired through highly-relevant interactive lessons devised by you, based on the knowledge
+ - **Wisdom**, which comes from interacting with other learners and practitioners
+ 
+-Before the `RESOURCES.md` is well-populated, your focus should be to find high-quality resources which will help the user acquire knowledge. Never trust your parametric knowledge.
++Before the `RESOURCES.md` is well-populated, your focus should be to find high-quality resources which will help the user acquire knowledge. Take facts from those sources rather than from your training knowledge, and check specifics against them even when you feel confident.
+ 
+ Some topics may require more skills than knowledge. Learning more about theoretical physics might be more knowledge-based. For yoga, more skills-based.
+ 
+@@ -48,7 +48,7 @@ Fluency can give the user an illusory sense of mastery, but storage strength is
+ 
+ A lesson is the main thing you produce: the unit in which knowledge and skills reach the user. Each lesson is one self-contained HTML file, saved to `./lessons/` and titled `0001-<dash-case-name>.html` where the number increments each time.
+ 
+-A lesson should be easy to read in one sitting: clear hierarchy, readable body text, dense-but-calm high data-ink information design (data and diagrams over decoration). Avoid a cream or off-white background, italic accent words in headings, numbered "01/02/03" section labels, monospace labels, or pill-shaped buttons unless the shared stylesheet already uses them.
++A lesson should be easy to read in one sitting: clear hierarchy, readable body text, dense-but-calm high data-ink information design (data and diagrams over decoration). Avoid a cream or off-white background, italic accent words in headings, numbered "01/02/03" section labels, monospace labels, or pill-shaped buttons unless the shared stylesheet already uses them. Before the workspace has a shared stylesheet, propose two or three visual directions (background hex, accent hex, typeface, one-line rationale) and build the stylesheet from the one the user picks.
+ 
+ The lesson should be short, and completable very quickly. Learners' working memory is very small, and we need to stay within it. But each lesson should give the user a single tangible win that they can build on. It should be directly tied to the mission, and should be in the user's zone of proximal development.
+ 
+diff --git a/docs/agents/claude-orchestration.md b/docs/agents/claude-orchestration.md
+index 9b8da59..9a075c6 100644
+--- a/docs/agents/claude-orchestration.md
++++ b/docs/agents/claude-orchestration.md
+@@ -55,6 +55,7 @@ Official prompting pages:
+ - Claude Opus 5: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5>
+ - Claude Opus 4.8: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-4-8>
+ - Claude Sonnet 5: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5>
++- Claude Sonnet 5.5: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5>
+ - All current models: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices>
+ 
+ The differences that most often change the text:
+@@ -66,10 +67,22 @@ The differences that most often change the text:
+   section, not just the first"); they do not generalize an instruction.
+ - **Verification:** Opus 5 verifies its own work unprompted, so skip
+   "double-check" steps in text it reads. The Opus 5.5 page treats Opus 5
+-  patterns as a starting point, so test the same removal there.
++  patterns as a starting point, so test the same removal there. Sonnet 5.5
++  checks its coding work at `high`, but at `low` it can report a change as done
++  without running a check that exercises it.
+ - **Frontend direction:** for Opus 5.5, name the default styles to avoid. For
+-  Opus 4.8 and Sonnet 5, give a concrete alternative spec or ask for several
+-  directions for the user to choose from.
++  Opus 4.8, Sonnet 5 and Sonnet 5.5, give a concrete alternative spec or ask for
++  several directions for the user to choose from; the Sonnet 5.5 page keeps the
++  Sonnet 5 patterns as its starting point.
++- **Sources over recall** (Sonnet 5.5): in knowledge work it can answer from
++  training knowledge where a source would catch details that have changed. Keep
++  the skills' primary-source instructions, and do not add wording that
++  discourages tool use, which it follows literally.
++- **Initiative and scope** (Sonnet 5.5): at `low` and `medium` effort it may stop
++  to check in before a multipart task is done; at every effort it tends to add
++  tests, docs and small files nobody asked for; at `xhigh` and `max` it may start
++  its own review rounds and reviewer subagents. The project's gates are the
++  intended stopping points, so state the scope where a skill hands over work.
+ - **Delegation** matters only for a model that can delegate. The main session
+   on Opus 5 delegates readily and needs damping; on Opus 4.8 it delegates rarely.
+ 
