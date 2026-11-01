@@ -86,3 +86,20 @@ On 2026-09-13 the maintainer confirmed that tw-emoji-commit, tw-emoji-pr-note,
 tw-emoji-release-note, and init-template were authored by the maintainer using
 Claude Code. They are recorded as project-authored material under the root MIT
 LICENSE. This provenance record is based on the maintainer's explicit confirmation.
+
+## egm-drift-report — Apache-2.0 local adaptation
+
+Source: google/elephant-goldfish-model, revision
+403d8881d62022490637d740657b33f01e321ea8. The drift workflow was adapted for
+harness-agile on 2026-11-01: local runtime entries, evidence/status handling,
+report placement, write boundaries and existing delivery gates replace upstream
+plugin conventions. This is not a complete EGM plugin installation or an
+upstream-supported integration.
+
+The complete Apache-2.0 text is retained in both
+[Codex](.agents/skills/egm-drift-report/LICENSE) and
+[Claude](.claude/skills/egm-drift-report/LICENSE) copies. The shared adapted contract
+is [docs/agents/drift-report.md](docs/agents/drift-report.md).
+No NOTICE file was present in the pinned upstream tree. Root MIT terms do not
+replace these third-party terms. Source verification and hashes are recorded in
+docs/agents/skill-sources.json.

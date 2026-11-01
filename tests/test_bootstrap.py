@@ -16,6 +16,17 @@ class BootstrapTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.target = Path(self.temp.name) / '專案 with spaces'
 
+    def assert_drift_skill_survives(self):
+        for tree in ('.agents/skills', '.claude/skills'):
+            skill = self.target / tree / 'egm-drift-report'
+            self.assertTrue((skill / 'SKILL.md').is_file())
+            self.assertEqual((skill / 'LICENSE').read_bytes(),
+                             (ROOT / tree / 'egm-drift-report/LICENSE').read_bytes())
+            contract = skill / '../../../docs/agents/drift-report.md'
+            self.assertEqual(contract.resolve(), (self.target / 'docs/agents/drift-report.md').resolve())
+            self.assertEqual(contract.read_bytes(),
+                             (ROOT / 'docs/agents/drift-report.md').read_bytes())
+
     def run_cli(self, *extra, values=True):
         args = [sys.executable, '-m', 'harness_agile', 'init', str(self.target), '--source', str(ROOT), '--no-input', '--json']
         if values:
@@ -25,9 +36,10 @@ class BootstrapTests(unittest.TestCase):
     def test_creates_project_with_separate_runtime_skill_copies(self):
         result = self.run_cli('--skill-mode', 'symlink')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assert_drift_skill_survives()
         self.assertIn('deprecated', result.stderr)
         output = json.loads(result.stdout)
-        self.assertEqual((output['skills'], output['codex_skills']), (32, 32))
+        self.assertEqual((output['skills'], output['codex_skills']), (33, 33))
         self.assertEqual(output['skill_mode'], 'copy')
         self.assertFalse(any(p.is_symlink() for p in (self.target / '.claude/skills').iterdir()))
         self.assertFalse((self.target / '.git').exists())
@@ -56,7 +68,7 @@ class BootstrapTests(unittest.TestCase):
         env = {**os.environ, 'LC_ALL': 'C', 'LANG': 'C', 'PYTHONUTF8': '0', 'PYTHONCOERCECLOCALE': '0'}
         result = subprocess.run([sys.executable, '-m', 'harness_agile', 'init', str(target), '--source', str(ROOT), '--name', 'Test', '--one-liner', 'Test', '--json', '--no-input'], cwd=ROOT, env=env, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout)['skills'], 32)
+        self.assertEqual(json.loads(result.stdout)['skills'], 33)
 
     def test_rejects_existing_content_without_modifying_it(self):
         self.target.mkdir()
@@ -78,7 +90,8 @@ class BootstrapTests(unittest.TestCase):
     def test_keep_retains_history_and_git_is_opt_in(self):
         result = self.run_cli('--keep-template-files', '--git')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout)['skills'], 33)
+        self.assertEqual(json.loads(result.stdout)['skills'], 34)
+        self.assert_drift_skill_survives()
         self.assertTrue((self.target / '.tmpl.docs').is_dir())
         self.assertTrue((self.target / 'INSTALL.md').is_file())
         self.assertTrue((self.target / 'bootstrap/create-harness-project/SKILL.md').is_file())

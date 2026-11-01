@@ -1,0 +1,36 @@
+{
+  "basic": {
+    "expected": "confirmed drift",
+    "document_limit": 64,
+    "implementation_limit": 128,
+    "evidence": [
+      "docs/interface.md:3",
+      "src/store.py:2"
+    ]
+  },
+  "boundaries": {
+    "no_drift": [
+      ".hidden/current.md"
+    ],
+    "expected_differences": [
+      ".hidden/planned.md",
+      ".hidden/history.md",
+      ".hidden/future.md"
+    ],
+    "needs_verification": [
+      ".hidden/missing.md"
+    ],
+    "confirmed_drift": [
+      "architecture sqlite3/json",
+      "dynamic max_bytes/fixed 256"
+    ],
+    "report_status": "partial"
+  },
+  "models": {
+    "confirmed_drift": [
+      "Record.timestamp missing",
+      "delete_record(key) missing"
+    ],
+    "required_output_root": ".proj.specs/0001-records/reports/"
+  }
+}

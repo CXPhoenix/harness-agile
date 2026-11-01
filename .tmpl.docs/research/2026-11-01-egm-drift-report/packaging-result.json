@@ -1,0 +1,57 @@
+{
+  "platform": "darwin",
+  "python": "3.14.3",
+  "source": {
+    "commit": "110a6224773d69b792b840e2a94c9966ed3ea110",
+    "content_sha256": "a33076ad30c01ebff931f4bfe8cc6e770fab993f770fec2f5e1f70baa6245e44",
+    "dirty": true,
+    "repository": "https://github.com/CXPhoenix/harness-agile"
+  },
+  "checks": [
+    {
+      "entry": "uvx",
+      "claude_skills": 33,
+      "codex_skills": 33,
+      "passed": true
+    },
+    {
+      "entry": "npx",
+      "claude_skills": 33,
+      "codex_skills": 33,
+      "passed": true
+    },
+    {
+      "entry": "pnpx",
+      "claude_skills": 33,
+      "codex_skills": 33,
+      "passed": true
+    }
+  ],
+  "keep": {
+    "entry": "uvx-wheel-keep",
+    "claude_skills": 34,
+    "codex_skills": 34,
+    "passed": true,
+    "ADR_date_replaced": true,
+    "verifier": "PASS: shared instructions, 34 skills across Claude/Codex trees, invocation policies, helper assets and native role configs\nStatic/offline checks only; confirm discovery in fresh Claude Code and Codex sessions."
+  },
+  "final_formal_files_match_wheel": [
+    ".agents/skills/egm-drift-report/LICENSE",
+    ".agents/skills/egm-drift-report/SKILL.md",
+    ".agents/skills/egm-drift-report/agents/openai.yaml",
+    ".claude/skills/egm-drift-report/LICENSE",
+    ".claude/skills/egm-drift-report/SKILL.md",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/README.md",
+    "docs/agents/drift-report.md",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/skill-sources.json",
+    "docs/guide.md",
+    "scripts/verify-project.py",
+    "docs/adr/0005-drift-diagnosis-native-host-verification.md"
+  ],
+  "artifact_sha256": {
+    "harness_agile-0.3.0-py3-none-any.whl": "aec693d32001c85fbe703b693b36a929fbc62ca43df8bb3cd7fd073561020b8c",
+    "create-harness-agile-0.3.0.tgz": "300887965475b297f6c9411afd28127e905ce6b218411a44ec2d9288cdc213b4"
+  }
+}

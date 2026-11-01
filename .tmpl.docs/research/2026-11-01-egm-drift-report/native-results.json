@@ -1,0 +1,199 @@
+{
+  "host": "Codex CLI 0.161.0",
+  "model": "CLI default; not independently observed",
+  "timezone": "Asia/Taipei",
+  "claude": {
+    "version": "2.1.283",
+    "loggedIn": false,
+    "live": "not run"
+  },
+  "runs": {
+    "baseline": {
+      "thread_id": "01a19650-6de8-7532-ad89-4e180c23cc9c",
+      "trace_path": "/private/tmp/harness-drift-baseline.jsonl",
+      "trace_sha256": "f19397fd6d07a83fa409b340428cf5b700e37bae26ccb48877a8911a188388ae",
+      "events": 19,
+      "executed_commands": 5,
+      "final_message": "找不到 `$egm-drift-report`：本機 skill 路徑與 Skills MCP 搜尋皆無結果，因此依規範停止診斷。\n\n請提供該 skill 的 `SKILL.md` 路徑或內容。尚未讀取兩個指定來源，未修改檔案，也未呼叫子代理。",
+      "usage": {
+        "input_tokens": 183957,
+        "cached_input_tokens": 157824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 684,
+        "reasoning_output_tokens": 128
+      }
+    },
+    "positive": {
+      "thread_id": "01a19651-0af9-7381-b198-4608a2d54942",
+      "trace_path": "/private/tmp/harness-drift-positive.jsonl",
+      "trace_sha256": "5dc068dec5f7c5911ba4661c05dcd91c625be6e50f185e9973b88eab4b259ff3",
+      "events": 12,
+      "executed_commands": 3,
+      "final_message": "報告已保存：[2026-11-01-drift-interface-store.md](/private/tmp/harness-drift-native/.proj.specs/_reports/2026-11-01-drift-interface-store.md)。\n\n診斷狀態為 **complete**，確認：\n\n- **一項漂移**：文件上限為 64 bytes，程式為 128 bytes；65–128 bytes 會錯誤回傳成功。\n- **一項文件缺口**：未記載成功回傳 `{\"saved\": True}`。\n\n已完整靜態檢查指定兩檔，寫入前確認來源 SHA-256 未變。未執行 fixture、修改來源、commit、發布或派子代理；此目錄無法取得 Git 版本資訊。",
+      "usage": {
+        "input_tokens": 130764,
+        "cached_input_tokens": 106368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4992,
+        "reasoning_output_tokens": 602
+      }
+    },
+    "cases": {
+      "thread_id": "01a19652-8885-76b0-a642-e0bdf26c1b7f",
+      "trace_path": "/private/tmp/harness-drift-cases.jsonl",
+      "trace_sha256": "a9436af2ff107f3b85973b622c27f680388ac6182ae1358a3d7b8156b6db88fa",
+      "events": 24,
+      "executed_commands": 9,
+      "final_message": "已保存[診斷報告](/private/tmp/harness-drift-cases/.proj.specs/_reports/2026-11-01-drift-hidden-src.md)，狀態為 **partial**。\n\n- 確認兩項落差：sqlite3 持久化儲存主張與實作不符；容量固定為 256，未使用 `max_bytes`。\n- `src/quota.py` 缺失，配額值與 fallback 列為待確認。\n- 已檢查 6 份文件、2 個實作檔；planned／history 未當作目前交付。\n\n保存前來源雜湊均未變動。僅新增報告，未修改受檢來源、執行 fixture、commit、發布或派工。",
+      "usage": {
+        "input_tokens": 239335,
+        "cached_input_tokens": 217856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7253,
+        "reasoning_output_tokens": 957
+      }
+    },
+    "negative": {
+      "thread_id": "01a19652-d782-76f1-9359-ef7bd97c4372",
+      "trace_path": "/private/tmp/harness-drift-negative.jsonl",
+      "trace_sha256": "d8dc194d675fadf7e06d3b1e2d81b877d983581000d89f1dd18cd7adfd4efbce",
+      "events": 7,
+      "executed_commands": 1,
+      "final_message": "可開始的 ticket 是 **T-0001：Export notes**。\n\n原因：狀態為 `todo`、`blocked_by: []`，且文件明確標示已核准、可開始實作。\n\n本次僅查詢進度，未開始實作。",
+      "usage": {
+        "input_tokens": 55144,
+        "cached_input_tokens": 40576,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 187,
+        "reasoning_output_tokens": 34
+      }
+    },
+    "rerun": {
+      "thread_id": "01a19652-e1ab-7372-a67b-030141ebe9c9",
+      "trace_path": "/private/tmp/harness-drift-rerun.jsonl",
+      "trace_sha256": "9923b8c606a3e26167aa1f0740e11596eacaa02b0b17d0531ea6c4a2f6bdd4f1",
+      "events": 14,
+      "executed_commands": 4,
+      "final_message": "已保存[診斷報告](/private/tmp/harness-drift-native/.proj.specs/_reports/2026-11-01-drift-interface-store-02.md)，狀態為 `complete`。\n\n- **確認漂移**：文件上限為 64 bytes，實作上限為 128 bytes；65–128 bytes 的文字會回傳成功，違反文件規範。\n- **文件缺口**：成功回傳 `{\"saved\": True}` 未記載；是否列為規範承諾仍待確認。\n\n已完整靜態檢查指定兩檔並複核雜湊未變。未執行程式、修改來源、commit、發布或派子代理。",
+      "usage": {
+        "input_tokens": 153517,
+        "cached_input_tokens": 134912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4799,
+        "reasoning_output_tokens": 828
+      }
+    },
+    "models": {
+      "thread_id": "01a19654-41a5-75f0-8a7b-c004e9cd8f0d",
+      "trace_path": "/private/tmp/harness-drift-models.jsonl",
+      "trace_sha256": "d98887c6cc62029e91aef1f47df8a7c7bd15172884f3d1b400ba2281dbc1ca16",
+      "events": 20,
+      "executed_commands": 6,
+      "final_message": "已建立[診斷報告](/private/tmp/harness-drift-models/.proj.specs/0001-records/reports/2026-11-01-drift-contracts-src.md)，狀態為 **complete**。\n\n確認兩項落差：\n\n- `Record` 缺少契約要求的必要欄位 `timestamp`。\n- 服務缺少契約要求的 `delete_record(key)`。\n\n已完整靜態檢查 2 份文件、2 個實作檔，來源 SHA-256 複查一致。未執行來源；執行時期行為未驗證。目錄無 Git，無法取得 HEAD 或 dirty state。\n\n僅新增報告，未修改既有檔案、commit、發布或派工。",
+      "usage": {
+        "input_tokens": 237895,
+        "cached_input_tokens": 214016,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5214,
+        "reasoning_output_tokens": 564
+      }
+    },
+    "stale": {
+      "thread_id": "01a19653-8fe9-7b23-a4a8-5e49e7ccea20",
+      "trace_path": "/private/tmp/harness-drift-stale.jsonl",
+      "trace_sha256": "c1535076e913a39b1c0651409d37a61795572016e5860409a4b54758cd141e49",
+      "events": 18,
+      "executed_commands": 6,
+      "final_message": "已儲存[診斷報告](/private/tmp/harness-drift-stale/.proj.specs/_reports/2026-11-01-drift-interface-store.md)，狀態為 `complete`。\n\n- 確認差異：文件上限為 64 bytes，實作為 128 bytes；65–128 bytes 會回傳成功。\n- 文件缺口：未說明成功回傳值 `{\"saved\": True}`，是否須納入契約仍待確認。\n- 實際涵蓋：完整靜態檢查兩份指定檔案；寫入前 SHA-256 均未變更。無可用 Git 資訊，未驗證執行期行為。\n\n僅新增報告，未執行或修改來源、commit、發布或派工。",
+      "usage": {
+        "input_tokens": 192962,
+        "cached_input_tokens": 172672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5132,
+        "reasoning_output_tokens": 820
+      }
+    },
+    "stale-2": {
+      "thread_id": "01a19654-9f5b-78b2-a5a3-e70ea11fcaca",
+      "trace_path": "/private/tmp/harness-drift-stale-2.jsonl",
+      "trace_sha256": "c5333bb9bb3294cc381016416580b73c4bd91ef50410431aef35c61b533b06e8",
+      "events": 19,
+      "executed_commands": 6,
+      "final_message": "已建立並讀回驗證[診斷報告](/private/tmp/harness-drift-stale-2/.proj.specs/_reports/2026-11-01-drift-interface-store.md)，狀態為 **stale**。\n\n- 初次版本確認差異：文件上限 64 bytes，實作上限 128 bytes。\n- 複查時實作已變為 256 bytes，因此結論不適用於目前版本，未自動重跑。\n- 實際涵蓋兩檔完整靜態比對；未驗證執行行為，Git 資訊不可用。\n\n僅寫入新報告；未執行或修改來源、commit、發布或派工。",
+      "usage": {
+        "input_tokens": 195837,
+        "cached_input_tokens": 173824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5164,
+        "reasoning_output_tokens": 619
+      }
+    },
+    "symlink": {
+      "thread_id": "01a19654-fa43-7cf3-b1ef-4bbb5bed98ff",
+      "trace_path": "/private/tmp/harness-drift-symlink.jsonl",
+      "trace_sha256": "1cd8718716575e09709848278d62fc4627ae20692daa283d7d0aaf3f9483a0d5",
+      "events": 16,
+      "executed_commands": 5,
+      "final_message": "已執行診斷；**未儲存報告**。契約指定的 `.tmpl.docs/research/drift-reports` 是指向 checkout 外部的 symlink，因此拒絕寫入，未修正或改用其他位置。\n\n- **確認漂移，高信心**：[文件第 3 行](/private/tmp/harness-drift-symlink/docs/interface.md:3)規定 UTF-8 文字上限為 64 bytes；[實作第 2 行](/private/tmp/harness-drift-symlink/src/store.py:2)僅在超過 128 bytes 時拒絕，因此 65–128 bytes 仍會成功儲存。\n- **涵蓋範圍**：完整靜態檢查兩個指定檔案，包含 `save` 的位元組計算、上限及回傳分支；未執行來源。\n- **版本與限制**：兩個來源的 SHA-256 複查皆未變。工作區不是 Git repository，無法取得 HEAD、branch 或 dirty state。\n- **狀態**：比較完成，報告寫入受阻。日期為 2026-11-01，時區 Asia/Taipei。\n\n未寫入任何檔案，未修改來源或環境、派工、commit 或發布。",
+      "usage": {
+        "input_tokens": 157904,
+        "cached_input_tokens": 137984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1613,
+        "reasoning_output_tokens": 251
+      }
+    },
+    "empty": {
+      "thread_id": "01a19655-0632-7032-801b-56a2647d4c74",
+      "trace_path": "/private/tmp/harness-drift-empty.jsonl",
+      "trace_sha256": "d97d00f0760f96acf74c9edacd12cebf4789bcc5d3c2bbf54ac77557544b0ebc",
+      "events": 12,
+      "executed_commands": 3,
+      "final_message": "已儲存[診斷報告](/private/tmp/harness-drift-empty/.proj.specs/_reports/2026-11-01-drift-empty-store.md)。\n\n- 狀態：`blocked`。`empty/` 沒有符合條件的 Markdown 文件，無法進行雙側比較，不能判定「無漂移」。\n- 覆蓋：完整靜態讀取 `src/store.py`，最終 SHA-256 複核未變；未建立可確認的差異。\n- 僅新增報告，未修改來源、執行來源、派工、commit 或發布。",
+      "usage": {
+        "input_tokens": 124221,
+        "cached_input_tokens": 88448,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4201,
+        "reasoning_output_tokens": 674
+      }
+    }
+  },
+  "reports": {
+    "native-2026-11-01-drift-interface-store-02.md": {
+      "original_path": "/private/tmp/harness-drift-native/.proj.specs/_reports/2026-11-01-drift-interface-store-02.md",
+      "sha256": "8306829d592f61feb2c7f3e418f5f5fa1c91795e7d8d01f3e5c9c93ff8d5b2e0"
+    },
+    "native-2026-11-01-drift-interface-store.md": {
+      "original_path": "/private/tmp/harness-drift-native/.proj.specs/_reports/2026-11-01-drift-interface-store.md",
+      "sha256": "ed1a0c04c7a5c6a6ecb00cd91a3ff90d63c7f173f272dc7409ed878472d4cf76"
+    },
+    "cases-2026-11-01-drift-hidden-src.md": {
+      "original_path": "/private/tmp/harness-drift-cases/.proj.specs/_reports/2026-11-01-drift-hidden-src.md",
+      "sha256": "7b737cfa50fa27185900fab1560bb77a89fcf238c9b9ed31c0d9291bde359621"
+    },
+    "models-2026-11-01-drift-contracts-src.md": {
+      "original_path": "/private/tmp/harness-drift-models/.proj.specs/0001-records/reports/2026-11-01-drift-contracts-src.md",
+      "sha256": "cc3cd141ffa858dcdb0a976bf1ab17743cc142502ad8d5657831815366cddbfb"
+    },
+    "stale-2-2026-11-01-drift-interface-store.md": {
+      "original_path": "/private/tmp/harness-drift-stale-2/.proj.specs/_reports/2026-11-01-drift-interface-store.md",
+      "sha256": "e65b594f1544c600b18eaafb527d1b20a2c03b2ffa1fe0253239f948e7312ce4"
+    },
+    "empty-2026-11-01-drift-empty-store.md": {
+      "original_path": "/private/tmp/harness-drift-empty/.proj.specs/_reports/2026-11-01-drift-empty-store.md",
+      "sha256": "2b86f4b4c9e24034fbf27661d21aacaac4fcce20e2d9a09e7c69ea2a8201fc68"
+    }
+  },
+  "stale_mutation": {
+    "after_event": "item_1",
+    "path": "src/store.py",
+    "before_sha256": "7986cc8463d114c79d260aa209518ea1bb9c393a33c699fcf006f5c5dfe798a6",
+    "after_sha256": "af260f3c552e4959772292c1e0d447dde28e86cc79304c9be586b63b533a8c75"
+  },
+  "limits": [
+    "First stale controller did not recognize SHA-256 marker and injected nothing; second run normalized marker and succeeded.",
+    "No-Git fixtures: staged/unstaged/untracked Git classification not live-tested.",
+    "Missing inputs interactive question, duplicate aliases, permission-denied read, context/time cutoff, malicious slug and concurrent report collision are not individually live-tested."
+  ]
+}
