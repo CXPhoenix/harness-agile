@@ -1,6 +1,6 @@
 # Archify 依賴與驗證範圍
 
-2026-10-16：本範本將 `fast-uri` override 與 lockfile 由 3.1.6 更新為 3.1.8（前一次為 2026-09-13，由 3.1.5 更新為 3.1.6），保留 Archify 內建及既有呼叫政策。Windows 自動開啟繼續[停用](windows-opener.md)。
+2026-11-01：本範本將兩套 Archify 的 `fast-uri` override 與 lockfile 由 3.1.8 更新為 3.1.9，修正 PR #11 的安全掃描失敗。前次更新為 2026-10-16（3.1.6 → 3.1.8）及 2026-09-13（3.1.5 → 3.1.6）。保留 Archify 內建及既有呼叫政策；Windows 自動開啟繼續[停用](windows-opener.md)。
 
 ## 公告的適用範圍
 
@@ -15,6 +15,17 @@
 | [GHSA-hrr3-gc8f-f4qj](https://github.com/advisories/GHSA-hrr3-gc8f-f4qj)：percent-encoded 字元造成 host 大小寫正規化不一致 | medium | 3.1.8 |
 
 3.1.8 是同時涵蓋三則公告的 3.x 版本，落在 `ajv@8.20.0` 宣告的 `^3.0.1` 範圍內。
+
+2026-10-19 又公布四則公告，3.1.8 仍在影響範圍；[3.1.9 security release](https://github.com/fastify/fast-uri/releases/tag/v3.1.9) 修正以下問題：
+
+| 公告 | 等級 | 3.x 修正版 |
+| --- | --- | --- |
+| [GHSA-w74x-v6f9-j3xg](https://github.com/advisories/GHSA-w74x-v6f9-j3xg)：percent-encoded scheme 解碼後變成可執行 scheme | moderate | 3.1.9 |
+| [GHSA-wjr9-j795-jxcr](https://github.com/advisories/GHSA-wjr9-j795-jxcr)：host canonicalization 靜默改寫有歧義的 host | moderate | 3.1.9 |
+| [GHSA-xhq7-xmqj-769h](https://github.com/advisories/GHSA-xhq7-xmqj-769h)：相對路徑正規化改變原本的解析語意 | low | 3.1.9 |
+| [GHSA-333x-w4r6-6crp](https://github.com/advisories/GHSA-333x-w4r6-6crp)：suffix reference 未跳脫首段冒號，可能被重新解析為 scheme | low | 3.1.9 |
+
+3.1.9 仍在現有 AJV 宣告的 `^3.0.1` 範圍內。兩棵 runtime 樹都固定此 patch 版本並更新 registry integrity；其他套件版本不變。CI 的安全掃描維持啟用，沒有降低門檻或略過檢查。
 
 目前程式碼僅在開發用的 `scripts/generate-validators.mjs` 經由 AJV 使用此依賴，讀取內附 schema，輸出無外部 require 的 standalone validators。一般產圖使用預先生成的驗證器；此次未確認公告描述的可利用 SSRF 路徑。即使沒有公開 endpoint，也不能單憑這點排除所有本機處理不受信任資料的風險。
 
@@ -34,6 +45,16 @@ npm audit --package-lock-only --ignore-scripts
 `test:portable` 涵蓋驗證器新鮮度及 schema、Windows opener 停用、交付規則、輸出路徑防護與 render 產物檢查。`test:preview` 需允許本機監聽，檢查最後有效產物保留、重複寫入、過期候選、停止行為與五種 renderer 的首次交付。
 
 上游 `npm test` 保持原樣，其中部分指令依賴未隨 skill 附上的上游 README、scripts 與 examples。此處提供可獨立執行的明確子集，不宣稱通過整套上游測試、瀏覽器視覺驗收或原生 Windows 端到端測試。
+
+## 2026-11-01 修正驗證
+
+在 macOS、Node.js 24.13.0、npm 11.6.2，以完整的乾淨 Archify 暫存副本驗證 3.1.9：
+
+- `npm ci --ignore-scripts` 成功，兩棵樹的 lockfile 安全掃描皆為 0 vulnerabilities。
+- `test:portable` 54／54、`test:preview` 11／11 通過；驗證器 freshness 檢查通過，預先生成的驗證器沒有改動。
+- 根目錄結構檢查及既有 22 項單元測試通過。
+
+遠端三平台結果以 PR #11 最新 commit 的 CI 為準；詳細重現與修正紀錄見範本維護歷程。
 
 ## 本輪結果
 
