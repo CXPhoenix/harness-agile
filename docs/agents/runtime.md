@@ -52,8 +52,10 @@ permissions continue to apply; the template does not enable permission bypass.
 
 Project roles in `.claude/agents/`:
 
-- `harness-reviewer`: file-reading tools; the parent supplies the exact Git diff,
-  base, HEAD, uncommitted changes and untracked inventory. One axis per invocation.
+- `harness-reviewer`: file-reading tools, one axis per invocation. For stage 3,
+  the parent supplies the spec packet defined in [review.md](review.md). For code
+  or security review, it supplies exact Git base/HEAD, captured diffs and requested
+  pending/untracked contents.
 - `harness-challenger`: devil's advocacy and alternative analysis on plans,
   decisions and findings; returns evidence only.
 - `harness-executor`: applies an approved, fully specified change and runs the
@@ -65,6 +67,14 @@ Role models and when to delegate are in [claude-orchestration.md](claude-orchest
 The main session keeps the user's model choice; model brands are not
 cross-runtime workflow requirements. Native plan mode and interactive requirement interviews fit stage 1;
 native agents can independently review the resulting evidence.
+
+For stage 3, start a new `harness-reviewer` invocation for each axis and round;
+do not resume a previous agent or forward the parent transcript. Inspect the
+effective host behavior, including any attached memory. Pass explicit packet and
+project-rule paths from [review.md](review.md). If the host can omit automatic
+CLAUDE.md loading, supply the necessary rules explicitly; that option is not a
+new minimum-version requirement. Keep the role's existing model and read tools.
+If a fresh conversation cannot be established, report stage 3 as incomplete.
 
 For security review, explicitly read `.claude/skills/security-review/SKILL.md`.
 The built-in `/security-review` remains a host capability, not proof that this
@@ -89,10 +99,20 @@ the assignment read-only. The parent captures Git context and writes final repor
 Use the available native agent API with these roles where supported; an API without
 custom-role selection can receive the role instructions explicitly.
 
+For stage 3, explicitly disable parent-conversation inheritance on each new
+reviewer invocation. For an API exposing `fork_turns`, use `fork_turns: "none"`;
+use `fork_context: false` only if that is the actual host schema. Omission is not
+proof of freshness. Select `harness-reviewer` when supported, otherwise provide
+its role instructions explicitly. Pass the required packet/rule paths and one
+axis; do not reuse an agent ID in round 2. Record actual launch/read/completion
+evidence as [review.md](review.md) requires. Freshness does not change sandbox,
+trust, model or tool permissions, and does not disable external memory services.
+
 The configured four child slots are a preference, not a promise: use fewer or batch
-when the host limits concurrency. If subagents are unavailable, perform isolated
-passes and report that they lacked independent contexts. Keep all four spec-review
-axes and the two-round ceiling.
+when the host limits concurrency. For stage 3, unavailable fresh subagents mean
+the gate is incomplete; isolated local passes are diagnostics only. Other review
+stages retain their own documented fallback and disclosure rules. Keep all four
+spec-review axes and the two-round ceiling.
 
 Codex can use its terminal, patching tools, app worktrees and native `review` for
 implementation and verification. Native `review` is a supplemental opinion; stage 6
