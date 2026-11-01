@@ -10,8 +10,9 @@ supplied by the user. Ask together only for missing values. The target must be
 absent or empty, with an existing parent directory, outside the source checkout.
 
 Source: `https://github.com/CXPhoenix/harness-agile.git`.
-Use version `0.3.0`: `harness-agile` on PyPI or `create-harness-agile` on npm.
-The corresponding source tag is `v0.3.0`. Registry installation does not require Git credentials.
+Use version `0.4.0`: `harness-agile` on PyPI or `create-harness-agile` on npm.
+The corresponding source tag is `v0.4.0`. Registry installation does not require Git credentials.
+Confirm the selected registry provides `0.4.0` before using these commands. During release preparation, use the local-source procedure below; a version in this guide does not prove it has been published.
 
 ## Choose an entry point
 
@@ -21,27 +22,27 @@ the selected package: a wheel snapshot or regular files in the npm package. The
 npm package has no installation lifecycle scripts and requires no build allowlist.
 
 ```bash
-uvx --from 'harness-agile==0.3.0' \
+uvx --from 'harness-agile==0.4.0' \
   harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-npx --yes --package='create-harness-agile@0.3.0' \
+npx --yes --package='create-harness-agile@0.4.0' \
   create-harness-agile init my-project --name 'My Project' \
   --one-liner 'What it does.' --no-input --json --dry-run
 ```
 
 ```bash
-pnpx 'create-harness-agile@0.3.0' \
+pnpx 'create-harness-agile@0.4.0' \
   init my-project --name 'My Project' --one-liner 'What it does.' \
   --no-input --json --dry-run
 ```
 
 These commands install fixed versions from the official PyPI and npm registries.
 For a Git-source installation, replace the uvx source with
-`git+https://github.com/CXPhoenix/harness-agile.git@v0.3.0`, or the npm package
-specifier with `git+https://github.com/CXPhoenix/harness-agile.git#v0.3.0`.
+`git+https://github.com/CXPhoenix/harness-agile.git@v0.4.0`, or the npm package
+specifier with `git+https://github.com/CXPhoenix/harness-agile.git#v0.4.0`.
 `HARNESS_PYTHON` can select an explicit Python executable for the Node wrapper.
 
 From an existing source checkout, without package installation:

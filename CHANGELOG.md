@@ -1,5 +1,33 @@
 # 更新紀錄
 
+## [Unreleased]
+
+> 預計版本：`0.4.0`。這是 release 準備內容，尚未建立 tag 或發布套件。
+
+### ✨ 新增
+- 新增兩套 runtime 的 `egm-drift-report`，可明確指定文件與實作範圍，產出附來源位置、SHA-256、查核範圍與限制的 Markdown 診斷。區分確認差異、待確認與預期差異，並以 complete／partial／blocked／stale 表達診斷狀態；這是 EGM 的本機改編，不是完整上游 plugin 安裝 ([#12])。
+
+### 🔄 變更
+- Stage 3 規格審查改為每軸、每輪都使用不繼承父對話的全新 reviewer，主助理提供固定 prompt、spec、traceability 與必要專案規範，記錄版本與完成證據。四軸有效完成且零 P0 才能前進，最多兩輪；缺少輸入、無法取得 fresh context 或來源變動均不能算通過 ([#11])。
+- 補齊跨 runtime 的角色、輸入封包與交接規則；不改使用者選定的角色模型、既有權限或 spec／ticket gates ([#11], [#13])。
+
+### 🐛 修復
+- Codex `research` 對齊唯讀角色分工：researcher 回傳證據、日期與未解事項，由主助理保存成果；協作指南分開說明 Codex 的 session 繼承與 Claude reviewer 的角色模型設定 ([#13])。
+- 採用指引更新為預設每套保留 33 個 skills；兩套 `init-template` 改依 ADR 的 `INIT_DATE` placeholder 描述日期，避免固定數量落後實際內容 ([#13])。
+
+### 🔒 安全性
+- 兩套 Archify 的開發依賴 `fast-uri` 更新至 3.1.9，修正既有 audit gate 報告的四則安全公告；保留原有掃描門檻，沒有將開發依賴公告宣稱為已確認的產品執行期漏洞 ([#11])。
+
+### 使用注意
+- 使用 `/egm-drift-report`（Claude）或 `$egm-drift-report`（Codex）顯式叫用診斷。它只建立新報告，不自動修正、開票或推進 gates；報告標示 partial 或 stale 時不能解讀為沒有差異。
+- 母範本與 `--keep-template-files` 各有 34 個 skills，預設初始化後各保留 33 個。既有採用專案不會自動更新，也不會自動重設 tracker。
+- 靜態設定與 CLI／套件測試不證明模型行為或工具強制唯讀。無法取得合格 fresh context 時，Stage 3 仍維持未完成；既有 Claude 原生宿主與強制拒寫的驗證限制保留。
+- Windows 的 Archify 自動開啟仍停用，請手動開啟產物。PyPI／npm 仍依既有手動發布流程；npm 候選需由維護者完成 2FA 核准後才公開。
+
+[#11]: https://github.com/CXPhoenix/harness-agile/pull/11
+[#12]: https://github.com/CXPhoenix/harness-agile/pull/12
+[#13]: https://github.com/CXPhoenix/harness-agile/pull/13
+
 ## ✨ [0.3.0] - 2026-10-16
 
 這一版把 Claude Code 與 Codex 的 skills 拆成兩份獨立副本，各自依自家模型的 prompting 指引調校，並新增 tune-skills，讓採用者可以依自己的主模型重新調校。
