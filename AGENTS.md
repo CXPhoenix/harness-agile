@@ -54,7 +54,7 @@ See [ADR-0001](docs/adr/0001-walking-skeleton-then-epic-loop.md).
 |---|---|---|---|
 | 1 | Converge the requirement | `/grill-with-docs` | user confirms shared understanding |
 | 2 | Write the spec | `/to-spec` | spec **and** traceability matrix exist |
-| 3 | Adversarial review | 4 subagents, ≤2 rounds | zero P0 findings |
+| 3 | Adversarial review | 4 fresh-context subagents, ≤2 rounds | all four axes validly complete; zero P0 findings |
 | 4 | Break into tickets | `/to-tickets` | user approves the breakdown |
 | 5 | Implement | `/implement` + `/tdd` | test plan table approved, then red → green |
 | 6 | Review the change | `/code-review` | direction and requirement confirmed |
@@ -75,7 +75,8 @@ upstream examples; use the existing configuration without asking to set it up ag
 2. **Two tables gate a ticket's tests.** A **test plan table** before the first test is written, which
    the user approves; a **coverage report table** when the ticket closes. Between them, `/tdd` governs
    the loop: one seam, one test, one minimal implementation per cycle.
-3. **Adversarial review runs a frozen prompt.** Round 2 replays round 1's prompt verbatim; only the
+3. **Adversarial review runs a frozen prompt in fresh contexts.** Each axis in each round uses a new
+   reviewer conversation without the parent transcript. Round 2 replays round 1's prompt verbatim; only the
    spec version changes. Two rounds is the ceiling. P0 findings surviving round 2 mean the epic is
    too large: split it and restart at stage 1.
 4. **Verify against the surface that actually runs the behaviour.** `/agent-browser` drives

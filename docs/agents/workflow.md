@@ -51,12 +51,15 @@ criterion.
 
 ## Stage 3 — Adversarial review
 
-Four independent reviewers, four fixed axes, at most two rounds. Use the active
+Four independent reviewers, each with a fresh conversation for its axis and round,
+four fixed axes, at most two rounds. Use the active
 host's native agents and available models as described in [runtime.md](runtime.md);
 run in batches if its concurrency limit is lower than four. Axes, grading, and the frozen-prompt
 mechanism live in [review.md](review.md).
 
-**Gate:** zero P0 findings.
+**Gate:** all four axes validly complete against the same captured version, with
+zero P0 findings. Missing fresh-context capability or incomplete/stale results do
+not satisfy this gate; use the completion rules in [review.md](review.md).
 
 **Escalation:** P0 findings surviving round 2 are a signal that the epic is too large, not a reason
 to open round 3. Split the epic and restart at stage 1. Adding rounds is how a review stops

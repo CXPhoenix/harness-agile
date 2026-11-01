@@ -1,0 +1,17 @@
+{
+  "round": 1,
+  "checkout": "/Users/phoenix/dev/edu-projects/harness-agile-template/.worktrees/fresh-context-spec-review",
+  "HEAD": "72677d5f04cfa9ace6658181d1317dacc1118305",
+  "status": " M .claude/agents/harness-reviewer.md\n M .codex/agents/harness-reviewer.toml\n M AGENTS.md\n M docs/agents/review.md\n M docs/agents/runtime.md\n M docs/agents/workflow.md\n?? .tmpl.docs/plans/2026-11-01-fresh-context-spec-review.md\n?? .tmpl.docs/research/2026-11-01-elephant-goldfish-integration.md\n?? .tmpl.docs/research/2026-11-01-elephant-goldfish-upstream.md\n?? .tmpl.docs/research/2026-11-01-fresh-context-review/README.md\n?? .tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/contract.md\n?? .tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/prompt.md\n?? .tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/spec.en.md\n?? .tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/traceability.md\n",
+  "inputs": {
+    "AGENTS.md": "d90eba47efbd06424eecc9c811068f2a9996717ca5c9acaae887ab4255e53950",
+    "docs/agents/runtime.md": "27db42f8d4734feed5ec1ef09e84fc9bc8979be3ba9852c70314c6f39d059e7a",
+    "docs/agents/review.md": "039fb97e77b5ac346c062356a26f7fd1d424a11df99f3b6f6a852f9967b4df43",
+    "docs/agents/codex.md": "20ab3a45cf34c28f7f4973c4c978aaba188674add1ecb2a585b1667605db1929",
+    ".codex/agents/harness-reviewer.toml": "646bed10563615475ad4b0594cb14cae335a1d6523c0deaf59154045d6bb4d56",
+    ".tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/contract.md": "29f3d47383e7e06a6cf80dc60bf049b50e9e4a7345198c4945d7b71a661787dd",
+    ".tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/prompt.md": "80786acb836ad2d1b2779fd6c02a5696d4ec5133ef6132e805e3c2f82bd022c0",
+    ".tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/spec.en.md": "1131cf4f234b7739a17cc99ef187051704b54457dd8452a763f46576a0895280",
+    ".tmpl.docs/research/2026-11-01-fresh-context-review/fixtures/traceability.md": "5c16ed1247b595008e9c3b945987ca2320a6c8e0ea816d76386d41ec9388b662"
+  }
+}

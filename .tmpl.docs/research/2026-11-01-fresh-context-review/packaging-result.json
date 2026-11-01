@@ -1,0 +1,32 @@
+{
+  "platform": "darwin",
+  "python": "3.14.3",
+  "built_source": {
+    "commit": "72677d5f04cfa9ace6658181d1317dacc1118305",
+    "content_sha256": "7ec76e8a5de342e7d5009dc290458106b1951855c7f6f7040c321a6ce424d4e8",
+    "dirty": true,
+    "repository": "https://github.com/CXPhoenix/harness-agile"
+  },
+  "default_package_entries": {
+    "uvx": "PASS",
+    "npx": "PASS",
+    "pnpx": "PASS"
+  },
+  "source_init_modes": {
+    "default": "PASS",
+    "keep": "PASS"
+  },
+  "wheel_keep_template": "PASS",
+  "final_formal_files_match_wheel": {
+    "AGENTS.md": "d90eba47efbd06424eecc9c811068f2a9996717ca5c9acaae887ab4255e53950",
+    "docs/agents/review.md": "039fb97e77b5ac346c062356a26f7fd1d424a11df99f3b6f6a852f9967b4df43",
+    "docs/agents/runtime.md": "1088214a9ae85f345251ce1b0c08382bddaaf604eda48287f3ada0f7557e4b15",
+    "docs/agents/workflow.md": "b3c000482fc0c25c18615ce84271be6c196e34e834ed46454c7cc863eaadfae1",
+    "docs/adr/0004-fresh-context-spec-review.md": "1dc3898d3d7718478805c11b20467d843761bf58e6b80c8b7d70f2420131bb00",
+    ".codex/agents/harness-reviewer.toml": "646bed10563615475ad4b0594cb14cae335a1d6523c0deaf59154045d6bb4d56",
+    ".claude/agents/harness-reviewer.md": "8e7968d9510871eb1f341c8358ca54b78668f12db786e02c2e1c7a2729409e9d",
+    "docs/guide.md": "10cbd84e850d6aaa456c376f1368d67e574aad2987ebeddd806eeca0b19e54d7",
+    "docs/README.md": "bff966a96a4f83a901bd5fcb5085e7865f9417dd7f630ff21a48e50aff644c17"
+  },
+  "note": "Verification records appended after building; no publication. Formal runtime files still exactly match tested artifacts."
+}
