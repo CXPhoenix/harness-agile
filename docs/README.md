@@ -17,6 +17,7 @@
 | Codex 如何區分 prompt、skill 與宿主能力？ | [Codex 執行指引](agents/codex.md) |
 | 哪些文件用英文？中英文規格如何同步？ | [語言規則](agents/language.md) |
 | 探索程式碼前，如何閱讀領域模型？ | [領域文件指引](agents/domain.md) |
+| 如何顯式檢查文件與實作的差異？ | [文件漂移診斷契約](agents/drift-report.md) |
 
 `agents/` 內的英文文件供開發助理執行流程，也可用來查核工作是否符合規範。面向使用者的說明採台灣繁體中文。
 
@@ -28,5 +29,6 @@ ADR 保存已採用的決策與理由，方便後續修改時判斷影響。
 - [ADR-0002](adr/0002-ticket-status-in-frontmatter.md)：ticket 狀態存於 frontmatter。
 - [ADR-0003](adr/0003-adversarial-review-fixed-axes-two-rounds.md)：規格審查使用固定四軸，最多兩輪。
 - [ADR-0004](adr/0004-fresh-context-spec-review.md)：每軸、每輪使用全新對話；缺少獨立上下文時，規格審查 gate 維持未完成。
+- [ADR-0005](adr/0005-drift-diagnosis-native-host-verification.md)：文件漂移診斷以原生宿主與實際報告／檔案邊界驗證，分開回報結構檢查與模型行為。
 
 [Archify 依賴處理與可執行測試](security/archify-dependencies.md)。

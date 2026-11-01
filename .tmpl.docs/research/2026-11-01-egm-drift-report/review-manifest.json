@@ -1,0 +1,82 @@
+{
+  "root": "/Users/phoenix/dev/edu-projects/harness-agile-template/.worktrees/egm-drift-report",
+  "branch": "codex/egm-drift-report",
+  "base": "110a6224773d69b792b840e2a94c9966ed3ea110",
+  "HEAD": "110a6224773d69b792b840e2a94c9966ed3ea110",
+  "merge_base": "110a6224773d69b792b840e2a94c9966ed3ea110",
+  "committed_changes": [],
+  "tracked_WIP": [
+    "THIRD_PARTY_NOTICES.md",
+    "docs/README.md",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/skill-sources.json",
+    "docs/guide.md",
+    "scripts/verify-distributions.py",
+    "scripts/verify-project.py",
+    "tests/test_bootstrap.py",
+    "tests/test_verify_project.py"
+  ],
+  "untracked_implementation": [
+    ".agents/skills/egm-drift-report/LICENSE",
+    ".agents/skills/egm-drift-report/SKILL.md",
+    ".agents/skills/egm-drift-report/agents/openai.yaml",
+    ".claude/skills/egm-drift-report/LICENSE",
+    ".claude/skills/egm-drift-report/SKILL.md",
+    "docs/agents/drift-report.md"
+  ],
+  "scope": [
+    ".agents/skills/egm-drift-report/LICENSE",
+    ".agents/skills/egm-drift-report/SKILL.md",
+    ".agents/skills/egm-drift-report/agents/openai.yaml",
+    ".claude/skills/egm-drift-report/LICENSE",
+    ".claude/skills/egm-drift-report/SKILL.md",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/README.md",
+    "docs/agents/drift-report.md",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/skill-sources.json",
+    "docs/guide.md",
+    "scripts/verify-distributions.py",
+    "scripts/verify-project.py",
+    "tests/test_bootstrap.py",
+    "tests/test_verify_project.py"
+  ],
+  "excluded": "Evolving template research fixtures, verification outputs and historical status note; approved plan separately included as requirement. No committed/staged changes.",
+  "hashes": {
+    ".agents/skills/code-review/references/smell-baseline.md": "e30141db30d50f41113abcf29baec544fabaf4f743dc69f0a1943bccae2bd213",
+    ".agents/skills/egm-drift-report/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    ".agents/skills/egm-drift-report/SKILL.md": "a340b35f51d80f91a4e90ec67284cc6a72c77c48877920b12c43a447f4a9d1ca",
+    ".agents/skills/egm-drift-report/agents/openai.yaml": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94",
+    ".agents/skills/security-review/references/upstream-security-review.md": "dd1d451f909dbb8798f4a4de010c35e7dd9152f02bb2f7988442cdd138f29e39",
+    ".claude/skills/egm-drift-report/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    ".claude/skills/egm-drift-report/SKILL.md": "935906fefd93005855de89818f947a6a33644e28737bb4b9ae69befc1717fb0f",
+    ".tmpl.docs/plans/2026-11-01-egm-drift-report-integration.md": "b7d59cb528a53a302ff98b1d8b24563bc678302014cd07b5c3b561afd1d76ac5",
+    "AGENTS.md": "d90eba47efbd06424eecc9c811068f2a9996717ca5c9acaae887ab4255e53950",
+    "THIRD_PARTY_NOTICES.md": "5b167b2449e9c74dcfe1b549b1a7d0a273d924f7e9af956c0e4f412bc3ee793a",
+    "docs/README.md": "a04022268a481afa4892029d8e1531269c475ffddbf08a70cef8e852fb08d569",
+    "docs/agents/codex.md": "20ab3a45cf34c28f7f4973c4c978aaba188674add1ecb2a585b1667605db1929",
+    "docs/agents/drift-report.md": "407d225e1d551ed14ecc6d0291ec491b442b82424ab7fd624d1eae4abbf62cd3",
+    "docs/agents/issue-tracker.md": "baa7ee97b3fa6c880e5ee8aad112af3d6d3bbb071231bb0c71196f467e21f6dd",
+    "docs/agents/review.md": "039fb97e77b5ac346c062356a26f7fd1d424a11df99f3b6f6a852f9967b4df43",
+    "docs/agents/runtime.md": "1088214a9ae85f345251ce1b0c08382bddaaf604eda48287f3ada0f7557e4b15",
+    "docs/agents/skill-sources.json": "e7e0a15be3d13a72af17b71cfddf16831f10150e69059f256654c0794d18a496",
+    "docs/agents/workflow.md": "b3c000482fc0c25c18615ce84271be6c196e34e834ed46454c7cc863eaadfae1",
+    "docs/guide.md": "23c99bcce3472f745fc934fbf521c2e014d712839dcabfaf22b576f97bc5527f",
+    "scripts/verify-distributions.py": "71ebb60c852f7a261cc09915d365d768cbf3f2c8c9bd1488ed223a965e157ee4",
+    "scripts/verify-project.py": "1d6a8079e7f05d0416549f1d4a4e0e9b1f028ed3406180c82fbc6b8203d522f1",
+    "tests/test_bootstrap.py": "43eb8a748bf8784c0549c2f7b335260781078b7ecb8d2b72189d7940066e027e",
+    "tests/test_verify_project.py": "41534037f5877058a10a05734d3105496bd3949e1d9ecc809bbd26a1d16a4d4a"
+  },
+  "supplemental_rule_hashes": {
+    ".agents/skills/security-review/SKILL.md": "c7a056cdbf74a8e6952f4e535a05acd5ef5bd857bce18372c77b7b4c33636c93",
+    ".agents/skills/code-review/SKILL.md": "21a2ea582f69452eb13aef6ac072b3b44ad0e3e9b4fd42c1bcc72ad367ffd64b",
+    ".agents/skills/code-review/references/review-surface.md": "8a85a4c34990bef206b522a6ffbab37ae185557ae3d936d5f138aa65432835cd",
+    "docs/agents/language.md": "b3da5aee9cfcc3495f865f91f5f881aa925e2fe5641759be6ded17d46943af45",
+    ".tmpl.docs/contributing.md": "1de563981c525c720f86206c872f6725f4ade50d63229377d3596bb33a87f38b"
+  },
+  "packet_sha256": "a1a0a4faf81b52b1cdcf2a733c538db99fae463aa13b30892786882a9bc6a12e",
+  "addendum": {
+    "docs/README.md": "61b43af0f156e645dd715a82a74e14d704f6f1ccff4e52073fc85ae650fb9c00",
+    "docs/adr/0005-drift-diagnosis-native-host-verification.md": "016dac5a64bf52bcca0d142913cc0148af88dce5ca3fb1cf6eca2e08bf6c3c0b"
+  }
+}

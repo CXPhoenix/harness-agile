@@ -184,6 +184,27 @@
         "Project threat model overrides unsafe blanket exclusions.",
         "Taiwan report and local evidence output."
       ]
+    },
+    "egm-drift-report": {
+      "source": "https://github.com/google/elephant-goldfish-model/blob/403d8881d62022490637d740657b33f01e321ea8/skills/egm-drift-report/SKILL.md",
+      "upstream_revision": "403d8881d62022490637d740657b33f01e321ea8",
+      "upstream_sha256": "c000ffe2e77a9fe74ee6915b314e1547337c95c79a19014c44fd976dc6511476",
+      "adaptations": [
+        "Both runtime trees: explicit-only local skill with shared docs/agents/drift-report.md contract; no upstream plugin runtime/persona dependency.",
+        "Sequential bounded diagnosis with bidirectional evidence, document applicability, content hashes, incomplete/stale states and exclusive in-checkout report creation.",
+        "Existing spec, traceability, ticket and delivery gates preserved; source files remain unchanged."
+      ],
+      "licensing": {
+        "license": "Apache-2.0",
+        "license_verification_revision": "403d8881d62022490637d740657b33f01e321ea8",
+        "license_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "license_locations": [
+          ".agents/skills/egm-drift-report/LICENSE",
+          ".claude/skills/egm-drift-report/LICENSE"
+        ],
+        "verified_on": "2026-11-01",
+        "notice": "No NOTICE file in the complete pinned upstream tree; modified files carry source/change attribution."
+      }
     }
   },
   "local_adaptations": {

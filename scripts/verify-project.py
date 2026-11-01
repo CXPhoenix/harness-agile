@@ -14,7 +14,7 @@ import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED = ("research", "security-review", "tw-emoji-commit", "tw-emoji-pr-note", "tw-emoji-release-note", "evidence-report", "agent-browser", "i-have-adhd", "tune-skills")
+REQUIRED = ("research", "security-review", "tw-emoji-commit", "tw-emoji-pr-note", "tw-emoji-release-note", "evidence-report", "agent-browser", "i-have-adhd", "tune-skills", "egm-drift-report")
 SANITIZERS = (("tw-emoji-commit", "sanitize_commit.py"), ("tw-emoji-pr-note", "sanitize_pr_note.py"), ("tw-emoji-release-note", "sanitize_release_note.py"))
 
 
@@ -77,6 +77,9 @@ def verify(root):
 
     for name in policies["Codex"].keys() & policies["Claude"].keys():
         check(policies["Codex"][name] == policies["Claude"][name], f"Claude/Codex invocation policy differs: {name}")
+    for runtime, policy in policies.items():
+        if "egm-drift-report" in policy:
+            check(policy["egm-drift-report"], f"{runtime} egm-drift-report must be explicitly invoked")
     names = policies["Codex"].keys() | policies["Claude"].keys()
 
     try:

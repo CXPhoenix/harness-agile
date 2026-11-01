@@ -30,6 +30,13 @@ on them never changing. Allocate the next id by scanning every epic directory fo
 Specs freeze after review; tickets churn. They live in separate roots so a spec directory's diff
 stays readable.
 
+Optional drift diagnoses are non-authoritative Markdown snapshots under an existing
+epic's reports/ or .proj.specs/_reports/. Their complete/partial/blocked/stale status
+belongs only to the report: it does not change a spec, traceability row, ticket
+status or delivery gate. Template-maintenance reports stay in .tmpl.docs/research/.
+The [drift contract](drift-report.md) owns scope and filenames; HTML evidence reports
+retain their existing format and purpose.
+
 ## Ticket format
 
 Status lives in **frontmatter**, never in the path. Moving files between status directories would

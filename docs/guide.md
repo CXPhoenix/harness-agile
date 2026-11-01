@@ -11,20 +11,21 @@
 | 定義需求與 Charter | `/grill-with-docs` | `$grill-with-docs` |
 | 查看 skills | `/skills` | `/skills` |
 | 審查變更 | `/code-review` | `$code-review` |
+| 顯式診斷文件與實作差異 | `/egm-drift-report` | `$egm-drift-report` |
 | 保存交接紀錄 | `/handoff` | `$handoff` |
 
 Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。帳號、API keys 與信任設定留在本機。完成設定或更新 skills 後，開啟新 session 檢查清單，避免沿用舊的載入結果。
 
 ## 找到適合的 skill
 
-目前 checkout 初始化後保留 32 個 skills；母範本另外有 `init-template`，共 33 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
+目前 checkout 初始化後保留 33 個 skills；母範本另外有 `init-template`，共 34 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
 
 | 工作 | Skills |
 | --- | --- |
 | 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依使用者的模型重新調校自己 runtime 的 skills，手動觸發） |
 | 需求與決策 | `grilling`、`grill-me`、`grill-with-docs`、`wayfinder`、`to-questionnaire` |
 | 規格與實作 | `to-spec`、`to-tickets`、`implement`、`tdd`、`prototype` |
-| 架構與診斷 | `codebase-design`、`domain-modeling`、`diagnosing-bugs`、`improve-codebase-architecture`、`archify` |
+| 架構與診斷 | `codebase-design`、`domain-modeling`、`diagnosing-bugs`、`improve-codebase-architecture`、`archify`、`egm-drift-report`（手動觸發） |
 | 審查與驗證 | `code-review`、`security-review`、`agent-browser`、`evidence-report` |
 | Git 文案與協作 | `tw-emoji-commit`、`tw-emoji-pr-note`、`tw-emoji-release-note`、`resolving-merge-conflicts`、`handoff` |
 | 研究與知識傳遞 | `research`、`teach`、`writing-for-agents`、`wait-what`、`i-have-adhd` |
@@ -32,6 +33,14 @@ Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。�
 這份專案已設定 `.proj.specs/` 與 `.proj.tickets/`。需要更換 tracker 時才使用 `setup-matt-pocock-skills` 調整，避免重新套入通用 `.scratch/` 預設。標示為手動觸發的 skills 需明確呼叫，包含 `i-have-adhd`。
 
 Claude Code 有同名的原生 `/security-review`。要使用專案版本，可明確要求「讀取並執行 `.claude/skills/security-review/SKILL.md`」；Codex 使用 `$security-review` 選擇專案版本。
+
+## 診斷文件與實作差異
+
+明確叫用 `egm-drift-report`，提供文件檔案／目錄與對應實作範圍。開發助理會逐份核對來源，區分確認差異、待確認事項與預期差異，只建立新的 Markdown 診斷報告。
+
+範本維護報告放在 `.tmpl.docs/research/drift-reports/`；採用後放在既有 epic 的 `reports/`，或 `.proj.specs/_reports/`。來源不足、未查完或期間有變更時，報告會明列 partial、blocked 或 stale，不能解讀成無差異。詳細輸入與報告規則見[診斷契約](agents/drift-report.md)。
+
+這是本機改編的 EGM 診斷能力，需顯式叫用，不會在每張 ticket、一般進度查詢或其他 pipeline 操作中自動執行。報告提供後續修正的證據；需求、spec、traceability、ticket 狀態與既有 gates 仍依現行流程處理。
 
 ## 兩套工具如何共用工作
 

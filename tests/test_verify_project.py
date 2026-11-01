@@ -29,6 +29,27 @@ class RuntimeSkillTreeTests(unittest.TestCase):
         (self.claude / 'research/SKILL.md').write_text('---\nname: research\ndescription: Claude-tuned.\n---\n')
         self.assertEqual(self.errors(), [])
 
+    def test_drift_skill_is_required_in_both_runtime_trees(self):
+        for tree in (self.claude, self.codex):
+            with self.subTest(runtime=tree.parent.name):
+                skill = tree / 'egm-drift-report'
+                detached = self.root / 'detached-skill'
+                skill.rename(detached)
+                try:
+                    self.assertTrue(any('egm-drift-report' in error and 'missing' in error
+                                        for error in self.errors()), self.errors())
+                finally:
+                    detached.rename(skill)
+
+    def test_drift_skill_stays_manual_when_both_policies_regress(self):
+        entry = self.claude / 'egm-drift-report/SKILL.md'
+        entry.write_text(entry.read_text().replace('disable-model-invocation: true',
+                                                  'disable-model-invocation: false'))
+        metadata = self.codex / 'egm-drift-report/agents/openai.yaml'
+        metadata.write_text('policy:\n  allow_implicit_invocation: true\n')
+        self.assertTrue(any('egm-drift-report must be explicitly invoked' in error
+                            for error in self.errors()), self.errors())
+
     def test_handoff_directory_must_stay_ignored(self):
         ignore = self.root / '.gitignore'
         ignore.write_text(ignore.read_text().replace('/.proj.handoffs/\n', ''))
