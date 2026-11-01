@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 
-> 預計版本：`0.4.0`。這是 release 準備內容，尚未建立 tag 或發布套件。
+## ✨ [0.4.0] - 2026-11-01
+
+> 新增顯式 EGM 診斷，補齊 fresh-context 規格審查與研究分工，並修正操作指引及開發依賴。
 
 ### ✨ 新增
 - 新增兩套 runtime 的 `egm-drift-report`，可明確指定文件與實作範圍，產出附來源位置、SHA-256、查核範圍與限制的 Markdown 診斷。區分確認差異、待確認與預期差異，並以 complete／partial／blocked／stale 表達診斷狀態；這是 EGM 的本機改編，不是完整上游 plugin 安裝 ([#12])。
