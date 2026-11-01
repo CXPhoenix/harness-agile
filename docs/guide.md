@@ -44,7 +44,7 @@ Claude Code 有同名的原生 `/security-review`。要使用專案版本，可�
 
 ## 兩套工具如何共用工作
 
-`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。skills 依工具分開保存：Claude Code 使用 `.claude/skills/`，Codex 使用 `.agents/skills/`。Anthropic 與 OpenAI 的 prompt 撰寫建議不同，同名 skill 可以各自調整措辭。兩套工具各自保留 reviewer／researcher 角色設定，模型預設繼承當前 session。
+`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。skills 依工具分開保存：Claude Code 使用 `.claude/skills/`，Codex 使用 `.agents/skills/`。Anthropic 與 OpenAI 的 prompt 撰寫建議不同，同名 skill 可以各自調整措辭。Codex 的 reviewer／researcher 預設繼承當前 session 的模型與 reasoning effort；Claude 的 researcher 繼承 session，reviewer 則使用角色指定的模型與 effort。Claude 其他角色與完整分工見[模型協作規則](agents/claude-orchestration.md)。
 
 切換工具前，使用 `handoff` 保存工作目標、spec／ticket 路徑、branch／HEAD、未提交變更、驗證結果與下一步。交接文件存放在 `.proj.handoffs/`，不進版控，frontmatter 標註以 session 數或時間計算的到期條件。接手者先確認文件未過期，再確認 Git 狀態後繼續。同一張 ticket 維持一位寫入者；並行實作使用不同 worktree。完整對應見 [runtime.md](agents/runtime.md)。
 
