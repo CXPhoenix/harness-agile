@@ -215,7 +215,8 @@
     "to-spec": "Use configured tracker and traceability; replace length and seam-count preferences with coverage.",
     "implement": "Preserve TDD gates, scope checks to configured tools and review pending work before skill-owned commits.",
     "tdd": "Reuse approved test plans and seams; load examples on demand.",
-    "init-template": "Trigger on requested adoption, not placeholder presence alone.",
+    "init-template": "Trigger on requested adoption, not placeholder presence alone. Both runtime trees: describe ADR adoption dates by the INIT_DATE placeholder rather than a fixed ADR count (2026-11-01).",
+    "research": "Codex tree: the read-only harness-researcher returns cited evidence, observed facts, source claims, inferences, verification date and unresolved questions without nested delegation; the main session saves the Markdown artifact using the existing language and tracker conventions (2026-11-01).",
     "agent-browser": "Compact branch-specific discovery and permit evidence-equivalent native tools. Restore Apache-2.0 text and add a prominent modification notice without changing execution guidance.",
     "writing-for-agents": "Codex tree: describe manual invocation as host policy rather than zero-cost metadata invisibility. Claude tree: disable-model-invocation keeps the description out of context (Claude Code skills docs, 2026-09-26)."
   },

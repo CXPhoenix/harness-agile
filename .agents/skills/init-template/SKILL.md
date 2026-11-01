@@ -38,8 +38,8 @@ the initializer, creator packaging and template tests, and this skill from both
 tokens inside `.tmpl.docs/` are always left untouched. It exits non-zero and names
 the files if any project token survives.
 
-`--date YYYY-MM-DD` overrides the ADR adoption date, which defaults to today. The three shipped ADRs
-are dated when this project adopts them, not when they were first written.
+`--date YYYY-MM-DD` overrides the ADR adoption date, which defaults to today. Shipped ADRs containing
+the `{{INIT_DATE}}` placeholder are dated when this project adopts them, not when they were first written.
 
 ## 4. Hand over
 
