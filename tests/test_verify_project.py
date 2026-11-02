@@ -1,5 +1,6 @@
 """Claude and Codex skill trees are independent copies with checked shared invariants."""
 import importlib.util
+import json
 from pathlib import Path
 import shutil
 import tempfile
@@ -28,6 +29,12 @@ class RuntimeSkillTreeTests(unittest.TestCase):
         self.assertEqual(self.errors(), [])
         (self.claude / 'research/SKILL.md').write_text('---\nname: research\ndescription: Claude-tuned.\n---\n')
         self.assertEqual(self.errors(), [])
+
+    def test_unresolved_migration_sidecars_fail(self):
+        state = {'schema': 2, 'files': {'docs/agents/workflow.md': 'sha256:0'}}
+        (self.root / 'docs/agents/template-source.json').write_text(json.dumps(state))
+        (self.root / 'docs/agents/workflow.md.harness-new').write_text('new rules\n')
+        self.assertTrue(any('harness-new' in error and 'docs/agents/workflow.md' in error for error in self.errors()), self.errors())
 
     def test_drift_skill_is_required_in_both_runtime_trees(self):
         for tree in (self.claude, self.codex):

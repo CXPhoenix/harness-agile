@@ -91,5 +91,40 @@ history, both template READMEs, and the banner. Default init writes a product RE
 removes the template English README and artwork, and retains `docs/guide.md` for
 day-to-day collaboration. These documentation changes describe this checkout;
 a fixed release tag may contain an earlier layout. `--source PATH` selects a trusted local uninitialized source.
-`--no-input` and `--json` never prompt and require all values. Existing product
-adoption and updates are separate tasks; this creator refuses nonempty targets.
+`--no-input` and `--json` never prompt and require all values. This creator
+refuses nonempty targets; to update an existing project, use `migrate` below.
+
+## Move an existing project to another version
+
+`migrate` moves a generated project to the template version of the package you
+run: a newer package upgrades, an older one downgrades. Versions up to 0.4.0 lack it;
+to reach one, run a newer package with `--source` set to that version's uninitialized checkout.
+It reads `docs/agents/template-source.json`, which records the version, the
+name/one-liner/date answers and a SHA-256 for every template-owned file.
+
+```bash
+uvx --from 'harness-agile==X.Y.Z' harness-agile migrate /path/to/project --json
+```
+
+1. Require a clean Git worktree; the command refuses otherwise (`--allow-no-git`
+   skips the check for non-Git directories). It previews by default; add `--apply`
+   to write. It never commits.
+2. Unmodified template files take the target content; files the target dropped are
+   deleted. A locally edited file is kept and the target content is written beside
+   it as `<file>.harness-new` only when the target changed it; a locally deleted file
+   is not recreated. `README.md`, `.gitignore`, `.gitattributes`, `.proj.*`, files
+   Git did not track at creation, and source-checkout tooling (`pyproject.toml`,
+   `package.json`, `.github/`, `bin/`, `harness_agile/`) are never synced; recorded,
+   reversible steps make required structural edits. A symlink or junction on any
+   synced path stops the run before writing.
+3. Merge each `.harness-new` into its file and delete it; until then
+   `scripts/verify-project.py` fails and `migrate` refuses to run again. Report the
+   JSON categories, the steps applied or undone, and the verify status. If a write
+   fails midway, inspect `git status` and return to the previous commit with
+   `git restore` and `git clean` before retrying.
+
+`--name`, `--one-liner`, `--date` and `--baseline-source` are accepted only with
+`--adopt`. Projects without a schema 2 record need one `--adopt` run with `--name`,
+`--one-liner` and the original `--date`; add `--baseline-source PATH` (an
+uninitialized checkout of the version they were created from) to tell edited
+files from unedited ones.

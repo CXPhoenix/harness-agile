@@ -60,3 +60,7 @@ python3 scripts/init-project.py --name '我的專案' --one-liner '它要解決�
 `--keep-template-files` 保留範本文件與初始化工具，包含中英文 README。歷史文件中的 placeholders 不會替換，因為它們記錄的是母範本的設計背景。
 
 初始化完成後，在新 session 使用 `grill-with-docs` 定義 Project Charter，再建立 walking skeleton。初始化不會選擇技術棧、安裝產品依賴或建立產品功能。日常操作請接著讀[協作指南](../docs/guide.md)。
+
+## 之後更新範本版本
+
+建立器與 `init-project.py` 都會在 `docs/agents/template-source.json` 留下版本與逐檔 hash。之後要升級或降級，使用目標版本的 `harness-agile migrate`；操作方式、衝突處理與舊專案的 `--adopt` 見[協作指南](../docs/guide.md#升級或降級範本)。

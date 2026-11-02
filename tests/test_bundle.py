@@ -18,7 +18,7 @@ class BundleTests(unittest.TestCase):
             self.assertEqual(snapshot(root)['files'], expected['files'])
 
     def test_rejects_unsafe_paths_before_any_writes(self):
-        for bad in ('../outside', '/absolute', 'C:/drive', '.git/config', 'a\\b', 'CON', 'folder/../outside'):
+        for bad in ('../outside', '/absolute', 'C:/drive', '.git/config', '.GIT/config', 'a\\b', 'CON', 'folder/../outside'):
             with self.subTest(path=bad), tempfile.TemporaryDirectory() as temp:
                 files = {'safe': base64.b64encode(b'ok').decode(), bad: base64.b64encode(b'bad').decode()}
                 bundle = {'schema': 1, 'files': files, 'source': {'content_sha256': digest(files)}}

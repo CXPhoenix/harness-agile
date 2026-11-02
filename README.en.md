@@ -69,6 +69,8 @@ You can replace `pnpx` with `pnpm dlx`. All three entry points use the same Pyth
 
 For an existing template copy, local creation, previews, and all options, see the [adoption guide](.tmpl.docs/adoption.md) (Traditional Chinese). For an English setup procedure, see [INSTALL.md](INSTALL.md); you can give it to a coding assistant with your target directory, name, and description.
 
+To move an existing project to another template version, use `harness-agile migrate`; see [INSTALL.md](INSTALL.md#move-an-existing-project-to-another-version).
+
 ## From idea to delivery
 
 Start with a **walking skeleton**: the thinnest product path that actually runs end to end and provides seams for further work. This is round 0, exempt from specs and spec review. Once it merges to `main`, subsequent work ships as epics, each delivering a demonstrable increment.

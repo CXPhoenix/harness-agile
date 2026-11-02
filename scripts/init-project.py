@@ -13,9 +13,14 @@ from __future__ import annotations
 
 import argparse
 import datetime as _dt
+import hashlib
+import json
+import os
 import re
 import shutil
+import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 TOKENS = ("{{PROJECT_NAME}}", "{{PROJECT_ONE_LINER}}", "{{INIT_DATE}}")
@@ -52,6 +57,62 @@ TEMPLATE_DOC_LINK = re.compile(
     r"<!-- TEMPLATE-DOCS:START -->.*?<!-- TEMPLATE-DOCS:END -->\n?",
     re.DOTALL,
 )
+
+
+# Template state: what migrate compares against. Keep these lists in step with
+# harness_agile/migrate.py, which applies the same rules to older renders.
+STATE_FILE = "docs/agents/template-source.json"
+STATE_SCHEMA = 2
+# Written once, then owned by the project; migrate never syncs them.
+SEEDED = ("README.md", ".gitignore", ".gitattributes", STATE_FILE)
+PROJECT_DIRS = (".git", ".proj.specs", ".proj.tickets", ".proj.handoffs")
+# Present only in a source checkout kept with --keep-template-files; no bundle carries them.
+CHECKOUT_ONLY = (
+    "harness_agile", "bin", "hatch_build.py", "pyproject.toml", "package.json", ".github",
+    "tests/test_bootstrap.py", "tests/test_bundle.py", "tests/test_verify_project.py",
+    "tests/test_migrate.py", "scripts/verify-distributions.py",
+)
+NOISE_DIRS = {"__pycache__", "node_modules", ".venv"}
+
+
+def managed(rel: str) -> bool:
+    parts = rel.split("/")
+    if rel in SEEDED or parts[-1] == ".DS_Store" or rel.endswith((".pyc", ".bak", ".harness-new")):
+        return False
+    if NOISE_DIRS & set(parts):
+        return False
+    return not any(rel == p or rel.startswith(p + "/") for p in PROJECT_DIRS + CHECKOUT_ONLY)
+
+
+def tracked(root: Path) -> set[str] | None:
+    """Git-tracked paths of a cloned template, so local and ignored files stay unmanaged."""
+    if not (root / ".git").exists():
+        return None
+    try:
+        listed = subprocess.run(["git", "-C", str(root), "ls-files", "-z"], capture_output=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return set(listed.decode("utf-8").split("\0")) - {""}
+
+
+def manifest(root: Path) -> dict[str, str]:
+    files = {}
+    allowed = tracked(root)
+    for folder, dirs, names in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in NOISE_DIRS and d != ".git")
+        for name in names:
+            path = Path(folder, name)
+            rel = path.relative_to(root).as_posix()
+            if managed(rel) and (allowed is None or rel in allowed) and path.is_file() and not path.is_symlink():
+                files[rel] = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    return dict(sorted(files.items()))
+
+
+def checkout_version(root: Path) -> str:
+    try:
+        return tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    except (OSError, ValueError, KeyError):
+        return "unknown"
 
 
 def project_root() -> Path:
@@ -99,6 +160,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="Print the plan and change nothing")
     ap.add_argument("--skill-mode", choices=("auto", "symlink", "copy"), help="Deprecated and ignored: Claude and Codex keep separate skill copies")
     ap.add_argument("--keep-template-files", action="store_true", help="Keep template documentation, its README link, initializer, test, and init skill entries")
+    ap.add_argument("--template-version", help="Template version to record (default: this checkout's pyproject.toml)")
     args = ap.parse_args()
 
     root = project_root()
@@ -134,31 +196,33 @@ def main() -> int:
         "{{INIT_DATE}}": args.date,
     }
 
+    template_version = args.template_version or checkout_version(root)
     prefix = "[dry-run] " if args.dry_run else ""
+    # Bytes in and out: text mode would turn LF into CRLF on Windows and change the recorded hashes.
     for path in sorted(hits):
-        body = path.read_text(encoding="utf-8")
+        body = path.read_bytes().decode("utf-8")
         for token, value in replacements.items():
             body = body.replace(token, value)
         if path.name in {"AGENTS.md", "CLAUDE.md"}:
             body = BANNER.sub("\n", body, count=1)
         print(f"{prefix}fill {path.relative_to(root)} ({', '.join(hits[path])})")
         if not args.dry_run:
-            path.write_text(body, encoding="utf-8")
+            path.write_bytes(body.encode("utf-8"))
 
     if not args.keep_template_files:
         readme = root / "README.md"
         if readme.is_file() and not readme.is_symlink():
-            body = readme.read_text(encoding="utf-8")
+            body = readme.read_bytes().decode("utf-8")
             cleaned = TEMPLATE_DOC_LINK.sub("", body)
             product_readme = root / "scripts/project-readme.md"
             if product_readme.is_file():
-                cleaned = product_readme.read_text(encoding="utf-8")
+                cleaned = product_readme.read_bytes().decode("utf-8")
                 for token, value in replacements.items():
                     cleaned = cleaned.replace(token, value)
             if cleaned != body:
                 print(f"{prefix}update README.md for the adopted project")
                 if not args.dry_run:
-                    readme.write_text(cleaned, encoding="utf-8")
+                    readme.write_bytes(cleaned.encode("utf-8"))
         for rel in TEMPLATE_ONLY:
             target = root / rel
             if not target.exists() and not target.is_symlink():
@@ -182,10 +246,10 @@ def main() -> int:
         if not args.dry_run:
             handoffs.mkdir()
 
+    print(f"{prefix}record {STATE_FILE}")
     if args.dry_run:
         print("\n[dry-run] nothing was written.")
         return 0
-
 
     leftover = find_tokens(root)
     if leftover:
@@ -193,6 +257,20 @@ def main() -> int:
         for path, toks in leftover.items():
             print(f"  {path.relative_to(root)}: {', '.join(toks)}", file=sys.stderr)
         return 3
+
+    state = {
+        "schema": STATE_SCHEMA,
+        "template_version": template_version,
+        "source": None,
+        "initialized_on": args.date,
+        "answers": {"name": args.name, "one_liner": args.one_liner, "date": args.date},
+        "options": {"keep_template_files": args.keep_template_files},
+        "files": manifest(root),
+        "migrations": [],
+        "history": [],
+    }
+    (root / STATE_FILE).parent.mkdir(parents=True, exist_ok=True)
+    (root / STATE_FILE).write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(
         "\nDone. Next: use grill-with-docs to fill the Project Charter in AGENTS.md.\n"

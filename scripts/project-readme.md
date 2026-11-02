@@ -12,7 +12,7 @@
 | 查看 skills | `/skills` | `/skills` |
 | 審查變更 | `/code-review` | `$code-review` |
 
-名稱與一句話描述已填入，產品需求仍需確認。日常操作、skills 更新與工具交接見[協作指南](docs/guide.md)；完整規則見 [AGENTS.md](AGENTS.md) 與[文件導覽](docs/README.md)。
+名稱與一句話描述已填入，產品需求仍需確認。日常操作、skills 更新、範本升降級與工具交接見[協作指南](docs/guide.md)；完整規則見 [AGENTS.md](AGENTS.md) 與[文件導覽](docs/README.md)。
 
 Codex 專案設定需要本機信任。帳號、憑證與信任設定由各自環境管理；更新設定後，從新 session 確認 skills 清單。
 

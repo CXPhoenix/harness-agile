@@ -82,6 +82,16 @@ def verify(root):
             check(policy["egm-drift-report"], f"{runtime} egm-drift-report must be explicitly invoked")
     names = policies["Codex"].keys() | policies["Claude"].keys()
 
+    # harness-agile migrate leaves new template content beside locally edited template files.
+    try:
+        state = json.loads((root / "docs/agents/template-source.json").read_text(encoding="utf-8"))
+        recorded = state.get("files", {}) if isinstance(state, dict) and state.get("schema") == 2 else {}
+    except (OSError, ValueError):
+        recorded = {}
+    for rel in recorded if isinstance(recorded, dict) else ():
+        if (root / (rel + ".harness-new")).exists():
+            errors.append(f"Unresolved migration sidecar: merge {rel}.harness-new into {rel}, then delete it")
+
     try:
         sources = json.loads((root / "docs/agents/skill-sources.json").read_text(encoding="utf-8"))
         for runtime, skills_root in trees.items():

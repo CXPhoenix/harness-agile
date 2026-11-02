@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import subprocess
+import tomllib
 
 SOURCE_URL = 'https://github.com/CXPhoenix/harness-agile'
 PATHS = (
@@ -17,6 +18,18 @@ PATHS = (
 
 def digest(files):
     return hashlib.sha256(json.dumps(files, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def version(root):
+    """The template version a checkout or an npm package root carries."""
+    try:
+        return tomllib.loads((root / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
+    except (OSError, ValueError, KeyError):
+        pass
+    try:
+        return json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
+    except (OSError, ValueError, KeyError):
+        return 'unknown'
 
 
 def snapshot(root):
@@ -45,7 +58,26 @@ def snapshot(root):
     if (root / '.git').exists():
         commit = subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()
         dirty = bool(subprocess.check_output(['git', '-C', str(root), 'status', '--porcelain'], text=True).strip())
-    return {'schema': 1, 'files': files, 'source': {'repository': SOURCE_URL, 'commit': commit, 'dirty': dirty, 'content_sha256': digest(files)}}
+    return {'schema': 1, 'files': files, 'source': {'repository': SOURCE_URL, 'commit': commit, 'dirty': dirty, 'content_sha256': digest(files), 'template_version': version(root)}}
+
+
+def check_path(name):
+    """Reject a relative path that could escape the project or be unwritable on Windows."""
+    path = PurePosixPath(name)
+    reserved = {'CON', 'PRN', 'AUX', 'NUL', *(f'COM{i}' for i in range(1, 10)), *(f'LPT{i}' for i in range(1, 10))}
+    if not isinstance(name, str) or path.is_absolute() or not path.parts or any(p in {'.', '..'} or p.casefold() == '.git' or ':' in p or '\\' in p or p.endswith((' ', '.')) or p.split('.')[0].upper() in reserved for p in path.parts):
+        raise ValueError(f'Unsafe template path: {name}')
+
+
+def load(source=None):
+    """The template bundle from an explicit local source, or the one this package carries."""
+    if source:
+        return snapshot(source)
+    resource = Path(__file__).parent / 'data/template.json'
+    if resource.is_file():
+        return json.loads(resource.read_text(encoding='utf-8'))
+    # npm ships regular source files and needs no install-time scripts.
+    return snapshot(Path(__file__).resolve().parents[1])
 
 
 def unpack(bundle, target):
@@ -53,10 +85,7 @@ def unpack(bundle, target):
         raise ValueError('Template bundle schema or content checksum mismatch')
     decoded = {}
     for name, content in bundle['files'].items():
-        path = PurePosixPath(name)
-        reserved = {'CON', 'PRN', 'AUX', 'NUL', *(f'COM{i}' for i in range(1, 10)), *(f'LPT{i}' for i in range(1, 10))}
-        if path.is_absolute() or not path.parts or any(p in {'.', '..', '.git'} or ':' in p or '\\' in p or p.endswith((' ', '.')) or p.split('.')[0].upper() in reserved for p in path.parts):
-            raise ValueError(f'Unsafe template path: {name}')
+        check_path(name)
         decoded[name] = base64.b64decode(content, validate=True)
     for name, content in decoded.items():
         path = target / name
