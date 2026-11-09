@@ -7,6 +7,7 @@ import sys
 import tempfile
 import unittest
 import hashlib
+import json
 
 
 SOURCE = Path(__file__).resolve().parents[1]
@@ -124,6 +125,62 @@ class InitializeProjectTests(unittest.TestCase):
         self.assertEqual((history.read_bytes(), readme.read_bytes()), before)
         self.assertEqual(self.run_init().returncode, 1)
 
+
+    def read_state(self):
+        return json.loads((self.root / "docs/agents/template-source.json").read_text(encoding="utf-8"))
+
+    def test_records_state_without_cli(self):
+        result = self.run_init()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        state = self.read_state()
+        self.assertEqual((state["schema"], state["template_version"]), (2, "unknown"))
+        self.assertEqual(state["answers"], {"name": "驗證專案", "one_liner": "驗證兩套工具共用初始化。", "date": "2026-09-08"})
+        self.assertEqual(state["options"], {"keep_template_files": False})
+        self.assertEqual(set(state["files"]), {"AGENTS.md", "CLAUDE.md", "docs/adr/0001-test.md",
+                                               ".agents/skills/research/SKILL.md", ".agents/skills/tw-emoji-commit/SKILL.md",
+                                               ".claude/skills/research/SKILL.md", ".claude/skills/tw-emoji-commit/SKILL.md"})
+        self.assertEqual(state["files"]["CLAUDE.md"], "sha256:" + hashlib.sha256((self.root / "CLAUDE.md").read_bytes()).hexdigest())
+
+    def test_crlf_instructions_lose_the_banner_and_keep_their_newlines(self):
+        (self.root / "AGENTS.md").write_bytes(
+            b"# Instructions\r\n\r\n<!-- TEMPLATE: {{PROJECT_NAME}} -->\r\n"
+            b"\r\n## Project Charter\r\n**{{PROJECT_NAME}}** \xe2\x80\x94 {{PROJECT_ONE_LINER}}\r\n")
+        result = self.run_init()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        body = (self.root / "AGENTS.md").read_bytes()
+        self.assertNotIn(b"<!-- TEMPLATE:", body)
+        self.assertTrue(body.startswith(b"# Instructions\r\n\r\n## Project Charter\r\n"), body)
+
+    def test_git_checkout_records_only_tracked_files_and_keeps_newlines(self):
+        (self.root / "docs/adr/0001-test.md").write_bytes(b"date: {{INIT_DATE}}\n")
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True)
+        subprocess.run(["git", "-C", str(self.root), "add", "-A"], check=True)
+        local = self.root / ".claude/settings.local.json"
+        local.write_text("{}", encoding="utf-8")
+        result = self.run_init()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        files = self.read_state()["files"]
+        self.assertNotIn(".claude/settings.local.json", files)
+        self.assertIn("AGENTS.md", files)
+        self.assertEqual((self.root / "docs/adr/0001-test.md").read_bytes(), b"date: 2026-09-08\n")
+
+    def test_state_reads_checkout_version_and_keep_option(self):
+        (self.root / "pyproject.toml").write_text('[project]\nname = "x"\nversion = "9.8.7"\n', encoding="utf-8")
+        (self.root / ".proj.specs").mkdir()
+        (self.root / ".proj.specs/OPEN-QUESTIONS.md").write_text("project-owned\n", encoding="utf-8")
+        result = self.run_init("--keep-template-files")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        state = self.read_state()
+        self.assertEqual(state["template_version"], "9.8.7")
+        self.assertEqual(state["options"], {"keep_template_files": True})
+        self.assertIn("scripts/init-project.py", state["files"])
+        for unmanaged in ("pyproject.toml", ".proj.specs/OPEN-QUESTIONS.md", "README.md"):
+            self.assertNotIn(unmanaged, state["files"])
+
+    def test_explicit_template_version_wins(self):
+        result = self.run_init("--template-version", "1.2.3")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self.read_state()["template_version"], "1.2.3")
 
 if __name__ == "__main__":
     unittest.main()

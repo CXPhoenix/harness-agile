@@ -82,6 +82,10 @@ def main():
             assert not (target / '.tmpl.docs').exists()
             assert '保留 $() 與 `literal`。' in (target / 'AGENTS.md').read_text(encoding='utf-8')
             run([sys.executable, '-B', str(target / 'scripts/verify-project.py')], parent)
+            state = json.loads((target / 'docs/agents/template-source.json').read_text(encoding='utf-8'))
+            assert state['schema'] == 2 and state['template_version'] == python_bundle['source']['template_version'], (label, state)
+            migration = json.loads(run([*command, 'migrate', str(target), '--allow-no-git', '--json'], parent).strip().splitlines()[-1])
+            assert migration['up_to_date'] and migration['dry_run'], (label, migration)
             rows.append({'entry': label, 'claude_skills': report['skills'], 'codex_skills': report['codex_skills'], 'passed': True})
         print(json.dumps({'platform': sys.platform, 'python': sys.version.split()[0], 'source': python_bundle['source'], 'checks': rows}, ensure_ascii=False, indent=2))
 

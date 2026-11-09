@@ -69,6 +69,8 @@ pnpx 'create-harness-agile@0.4.0' \
 
 已複製 GitHub template、要從本機建立，或需要預覽與完整參數，請讀[採用指引](.tmpl.docs/adoption.md)。要請開發助理代為建立，提供 [INSTALL.md](INSTALL.md)、目標目錄、名稱與一句話描述即可。
 
+已建立的專案要換到其他範本版本時，使用 `harness-agile migrate`，見[協作指南](docs/guide.md#升級或降級範本)。
+
 ## 從想法到交付
 
 先完成 **walking skeleton**：讓最薄的一條產品路徑真正跑通，建立後續開發可用的接點。這是第 0 輪，免 spec 與規格 review；合併到 `main` 後，後續以 epic 交付可展示的增量。

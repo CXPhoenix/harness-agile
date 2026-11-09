@@ -58,6 +58,39 @@ python3 scripts/verify-project.py
 
 驗證會確認兩邊都有必要 skills、同名 skill 的觸發政策一致，且各自只保留自己工具的設定檔。
 
+## 升級或降級範本
+
+建立專案時，`docs/agents/template-source.json` 會記錄範本版本、建立時的名稱、描述與日期，以及每個範本檔的 SHA-256。`harness-agile migrate` 依這份紀錄，把專案移到**執行中那個版本**的範本內容：要升級就執行較新的版本，要降級就執行較舊的版本。0.4.0 以前的版本沒有這個指令；要降到這些版本，用較新的版本執行 `migrate . --source <該版的未初始化範本 checkout>`。
+
+先 commit 或 stash 所有變更，再預覽計畫（`X.Y.Z` 換成目標版本）：
+
+```bash
+uvx --from 'harness-agile==X.Y.Z' harness-agile migrate .
+```
+
+```bash
+npx --yes --package='create-harness-agile@X.Y.Z' create-harness-agile migrate .
+```
+
+確認計畫後，加上 `--apply` 寫入。migrate 不會 commit；完成後檢查 `git diff`，再用 `tw-emoji-commit` 提交。
+
+| 檔案狀況 | migrate 的處理 |
+| --- | --- |
+| 範本檔沒有改過 | 換成目標版本內容；目標版本已移除的檔案會刪除 |
+| 範本檔改過，目標版本也不同 | 保留你的版本，目標版本內容寫入 `<檔名>.harness-new` |
+| 你刪除的範本檔 | 不重建 |
+| 你改過、但目標版本沒變的範本檔 | 保留，不產生旁置檔 |
+| `README.md`、`.gitignore`、`.gitattributes`、`.proj.*`、Git 未追蹤的本機檔 | 不同步。必要的結構調整（例如在 `.gitignore` 加一行）由 migration step 處理，降級時只還原 migrate 自己加入的內容 |
+| 路徑上有 symlink 或 junction | 整次中止，不寫入任何檔案 |
+
+出現 `.harness-new` 時，把需要的內容合併進原檔，再刪除旁置檔。處理完之前，`verify-project.py` 會失敗，migrate 也不會再次執行。填寫 Project Charter 之後，只要範本更新了 `AGENTS.md`，就會產生它的旁置檔；合併時保留你的 Charter。
+
+專案沒有這份紀錄，或紀錄是舊格式時，第一次執行要加上 `--adopt --name … --one-liner … --date <建立日期>`。與目標版本不同的檔案都會先寫成旁置檔；若手邊有建立時那一版的未初始化範本 checkout，加上 `--baseline-source PATH`，就能分辨哪些檔案真的改過。
+
+`--name`、`--one-liner`、`--date` 與 `--baseline-source` 只能搭配 `--adopt`。不在 Git 工作區時必須加 `--allow-no-git`，並自行備份。`--json` 會列出每個有動作的檔案分類，方便開發助理檢查。
+
+寫入途中失敗（例如檔案被其他程式鎖住）時，專案可能停在一半。先用 `git status` 確認，再用 `git restore` 與 `git clean` 回到執行前的 commit，排除原因後重跑。
+
 ## 規格審查需要獨立上下文
 
 Stage 3 的四軸 review，每個軸與每一輪都使用沒有前面對話的全新子代理。主助理提供當輪 spec、traceability、固定的審查 prompt 與必要專案規範，記錄版本與完成狀態；審查者依這些可見證據找問題。

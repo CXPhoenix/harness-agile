@@ -1,5 +1,6 @@
 """Exercise the public generator without installing or running a model."""
 from pathlib import Path
+import hashlib
 import json
 import os
 import subprocess
@@ -48,6 +49,23 @@ class BootstrapTests(unittest.TestCase):
         self.assertTrue((self.target / 'docs/agents/template-source.json').is_file())
         check = subprocess.run([sys.executable, 'scripts/verify-project.py'], cwd=self.target, capture_output=True, text=True)
         self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
+
+    def test_records_migration_state_with_file_hashes(self):
+        result = self.run_cli('--date', '2026-11-02')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        state = json.loads((self.target / 'docs/agents/template-source.json').read_text(encoding='utf-8'))
+        self.assertEqual(state['schema'], 2)
+        self.assertEqual(state['template_version'], json.loads(result.stdout)['source']['template_version'])
+        self.assertEqual(state['answers'], {'name': '測試專案', 'one_liner': '保留 $() 與 `literal` 引數。', 'date': '2026-11-02'})
+        self.assertEqual(state['options'], {'keep_template_files': False})
+        self.assertEqual(state['migrations'], [])
+        self.assertIn('content_sha256', state['source'])
+        files = state['files']
+        self.assertIn('.claude/skills/research/SKILL.md', files)
+        for seeded in ('README.md', '.gitignore', '.gitattributes', 'docs/agents/template-source.json'):
+            self.assertNotIn(seeded, files)
+        for name, recorded in files.items():
+            self.assertEqual(recorded, 'sha256:' + hashlib.sha256((self.target / name).read_bytes()).hexdigest(), name)
 
     def test_generated_readme_has_project_identity_and_no_deleted_initializer(self):
         result = self.run_cli()

@@ -9,7 +9,8 @@ import sys
 import tempfile
 
 from . import __version__
-from .bundle import snapshot, unpack
+from .bundle import load, unpack
+from . import migrate
 
 
 def run(command, cwd):
@@ -26,6 +27,19 @@ def empty_target(target):
         raise ValueError(f'Target parent directory must already exist: {target.parent}')
 
 
+def record_source(project, source, date):
+    """Add the bundle's provenance to the state init-project.py wrote."""
+    path = project / 'docs/agents/template-source.json'
+    provenance = {k: v for k, v in source.items() if k != 'template_version'}
+    if path.is_file():
+        state = json.loads(path.read_text(encoding='utf-8'))
+        state.update(source=provenance, generator_version=__version__)
+    else:
+        # Sources up to 0.4.0 write no state; keep their provenance-only record.
+        state = {**source, 'generator_version': __version__, 'initialized_on': date}
+    path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+
 def create(args):
     target = Path(args.directory).expanduser().absolute()
     empty_target(target)
@@ -38,20 +52,11 @@ def create(args):
         if not value and not args.no_input and not args.json and sys.stdin.isatty():
             value = input(f'Project {key.replace("_", " ")}: ').strip()
             setattr(args, key, value)
-        if not value or not value.strip() or any(c in value for c in '\r\n\x00') or '{{' in value:
-            raise ValueError(f'--{key.replace("_", "-")} requires a nonempty single line without template tokens')
+        migrate.single_line(f'--{key.replace("_", "-")}', value)
     datetime.date.fromisoformat(args.date)
     if len(args.date) != 10:
         raise ValueError('--date must use YYYY-MM-DD')
-    if args.source:
-        bundle = snapshot(source)
-    else:
-        resource = Path(__file__).parent / 'data/template.json'
-        if resource.is_file():
-            bundle = json.loads(resource.read_text(encoding='utf-8'))
-        else:
-            # npm ships regular source files and needs no install-time scripts.
-            bundle = snapshot(Path(__file__).resolve().parents[1])
+    bundle = load(source if args.source else None)
     result = {'target': str(target), 'generator_version': __version__, 'source': bundle['source'], 'dry_run': args.dry_run}
     if args.dry_run:
         return result
@@ -59,7 +64,8 @@ def create(args):
         staging = Path(temp) / 'project'
         staging.mkdir()
         unpack(bundle, staging)
-        command = [sys.executable, '-B', 'scripts/init-project.py', '--name', args.name, '--one-liner', args.one_liner, '--date', args.date]
+        answers = {'name': args.name, 'one_liner': args.one_liner, 'date': args.date}
+        command = migrate.init_command(staging, answers, bundle['source'].get('template_version') or __version__, False)
         if args.skill_mode:
             print('Warning: --skill-mode is deprecated and ignored; each runtime keeps its own skill copies.', file=sys.stderr)
         if args.keep_template_files:
@@ -69,8 +75,7 @@ def create(args):
         # skill_mode stays for JSON compatibility; runtimes now keep separate copies.
         result.update(skills=sum(p.is_dir() for p in (staging / '.claude/skills').iterdir()), codex_skills=sum(p.is_dir() for p in (staging / '.agents/skills').iterdir()), skill_mode='copy')
         result['next_step'] = 'Open this directory in Claude Code or Codex and use grill-with-docs to define the Project Charter.'
-        provenance = {**bundle['source'], 'generator_version': __version__, 'initialized_on': args.date, 'skill_mode': result['skill_mode']}
-        (staging / 'docs/agents/template-source.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
+        record_source(staging, bundle['source'], args.date)
         if args.git:
             run(['git', 'init', '-b', 'main'], staging)
         empty_target(target)
@@ -96,15 +101,22 @@ def main(argv=None):
     init.add_argument('--skill-mode', choices=['auto', 'symlink', 'copy'], help='Deprecated and ignored; each runtime keeps its own skill copies')
     for flag in ('keep-template-files', 'no-input', 'json', 'dry-run', 'git'):
         init.add_argument('--' + flag, action='store_true')
+    migrate.add_parser(commands)
     args = parser.parse_args(argv)
     try:
-        result = create(args)
-    except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
+        result = create(args) if args.command == 'init' else migrate.migrate(args)
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         if args.json:
             print(json.dumps({'error': str(error)}, ensure_ascii=False))
         else:
-            print(f'Cannot create project: {error}', file=sys.stderr)
+            print(f"Cannot {'create' if args.command == 'init' else 'migrate'} project: {error}", file=sys.stderr)
         return 1
+    if args.command == 'migrate':
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False))
+        else:
+            migrate.print_report(result)
+        return 1 if (result['verify'] or {}).get('status') == 'failed' else 0
     if args.json:
         print(json.dumps(result, ensure_ascii=False))
     else:
