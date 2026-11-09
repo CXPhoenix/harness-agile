@@ -10,7 +10,7 @@ import tempfile
 import unittest
 
 from harness_agile import migrate
-from harness_agile.bundle import snapshot, unpack
+from harness_agile.bundle import digest as bundle_digest, snapshot, unpack
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = 'docs/agents/template-source.json'
@@ -40,25 +40,36 @@ def digest(path):
 class MigrateTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bundle = snapshot(ROOT)
+        bundle = snapshot(ROOT)
+        # Archify and template history are most of the bundle and play no part in migration.
+        # Every render unpacks the whole bundle, and Windows scans each new file, so keep it small.
+        files = {k: v for k, v in bundle['files'].items() if '/skills/archify/' not in k and not k.startswith('.tmpl.docs/')}
+        cls.bundle = {**bundle, 'files': files, 'source': {**bundle['source'], 'content_sha256': bundle_digest(files)}}
+        shared = tempfile.TemporaryDirectory(prefix='harness-migrate-sources-')
+        cls.addClassCleanup(shared.cleanup)
+        # Tests only read these two; a test that needs another version builds its own.
+        cls.old = cls.make_source(Path(shared.name), '0.4.0')
+        cls.new = cls.make_source(Path(shared.name), '0.5.0', cls.next_version)
 
     def setUp(self):
         temp = tempfile.TemporaryDirectory(prefix='harness-migrate-')
         self.addCleanup(temp.cleanup)
         self.temp = Path(temp.name)
-        self.old = self.source('0.4.0')
-        self.new = self.source('0.5.0', self.next_version)
         self.project = self.temp / '專案 project'
         self.create(self.old)
 
-    def source(self, version, mutate=None):
-        root = self.temp / ('source-' + version)
+    @classmethod
+    def make_source(cls, parent, version, mutate=None):
+        root = parent / ('source-' + version)
         root.mkdir()
-        unpack(self.bundle, root)
+        unpack(cls.bundle, root)
         (root / 'pyproject.toml').write_text(f'[project]\nname = "harness-agile"\nversion = "{version}"\n', encoding='utf-8')
         if mutate:
             mutate(root)
         return root
+
+    def source(self, version, mutate=None):
+        return self.make_source(self.temp, version, mutate)
 
     @staticmethod
     def next_version(root):
