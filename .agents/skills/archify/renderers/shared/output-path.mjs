@@ -67,6 +67,9 @@ export function canonicalFuturePath(targetPath) {
   }
 }
 
+// Local adaptation (harness-agile): identity stats are read with { bigint: true }.
+// A Number ino loses precision above 2^53, which NTFS file IDs exceed once the
+// MFT sequence number grows, so distinct neighbours could compare as equal.
 function hasFileIdentity(stat) {
   return stat.ino !== 0 && stat.ino !== 0n;
 }
@@ -82,7 +85,7 @@ function nearestExistingDirectory(targetPath) {
   let directory = path.dirname(targetPath);
   while (true) {
     try {
-      const stat = fs.statSync(directory);
+      const stat = fs.statSync(directory, { bigint: true });
       if (stat.isDirectory()) {
         return {
           path: fs.realpathSync.native(directory),
@@ -119,8 +122,8 @@ function probeNamesAlias(directoryPath, authoredName, lookupName) {
     let authored;
     let lookup;
     try {
-      authored = fs.statSync(authoredPath);
-      lookup = fs.statSync(lookupPath);
+      authored = fs.statSync(authoredPath, { bigint: true });
+      lookup = fs.statSync(lookupPath, { bigint: true });
     } catch (error) {
       if (error.code === 'ENOENT') result = false;
     }
@@ -220,8 +223,8 @@ function futurePathsAlias(leftPath, rightPath) {
 export function pathsAlias(leftPath, rightPath) {
   if (futurePathsAlias(leftPath, rightPath)) return true;
   try {
-    const left = fs.statSync(leftPath);
-    const right = fs.statSync(rightPath);
+    const left = fs.statSync(leftPath, { bigint: true });
+    const right = fs.statSync(rightPath, { bigint: true });
     return sameFileIdentity(left, right);
   } catch {
     return false;
