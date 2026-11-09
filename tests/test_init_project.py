@@ -141,6 +141,16 @@ class InitializeProjectTests(unittest.TestCase):
                                                ".claude/skills/research/SKILL.md", ".claude/skills/tw-emoji-commit/SKILL.md"})
         self.assertEqual(state["files"]["CLAUDE.md"], "sha256:" + hashlib.sha256((self.root / "CLAUDE.md").read_bytes()).hexdigest())
 
+    def test_crlf_instructions_lose_the_banner_and_keep_their_newlines(self):
+        (self.root / "AGENTS.md").write_bytes(
+            b"# Instructions\r\n\r\n<!-- TEMPLATE: {{PROJECT_NAME}} -->\r\n"
+            b"\r\n## Project Charter\r\n**{{PROJECT_NAME}}** \xe2\x80\x94 {{PROJECT_ONE_LINER}}\r\n")
+        result = self.run_init()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        body = (self.root / "AGENTS.md").read_bytes()
+        self.assertNotIn(b"<!-- TEMPLATE:", body)
+        self.assertTrue(body.startswith(b"# Instructions\r\n\r\n## Project Charter\r\n"), body)
+
     def test_git_checkout_records_only_tracked_files_and_keeps_newlines(self):
         (self.root / "docs/adr/0001-test.md").write_bytes(b"date: {{INIT_DATE}}\n")
         subprocess.run(["git", "init", "-q", str(self.root)], check=True)

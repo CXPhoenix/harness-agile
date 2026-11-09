@@ -228,7 +228,8 @@ class MigrateTests(unittest.TestCase):
         ignore.write_bytes(original.replace(b'/.proj.handoffs/\n', b''))
         stripped = ignore.read_bytes()
         (self.project / STATE).unlink()
-        report = self.applied(self.old, '--adopt', '--name', '遷移專案', '--one-liner', '保留 $() 與 `literal`。')
+        # Without --date an adoption uses today, which would change every dated ADR.
+        report = self.applied(self.old, '--adopt', '--date', '2026-11-02', '--name', '遷移專案', '--one-liner', '保留 $() 與 `literal`。')
         self.assertIn('handoffs-gitignore', report['steps']['apply'])
         self.assertIn(b'/.proj.handoffs/\n', ignore.read_bytes())
         result, report = self.migrate(self.source('0.2.1'), '--apply')

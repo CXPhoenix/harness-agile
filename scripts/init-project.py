@@ -49,12 +49,13 @@ TEMPLATE_ONLY = (
 HANDOFFS_DIR = ".proj.handoffs"
 
 # The banner in shared instructions that only makes sense before initialisation.
+# Files are read as bytes, so match either line ending and keep the file's own.
 BANNER = re.compile(
-    r"\n\n<!-- TEMPLATE:.*?-->\n",
+    r"(\r?\n)\r?\n<!-- TEMPLATE:.*?-->\r?\n",
     re.DOTALL,
 )
 TEMPLATE_DOC_LINK = re.compile(
-    r"<!-- TEMPLATE-DOCS:START -->.*?<!-- TEMPLATE-DOCS:END -->\n?",
+    r"<!-- TEMPLATE-DOCS:START -->.*?<!-- TEMPLATE-DOCS:END -->(?:\r?\n)?",
     re.DOTALL,
 )
 
@@ -204,7 +205,7 @@ def main() -> int:
         for token, value in replacements.items():
             body = body.replace(token, value)
         if path.name in {"AGENTS.md", "CLAUDE.md"}:
-            body = BANNER.sub("\n", body, count=1)
+            body = BANNER.sub(r"\1", body, count=1)
         print(f"{prefix}fill {path.relative_to(root)} ({', '.join(hits[path])})")
         if not args.dry_run:
             path.write_bytes(body.encode("utf-8"))
