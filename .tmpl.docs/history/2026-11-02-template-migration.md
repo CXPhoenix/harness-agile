@@ -1,6 +1,6 @@
 # 範本 migration（upgrade／downgrade）完成紀錄
 
-日期：2026-11-02（Asia/Taipei）。分支：`claude/template-migration`，基準 `main`／`0fcd87f`（harness-agile 0.4.0）。依[計畫](../plans/2026-11-02-template-migration.md)實作；尚未 commit、發布或合併。
+日期：2026-11-02（Asia/Taipei）。分支：`claude/template-migration`，基準 `main`／`0fcd87f`（harness-agile 0.4.0）。依[計畫](../plans/2026-11-02-template-migration.md)實作，經 [PR #16](https://github.com/CXPhoenix/harness-agile/pull/16) 送審；尚未發布。
 
 ## 交付內容
 
@@ -16,9 +16,19 @@
 | `python3 scripts/verify-project.py` | PASS | 母範本結構 |
 | `python3 -m unittest discover -s tests` | 54 項通過 | macOS 本機；含 T1–T12 與審查後新增的回歸測試 |
 | `scripts/verify-distributions.py` | uvx、npx、pnpx 皆通過 | 從只含 tracked 檔與本次新增檔的乾淨副本建置 wheel／npm tarball；每個入口建立專案後執行 `migrate --json`，確認 up-to-date |
-| Windows、Linux CI | 未執行 | 需 push 後由 GitHub Actions 驗證；CRLF 與 junction 相關修正只在 Windows 上有實際作用 |
+| Windows、Linux、macOS CI | 2026-11-09 全數通過（`c89b851`） | 經下節三次修正後通過；junction 偵測沒有專屬測試 |
 
 工作區原有的未追蹤研究目錄 `.tmpl.docs/research/2026-11-02-codex-native-host-verification/` 含巢狀 LICENSE fixture，若在原 checkout 直接建置，會被打包並讓 `verify-distributions.py` 的授權檢查失敗。這與本次變更無關；提交前若要納入該目錄，需另行處理。
+
+## PR CI 失敗與修正（2026-11-09）
+
+| 失敗 | 原因 | 修正 |
+|---|---|---|
+| 三個平台的 `test_adopted_gitignore_step_is_undone_on_downgrade` | 測試的 `--adopt` 沒給 `--date`，改用執行當天的日期；11-02 本機剛好等於建立日，11-09 的 CI 就讓 ADR 內容不同而產生旁置檔 | `14154a7`：測試明確指定建立日期 |
+| Windows 的初始化 banner 未移除 | 改以 bytes 讀檔後，CRLF 檔案不再正規化，banner regex 只認 `\n` | `14154a7`：regex 接受兩種換行並沿用原換行，新增 CRLF 測試 |
+| Windows 的 Archify `deliver`／`preview` 測試隨機失敗 | Archify `output-path.mjs` 以 Number 比對 `dev`／`ino`；NTFS file ID 超過 2^53 後失去精度，不同的檔案或目錄被誤判成同一個。本 PR 的測試在 `%TEMP%` 大量建立又刪除檔案，因而觸發 | 根本修正在 [PR #17](https://github.com/CXPhoenix/harness-agile/pull/17)（bigint 比對），已合併進 `main` 並同步到本分支。`c89b851` 讓 migrate 測試改用精簡 bundle、共用 source，檔案量約少七成，本機 `test_migrate` 由約 45 秒降到 17 秒 |
+
+更正：`c89b851` 的 commit 訊息推測原因是 Windows Defender 掃描新檔案；#17 的診斷證實原因是上表的檔案識別精度問題，該推測不正確。`c89b851` 減少檔案量只降低了撞上誤判的機率，本身不是修正；保留它是為了測試速度。
 
 ## Code review findings 與處理
 
