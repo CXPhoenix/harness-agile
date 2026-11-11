@@ -55,7 +55,7 @@ pass to the audit as its keep list:
   schema contracts, and every sentence a test asserts verbatim. Find those with
   `grep -rn` over each skill's `test/` or `tests/` folder before proposing an
   edit to that skill.
-- Commit, PR, release, spec, ticket, ADR and CONTEXT templates.
+- Commit, PR, release, spec, ticket, ADR and GLOSSARY templates.
 - License and modification notices of vendored skills.
 
 When the record names an earlier report, use it as the baseline: keep its

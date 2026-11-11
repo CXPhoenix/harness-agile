@@ -258,7 +258,25 @@
           "wizard",
           "writing-for-agents"
         ],
-        "license_location": ".agents/skills/<skill>/LICENSE"
+        "license_location": ".agents/skills/<skill>/LICENSE",
+        "upstream_syncs": [
+          {
+            "on": "2026-11-12",
+            "scope": "partial",
+            "checked_head": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+            "commits": {
+              "d80fa0f4ebe0c5714af0adf8670336065233ecc6": "Rename the CONTEXT.md/CONTEXT-MAP.md domain-glossary convention to GLOSSARY.md/GLOSSARY-MAP.md (upstream v1.3.0); domain-modeling/CONTEXT-FORMAT.md becomes GLOSSARY-FORMAT.md.",
+              "ed0de59eb5de8c2730a650cc69f588ffa64c1040": "setup-matt-pocock-skills only: detect a legacy CONTEXT.md/CONTEXT-MAP.md and offer git mv (upstream v1.3.2)."
+            },
+            "runtimes": [
+              "claude",
+              "codex"
+            ],
+            "not_synced": "Every other upstream change after 3cca18b. Skills still match their 2026-09-08 copy plus the runtime tuning recorded under runtime_trees.",
+            "local_follow_up": "harness-agile migrate step glossary-rename (0.5.0) renames root CONTEXT.md/CONTEXT-MAP.md in adopted projects; docs/agents/domain.md warns against running /teach at the repo root, since teach writes its own GLOSSARY.md.",
+            "record": ".tmpl.docs/history/2026-11-12-glossary-rename.md"
+          }
+        ]
       }
     }
   }
