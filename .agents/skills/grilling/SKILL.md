@@ -21,6 +21,8 @@ Format a round like so:
 ➡️ <your recommended answer>
 ```
 
+Word each question so "yes" accepts your recommended answer.
+
 Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
 
 Finding _facts_ is your job. Read known files directly; delegate a bounded investigation when it can run independently alongside useful local work. A running investigation is an unsettled prerequisite: ask unrelated questions while it runs, and hold questions that depend on its result. The _decisions_ are the user's: put unresolved material choices to them and wait. Reuse facts and approvals already established unless new evidence changes them.

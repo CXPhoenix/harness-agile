@@ -89,7 +89,9 @@ Five are written to `status:`. One is derived.
 | `blocked` | **derived**, never written | computed from `blocked_by` |
 
 **Blocking is computed.** A ticket is blocked when any id in `blocked_by` is not yet `done`. Writing
-a blocked state by hand would create a second truth that drifts from the edges.
+a blocked state by hand would create a second truth that drifts from the edges. For skills that
+distinguish native blocking edges from a `Blocked by` body section, `blocked_by` is this tracker's
+native edge: tickets carry no `## Blocked by` section.
 
 **`pending` carries its reasoning.** Add these to frontmatter when setting it:
 
