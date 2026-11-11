@@ -413,5 +413,72 @@ class StepTests(unittest.TestCase):
         self.assertEqual((self.root / '.gitignore').read_bytes(), b'/extra/\n')
 
 
+class RenameStepTests(unittest.TestCase):
+    """Upstream renamed the domain glossary CONTEXT.md -> GLOSSARY.md; a step carries adopted projects across."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        self.steps = (migrate.Step('glossary', '0.5.0', (('rename', 'CONTEXT.md', 'GLOSSARY.md'),
+                                                          ('report_nested', 'CONTEXT.md', 'GLOSSARY.md'))),)
+
+    def apply(self):
+        return migrate.apply_steps(self.root, migrate.pending_steps(self.steps, [], '0.4.0', '0.5.0'), [])
+
+    def test_rename_moves_the_file_and_undo_moves_it_back(self):
+        (self.root / 'CONTEXT.md').write_bytes(b'# Terms\r\n')
+        self.assertEqual(migrate.step_notices(self.root, self.steps), [])
+        journal = self.apply()
+        self.assertFalse((self.root / 'CONTEXT.md').exists())
+        self.assertEqual((self.root / 'GLOSSARY.md').read_bytes(), b'# Terms\r\n')
+        self.assertEqual(journal[0]['undo'], [{'op': 'rename', 'path': 'GLOSSARY.md', 'to': 'CONTEXT.md'}])
+        self.assertEqual(migrate.undo_steps(self.root, journal, '0.4.0'), [])
+        self.assertEqual((self.root / 'CONTEXT.md').read_bytes(), b'# Terms\r\n')
+        self.assertFalse((self.root / 'GLOSSARY.md').exists())
+
+    def test_missing_source_records_nothing(self):
+        self.assertEqual(self.apply()[0]['undo'], [])
+        self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_existing_target_keeps_both_files_and_is_reported(self):
+        (self.root / 'CONTEXT.md').write_bytes(b'old\n')
+        (self.root / 'GLOSSARY.md').write_bytes(b'new\n')
+        notices = migrate.step_notices(self.root, self.steps)
+        self.assertEqual(len(notices), 1)
+        self.assertIn('CONTEXT.md', notices[0])
+        self.assertIn('GLOSSARY.md', notices[0])
+        self.assertEqual(self.apply()[0]['undo'], [])
+        self.assertEqual((self.root / 'CONTEXT.md').read_bytes(), b'old\n')
+        self.assertEqual((self.root / 'GLOSSARY.md').read_bytes(), b'new\n')
+
+    def test_nested_glossaries_are_reported_not_moved(self):
+        nested = self.root / 'src/ordering/CONTEXT.md'
+        nested.parent.mkdir(parents=True)
+        nested.write_bytes(b'ordering\n')
+        for skipped in ('.git', 'node_modules', '.tmpl.docs'):
+            (self.root / skipped).mkdir()
+            (self.root / skipped / 'CONTEXT.md').write_bytes(b'x\n')
+        notices = migrate.step_notices(self.root, self.steps)
+        self.assertEqual(len(notices), 1)
+        self.assertIn('src/ordering/CONTEXT.md', notices[0])
+        self.apply()
+        self.assertEqual(nested.read_bytes(), b'ordering\n')
+
+    def test_rename_undo_entries_are_validated(self):
+        good = {'op': 'rename', 'path': 'GLOSSARY.md', 'to': 'CONTEXT.md'}
+        migrate.check_journal([{'id': 'g', 'version': '0.5.0', 'undo': [good]}])
+        for bad in ({'op': 'rename', 'path': 'GLOSSARY.md'}, {**good, 'to': '../CONTEXT.md'}, {**good, 'to': 1}):
+            with self.assertRaises(ValueError, msg=bad):
+                migrate.check_journal([{'id': 'g', 'version': '0.5.0', 'undo': [bad]}])
+
+    def test_registry_renames_root_glossaries_in_0_5_0(self):
+        step = next(s for s in migrate.STEPS if s.id == 'glossary-rename')
+        self.assertEqual(step.version, '0.5.0')
+        self.assertIn(('rename', 'CONTEXT.md', 'GLOSSARY.md'), step.ops)
+        self.assertIn(('rename', 'CONTEXT-MAP.md', 'GLOSSARY-MAP.md'), step.ops)
+        self.assertIn(('report_nested', 'CONTEXT.md', 'GLOSSARY.md'), step.ops)
+
+
 if __name__ == '__main__':
     unittest.main()

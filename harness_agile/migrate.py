@@ -32,6 +32,10 @@ Step = namedtuple('Step', 'id version ops')
 # Structural changes file sync cannot express. Each op must have an inverse in UNDO.
 STEPS = (
     Step('handoffs-gitignore', '0.3.0', (('ensure_line', '.gitignore', '/.proj.handoffs/'),)),
+    # Upstream mattpocock/skills v1.3.0 renamed the domain glossary; skills no longer read the old names.
+    Step('glossary-rename', '0.5.0', (('rename', 'CONTEXT.md', 'GLOSSARY.md'),
+                                      ('rename', 'CONTEXT-MAP.md', 'GLOSSARY-MAP.md'),
+                                      ('report_nested', 'CONTEXT.md', 'GLOSSARY.md'))),
 )
 
 
@@ -148,9 +152,50 @@ def remove_line(project, path, line, suffix='', delete_if_empty=False):
         target.write_bytes(body.encode('utf-8'))
 
 
-APPLY = {'ensure_line': ensure_line}
-UNDO = {'remove_line': {'path': str, 'line': str, 'suffix': str, 'delete_if_empty': bool}}
-UNDO_FUNCTIONS = {'remove_line': remove_line}
+def rename(project, path, to):
+    """Move a regular file; an absent source or an existing target leaves both alone (step_notices reports it)."""
+    source, target = project / path, project / to
+    if not source.is_file() or target.exists() or target.is_symlink():
+        return []
+    target.parent.mkdir(parents=True, exist_ok=True)
+    source.rename(target)
+    return [{'op': 'rename', 'path': to, 'to': path}]
+
+
+def nested_files(project, name):
+    """Files called name below the root, outside Git, noise and template-maintenance folders."""
+    skip = NOISE_DIRS | {'.git', '.tmpl.docs'}
+    for folder, dirs, files in os.walk(project):
+        dirs[:] = sorted(d for d in dirs if d not in skip)
+        if name in files and Path(folder) != project:
+            yield Path(folder, name).relative_to(project).as_posix()
+
+
+def report_nested(project, name, new):
+    return []
+
+
+def step_notices(project, steps):
+    """What a pending step will leave for the user to do by hand."""
+    notices = []
+    for step in steps:
+        for op, *params in step.ops:
+            if op == 'rename' and (project / params[0]).is_file() and (project / params[1]).exists():
+                notices.append(f'{params[0]} kept: {params[1]} already exists; merge them by hand')
+            elif op == 'report_nested':
+                notices += [f'{rel}: rename to {params[1]} by hand' for rel in nested_files(project, params[0])]
+    return notices
+
+
+def op_paths(op, *params):
+    return params[:2] if op == 'rename' else () if op == 'report_nested' else params[:1]
+
+
+APPLY = {'ensure_line': ensure_line, 'rename': rename, 'report_nested': report_nested}
+UNDO = {'remove_line': {'path': str, 'line': str, 'suffix': str, 'delete_if_empty': bool},
+        'rename': {'path': str, 'to': str}}
+REQUIRED = {'remove_line': {'path', 'line'}, 'rename': {'path', 'to'}}
+UNDO_FUNCTIONS = {'remove_line': remove_line, 'rename': rename}
 
 
 def pending_steps(steps, journal, old, new):
@@ -178,9 +223,11 @@ def check_journal(journal):
             fields = UNDO.get(op.get('op')) if isinstance(op, dict) else None
             if fields is None:
                 raise ValueError(f'Unknown migration operation in {entry["id"]}: {op!r}; use a newer harness-agile')
-            if not {'path', 'line'} <= op.keys() or any(k != 'op' and not isinstance(v, fields.get(k, ())) for k, v in op.items()):
+            if not REQUIRED[op['op']] <= op.keys() or any(k != 'op' and not isinstance(v, fields.get(k, ())) for k, v in op.items()):
                 raise ValueError(f'Malformed migration operation in {entry["id"]}: {op!r}')
             check_path(op['path'])
+            if 'to' in op:
+                check_path(op['to'])
 
 
 def undo_steps(project, journal, target):
@@ -354,7 +401,8 @@ def migrate(args):
         downgrade = at_least_zero(new_version) < at_least_zero(old_version)
         steps = [] if downgrade else pending_steps(STEPS, journal, old_version, new_version)
         undo = [e for e in reversed(journal) if at_least_zero(e['version']) > at_least_zero(new_version)] if downgrade else []
-        step_paths = {op[1] for s in steps for op in s.ops} | {op['path'] for e in undo for op in e['undo']}
+        step_paths = ({p for s in steps for op in s.ops for p in op_paths(*op)}
+                      | {op[k] for e in undo for op in e['undo'] for k in ('path', 'to') if k in op})
         blocked = [rel for rel in sorted(step_paths) if local_hash(project, rel) == 'blocked']
         if blocked:
             raise ValueError('Paths blocked by a link, junction or non-file: ' + ', '.join(blocked))
@@ -367,6 +415,9 @@ def migrate(args):
         }
         if warning:
             report['warning'] = warning
+        notices = step_notices(project, steps)
+        if notices:
+            report['notices'] = notices
         if not args.apply or report['up_to_date']:
             return report
         write_files(project, rendered, actions)
@@ -416,6 +467,8 @@ def print_report(report):
     for key in ('apply', 'undo'):
         for step in report['steps'][key]:
             print(f'  step {key:<10} {step}')
+    for notice in report.get('notices', ()):
+        print('  by hand         ' + notice)
     if report['dry_run']:
         print('Nothing written. Re-run with --apply.')
     elif report['verify']:
