@@ -249,6 +249,25 @@ class MigrateTests(unittest.TestCase):
         self.assertEqual(report['verify']['status'], 'failed')
         self.assertEqual(result.returncode, 1)
 
+    # The real registry carries a pre-0.5.0 domain glossary across and back.
+    def test_glossary_rename_step_round_trips(self):
+        (self.project / 'CONTEXT.md').write_bytes(b'# Terms\n')
+        nested = self.project / 'src/ordering/CONTEXT.md'
+        nested.parent.mkdir(parents=True)
+        nested.write_bytes(b'ordering\n')
+        _, plan = self.migrate(self.new)
+        self.assertIn('glossary-rename', plan['steps']['apply'])
+        self.assertEqual(plan['notices'], ['src/ordering/CONTEXT.md: rename to GLOSSARY.md by hand'])
+        self.assertTrue((self.project / 'CONTEXT.md').is_file())
+        self.applied(self.new)
+        self.assertEqual((self.project / 'GLOSSARY.md').read_bytes(), b'# Terms\n')
+        self.assertFalse((self.project / 'CONTEXT.md').exists())
+        self.assertEqual(nested.read_bytes(), b'ordering\n')
+        report = self.applied(self.old)
+        self.assertEqual(report['steps']['undo'], ['glossary-rename'])
+        self.assertEqual((self.project / 'CONTEXT.md').read_bytes(), b'# Terms\n')
+        self.assertFalse((self.project / 'GLOSSARY.md').exists())
+
     # T11
     def test_adopt_without_baseline_never_overwrites(self):
         (self.project / CHANGED).write_text('local rules\n', encoding='utf-8')

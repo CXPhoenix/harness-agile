@@ -2,6 +2,41 @@
 
 ## [Unreleased]
 
+## ✨ [0.5.0] - 2026-11-12
+
+> 新增 `harness-agile migrate`，讓已建立的專案可以升級或降級範本；領域詞彙表跟隨上游改名為 `GLOSSARY.md`，並同步 mattpocock/skills 至 `4ae2317`。
+
+### ✨ 新增
+- 新增 `harness-agile migrate`，把專案移到執行中 CLI 的範本版本，升級降級都可以。預設只預覽計畫，加 `--apply` 才寫入。本機改過的範本檔不會被覆寫，目標版本內容另存為 `<檔名>.harness-new`；結構調整以可還原的 migration step 記錄。0.4.0 以前建立的專案可用 `--adopt` 納入管理 ([#16])。
+- 建立專案時在 `docs/agents/template-source.json` 記錄範本版本、建立參數與逐檔 SHA-256，供 migrate 判斷哪些檔案改過；`verify-project.py` 會在旁置檔未處理時失敗 ([#16])。
+- migrate 新增 `glossary-rename` step：升級到 0.5.0 時，把根目錄的 `CONTEXT.md`／`CONTEXT-MAP.md` 改名為 `GLOSSARY.md`／`GLOSSARY-MAP.md`，降級時改回。新檔名已存在，或子目錄還有 `CONTEXT.md` 時不會移動，計畫會列在 `by hand` ([#18])。
+
+### 🔄 變更
+- 同步 mattpocock/skills 上游 `3cca18b..4ae2317`，涵蓋 setup-matt-pocock-skills 的 tracker 範本、diagnosing-bugs、teach、to-tickets、grilling、wayfinder、code-review、implement 與 tdd。兩套 runtime 各自保留既有的本機改編，來源與差異記錄在 `docs/agents/skill-sources.json` ([#18])。
+- Codex 樹的 subagent 一律以全新 context 啟動，`docs/agents/runtime.md` 補上 Stage 3 以外的隔離規則與無法隔離時的 fallback ([#18])。
+- `setup-matt-pocock-skills` 偵測到舊的 `CONTEXT.md`／`CONTEXT-MAP.md` 時，會提議以 `git mv` 改成新名稱 ([#18])。
+
+### 🐛 修復
+- Archify 改以 bigint 比對檔案 identity。先前 Windows NTFS 的 file ID 超過 2^53 會失去精度，不同的檔案或目錄被誤判成 output／input alias，導致 `deliver`／`preview` 隨機失敗 ([#17])。
+- 初始化移除範本 banner 時接受 CRLF 換行，修正 Windows 上 banner 沒有移除的問題 ([#16])。
+- wizard `template.sh` 改用上游版本，另修正 shellcheck SC1087，以及 macOS 內建 bash 3.2 重跑時把 `.env` 值中的 `'` 變成 `\'` 的問題 ([#18])。
+- Codex 樹的 wayfinder 不再讓每張 research ticket 各開 subagent、push 永不合併的 `research/<name>` branch，改由 research skill 處理，並由主 session 把結果存到 tracker 指定的位置，與 Claude 樹及 `docs/agents/issue-tracker.md` 一致 ([#19])。
+
+### 💥 Breaking Changes
+- **領域詞彙表檔名**：`CONTEXT.md`／`CONTEXT-MAP.md` → `GLOSSARY.md`／`GLOSSARY-MAP.md`。domain-modeling 的格式檔也改名為 `GLOSSARY-FORMAT.md`。skill 執行時只讀新名稱，不會回頭找舊檔名 ([#18])。
+  遷移方式：執行 0.5.0 的 `harness-agile migrate`（0.4.0 以前建立的專案先加 `--adopt`），根目錄的詞彙表會自動改名；計畫列在 `by hand` 的檔案請自行合併或 `git mv`。
+
+### 使用注意
+- migrate 不會 commit。套用後先檢查 `git diff` 並處理所有 `.harness-new`，再提交。
+- `teach` 會在執行目錄寫自己的 `GLOSSARY.md`，請在另外的工作目錄執行 `/teach`，不要在 repo 根目錄執行。
+- 同步後的 skill 只經過結構檢查與靜態審查，沒有在原生 Claude Code／Codex session 實際跑過；wizard 只在 bash 3.2 測試過。
+- PyPI／npm 依既有手動流程發布；npm 候選需由維護者完成 2FA 核准後才公開。
+
+[#16]: https://github.com/CXPhoenix/harness-agile/pull/16
+[#17]: https://github.com/CXPhoenix/harness-agile/pull/17
+[#18]: https://github.com/CXPhoenix/harness-agile/pull/18
+[#19]: https://github.com/CXPhoenix/harness-agile/pull/19
+
 ## ✨ [0.4.0] - 2026-11-01
 
 > 新增顯式 EGM 診斷，補齊 fresh-context 規格審查與研究分工，並修正操作指引及開發依賴。
