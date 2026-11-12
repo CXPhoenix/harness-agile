@@ -4,7 +4,8 @@ description: Investigate a question against high-trust primary sources and captu
 ---
 
 Spin up a background `harness-researcher` using the Codex role contract in
-`docs/agents/runtime.md`, so you keep working while it reads.
+`docs/agents/runtime.md`, so you keep working while it reads. Start it with a
+fresh context window.
 
 Its job:
 

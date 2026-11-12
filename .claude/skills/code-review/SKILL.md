@@ -31,15 +31,17 @@ ask the user to run `/setup-matt-pocock-skills`. Find requirements in this order
 5. If none is found, ask where the requirements are. If the user confirms there
    are none, skip Spec and report "no spec available"; do not claim compliance.
 
-Find applicable repository standards such as AGENTS.md, CONTRIBUTING.md and
-CODING_STANDARDS.md. For the Standards axis, also load
+Search the repo for every file that documents how the changed code should be
+written; AGENTS.md, CONTRIBUTING.md and CODING_STANDARDS.md must be on the
+list when they exist. For the Standards axis, also load
 [the smell baseline](references/smell-baseline.md). These are labeled heuristics;
 documented repository standards override them. Skip checks already enforced by tooling.
 
 ## 3. Run independent reviews
 
 Run Standards and Spec as parallel read-only subagents: the `Agent` tool with
-`harness-reviewer`, one axis each.
+`harness-reviewer`, one axis each. Launch both in one message and wait for both
+reports before step 4.
 Give both the same captured diffs, relevant file contents, scope manifest,
 base/HEAD IDs and commit list. A diff command alone is not a snapshot.
 Keep the checkout stable while they read surrounding context.
