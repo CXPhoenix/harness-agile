@@ -31,6 +31,7 @@
 | Claude Code／Codex 整合 | [研究](research/2026-09-08-claude-code-codex.md) · [計畫](plans/2026-09-08-dual-agent-template.md) | [建立器與發布歷程](history/2026-09-08-bootstrap-cli.md) |
 | 多入口建立器 | [研究](research/2026-09-08-template-distribution-bootstrap.md) · [計畫](plans/2026-09-08-bootstrap-cli.md) | [實作與驗證](history/2026-09-08-bootstrap-cli.md) |
 | 範本文件分離 | — | [搬移歷程](history/2026-09-08-template-docs-relocation.md) |
+| v0.5.0 發版 | — | [發版紀錄](history/2026-11-12-release-0.5.0.md) |
 
 ## 保存與初始化
 
