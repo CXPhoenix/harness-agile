@@ -1,6 +1,6 @@
 # mattpocock/skills 上游同步評估與計畫
 
-日期：2026-11-12（Asia/Taipei）。範圍：[mattpocock/skills](https://github.com/mattpocock/skills) 從本機副本基準 `3cca18b`（2026-09-04）到 main `4ae2317`（2026-10-31）之間的變更。狀態：**計畫待核准**。這份文件只做評估，還沒有修改任何 skill。
+日期：2026-11-12（Asia/Taipei）。範圍：[mattpocock/skills](https://github.com/mattpocock/skills) 從本機副本基準 `3cca18b`（2026-09-04）到 main `4ae2317`（2026-10-31）之間的變更。狀態：**已核准並執行**（2026-11-12，D1–D4 全部採用建議）。以下保留評估當時的內容；實際交付、計畫外的發現與審查結果見 [同步歷程](../history/2026-11-12-upstream-sync.md)。
 
 詞彙表改名（`d80fa0f`）與 setup 的舊檔偵測（`ed0de59` 的其中一段）已經同步，不在本次範圍內，紀錄見 [glossary-rename 歷程](../history/2026-11-12-glossary-rename.md) 與 `docs/agents/skill-sources.json` 的 `licensing.groups.mattpocock-skills.upstream_syncs`。
 

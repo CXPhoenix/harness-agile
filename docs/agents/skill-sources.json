@@ -210,11 +210,11 @@
   "local_adaptations": {
     "setup-matt-pocock-skills": "Prefer shared AGENTS.md and preserve configured tracker conventions.",
     "archify": "Add agents/openai.yaml for Codex discovery metadata; preserve upstream implicit invocation policy. Disable Windows artifact and preview automatic opening before process launch (2026-09-13); add regression coverage and restriction documentation. Native Windows reproduction is deferred. Update both runtime copies of the fast-uri override and lockfile to 3.1.9 (3.1.6 on 2026-09-13; 3.1.8 on 2026-10-16 for GHSA-qw65-cvwx-89v3, GHSA-58mr-gqgx-xq4g and GHSA-hrr3-gc8f-f4qj; 3.1.9 on 2026-11-01 for GHSA-w74x-v6f9-j3xg, GHSA-xhq7-xmqj-769h, GHSA-wjr9-j795-jxcr and GHSA-333x-w4r6-6crp); add test:portable and test:preview scripts for the bundled subset. Keep upstream test command and invocation policy unchanged. Canonicalize the native directory before fs.watch to address Windows short-path libuv assertion failures; assert the watcher boundary in existing preview coverage. Both runtime copies: read the output-path alias file-identity stats with { bigint: true } (2026-11-09); a Number ino loses precision above 2^53, so on Windows distinct neighbouring NTFS files or directories were rejected as output/input-alias (upstream tt-a1i/archify already compares bigint identity in renderers/shared/path-semantics.mjs).",
-    "code-review": "Capture committed and pending layers with a shared snapshot; disclose smell reference on demand.",
+    "code-review": "Capture committed and pending layers with a shared snapshot; disclose smell reference on demand. Both runtime trees keep reading docs/agents/issue-tracker.md rather than upstream 3da8c01's generic tracker doc; Claude tree waits for both harness-reviewer reports instead of upstream's foreground wording (2026-11-12).",
     "grilling": "Bound question batches and factual delegation; carry forward approvals while retaining final confirmation.",
     "to-spec": "Use configured tracker and traceability; replace length and seam-count preferences with coverage.",
-    "implement": "Preserve TDD gates, scope checks to configured tools and review pending work before skill-owned commits.",
-    "tdd": "Reuse approved test plans and seams; load examples on demand.",
+    "implement": "Preserve TDD gates, scope checks to configured tools and review pending work before skill-owned commits. Ticket references are read through docs/agents/issue-tracker.md; Codex tree loads tdd and code-review as project skills where Claude calls the Skill tool (2026-11-12).",
+    "tdd": "Reuse approved test plans and seams; load examples on demand. The per-seam catches/misses note from upstream 3f59913 goes into the test plan table's Test intent column (2026-11-12).",
     "init-template": "Trigger on requested adoption, not placeholder presence alone. Both runtime trees: describe ADR adoption dates by the INIT_DATE placeholder rather than a fixed ADR count (2026-11-01).",
     "research": "Codex tree: the read-only harness-researcher returns cited evidence, observed facts, source claims, inferences, verification date and unresolved questions without nested delegation; the main session saves the Markdown artifact using the existing language and tracker conventions (2026-11-01).",
     "agent-browser": "Compact branch-specific discovery and permit evidence-equivalent native tools. Restore Apache-2.0 text and add a prominent modification notice without changing execution guidance.",
@@ -276,6 +276,41 @@
             "not_synced": "Every other upstream change after 3cca18b. Skills still match their 2026-09-08 copy plus the runtime tuning recorded under runtime_trees.",
             "local_follow_up": "harness-agile migrate step glossary-rename (0.5.0) renames root CONTEXT.md/CONTEXT-MAP.md in adopted projects; docs/agents/domain.md warns against running /teach at the repo root, since teach writes its own GLOSSARY.md.",
             "record": ".tmpl.docs/history/2026-11-12-glossary-rename.md"
+          },
+          {
+            "on": "2026-11-12",
+            "scope": "full-review",
+            "checked_head": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+            "plan": ".tmpl.docs/research/2026-11-12-mattpocock-upstream-sync-plan.md",
+            "commits": {
+              "e0efb6e7435ebb420d8a25d6816ed1ebaa2d23d2": "setup-matt-pocock-skills GitHub template: list external PRs through the REST pulls endpoint (with 8e67db2).",
+              "cffab50350e3d96688f63f890f4d7ca0e6007cfe": "to-tickets sub-issues and Blocked-by omission; GitHub template sub-issue command (with 9e2abf8). Claude tree placed by hand around audit B7.",
+              "5b7cade4d68947f34dae71326a0ce89f09e22c9c": "setup-matt-pocock-skills: create missing triage labels; gh --json reads; glab -O json; triage-labels column name.",
+              "ed0de59eb5de8c2730a650cc69f588ffa64c1040": "Remainder after the legacy-glossary hunk: reachable remote, comment-then-close, PR body read, Blocking in Conventions, open-blocker count, GitLab frontier command.",
+              "59db609eb1e18aaf59b63284d0e52255aff0c63c": "GitHub template: file issues only into the user's own repo.",
+              "f3fc5632f401156837ee3872f14fe33ccf1024ea": "diagnosing-bugs: diff a forced mutation against a pristine copy before trusting the red.",
+              "868c4cf20cb7e08bc805c388ff1f305dbedd261a": "wizard template.sh fixes (with 49dd158); two local library fixes recorded under local_adaptations.wizard.",
+              "ad5400b930b297b0c0cb231ff1ffe42a7da666aa": "teach: workspace paths resolve from the run directory; vary the correct quiz answer's position.",
+              "95249b0b49782349740fd9b8c6ce32b4e59e497a": "grilling: word each question so yes accepts the recommendation; placed by hand in both trees.",
+              "8295b8e10d4cdb6cce772a56dda7b7c37075074d": "wayfinder: wayfinder labels only, real-id cross-references, resolve by type label. Claude tree omits the research-branch no-PR sentence because its step 5 has no research branch.",
+              "3da8c01116264675eeefbd6e9d59c734de9095cc": "code-review: search for every standards file and wait for both reviewer reports; the tracker-doc wording is not synced.",
+              "e48341a3d412cfeba4b9a79d3fd0331fc376ba82": "implement: explicit skill invocation for tdd and code-review (with 04320ee), in each runtime's wording.",
+              "6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394": "implement: read a passed ticket reference through the tracker doc and state its title first.",
+              "3f599139104dfceabc7754eeb91319802f85e042": "tdd: one-line catches/misses note per proposed seam, carried into the Test intent column.",
+              "7739eaed7f8f3915437a8def198a6d0d7206dbc7": "Codex tree only: subagents start with a fresh context window; docs/agents/runtime.md Codex section extends the stage-3 isolation rule."
+            },
+            "runtimes": [
+              "claude",
+              "codex"
+            ],
+            "not_synced": {
+              "4f4e9433bbb7c4957ef33b1ea26686fb7c2a4cf4": "handoff (with 0f5e033): the local skill writes to .proj.handoffs/ with expiry frontmatter, not the OS temp directory.",
+              "daa01d8aa68ad5c61b68970ec2018d0ce9567be6": "Upstream removed resolving-merge-conflicts; this template keeps its 3cca18b copy (docs/guide.md, THIRD_PARTY_NOTICES.md and skills-lock.json still list it).",
+              "7739eaed7f8f3915437a8def198a6d0d7206dbc7": "Claude tree: Agent tool subagents already start fresh, and the prompt audit removed most of the delegation these sentences guard.",
+              "new-skills": "pr, retro, implement-spec, chief-of-staff, software-factory, claude-handoff and changes to ask-matt/triage are not part of this template."
+            },
+            "unchanged_records": "skills-lock.json remains the 2026-09-08 installer snapshot; the upstream LICENSE did not change between 3cca18b and 4ae2317.",
+            "record": ".tmpl.docs/history/2026-11-12-upstream-sync.md"
           }
         ]
       }
