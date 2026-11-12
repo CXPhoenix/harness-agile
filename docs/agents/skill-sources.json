@@ -219,7 +219,8 @@
     "research": "Codex tree: the read-only harness-researcher returns cited evidence, observed facts, source claims, inferences, verification date and unresolved questions without nested delegation; the main session saves the Markdown artifact using the existing language and tracker conventions (2026-11-01).",
     "agent-browser": "Compact branch-specific discovery and permit evidence-equivalent native tools. Restore Apache-2.0 text and add a prominent modification notice without changing execution guidance.",
     "writing-for-agents": "Codex tree: describe manual invocation as host policy rather than zero-cost metadata invisibility. Claude tree: disable-model-invocation keeps the description out of context (Claude Code skills docs, 2026-09-26).",
-    "wizard": "Both runtime trees, template.sh from upstream 4ae2317 (2026-11-12) with two library fixes: ask() writes ${e}[Enter keeps current] so shellcheck 0.11.0 reports no SC1087 error, and _existing() restores single quotes through a variable (q=\"'\") because bash 3.2 (the macOS /bin/bash) keeps the backslash in ${value//\"$sq\"/\\'}."
+    "wizard": "Both runtime trees, template.sh from upstream 4ae2317 (2026-11-12) with two library fixes: ask() writes ${e}[Enter keeps current] so shellcheck 0.11.0 reports no SC1087 error, and _existing() restores single quotes through a variable (q=\"'\") because bash 3.2 (the macOS /bin/bash) keeps the backslash in ${value//\"$sq\"/\\'}.",
+    "wayfinder": "Codex tree (2026-11-12): research tickets are resolved through the research skill, which decides whether to delegate, and the main session saves findings where docs/agents/issue-tracker.md Wayfinding operations put research evidence; drops upstream's per-ticket subagents and pushed throwaway research/<name> branches, matching the Claude tree."
   },
   "licensing": {
     "verified_on": "2026-09-13",
