@@ -56,4 +56,5 @@
 ## 後續
 
 - Codex 樹的 wayfinder／research 跟 `issue-tracker.md` 的 research 規則要對齊，這屬於 audit 暫緩的「Codex 樹是否移植行為修正」。
+  - 2026-11-12 已處理：Codex 樹 wayfinder 的 Research 類型說明（第 76 行）與 Chart the map 第 5、6 步改成 Claude 樹的寫法，research skill 本身原本就一致，不需修改；記錄在 `skill-sources.json` 的 `local_adaptations.wayfinder`。上方「沒有採納的 P2」中 wayfinder 第 76 行一項因此不再成立。
 - `retro` 可以另外評估是否配合 epic close-out。
