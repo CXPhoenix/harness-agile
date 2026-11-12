@@ -50,7 +50,7 @@ source URL and date, and have the user confirm it before auditing.
      decisions the user needs, not over-cautious boundaries;
    - exact scripts and contracts, including every sentence a skill's own tests
      assert (find them with `grep -rn` in its `test/` or `tests/` folder);
-   - commit, PR, release, spec, ticket, ADR and CONTEXT templates;
+   - commit, PR, release, spec, ticket, ADR and GLOSSARY templates;
    - license and modification notices of vendored skills.
 4. **Approval.** Save the report and combined patch to
    `docs/agents/skill-tuning/<YYYY-MM-DD>-<model>.md` (patch beside it; under

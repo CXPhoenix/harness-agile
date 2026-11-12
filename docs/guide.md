@@ -81,6 +81,7 @@ npx --yes --package='create-harness-agile@X.Y.Z' create-harness-agile migrate .
 | 你刪除的範本檔 | 不重建 |
 | 你改過、但目標版本沒變的範本檔 | 保留，不產生旁置檔 |
 | `README.md`、`.gitignore`、`.gitattributes`、`.proj.*`、Git 未追蹤的本機檔 | 不同步。必要的結構調整（例如在 `.gitignore` 加一行）由 migration step 處理，降級時只還原 migrate 自己加入的內容 |
+| 根目錄的領域詞彙表 `CONTEXT.md`／`CONTEXT-MAP.md` | 升級到 0.5.0 以上時改名為 `GLOSSARY.md`／`GLOSSARY-MAP.md`，降級時改回。新檔名已存在，或子目錄還有 `CONTEXT.md` 時不動，計畫會列在 `by hand`，請自行合併或 `git mv` |
 | 路徑上有 symlink 或 junction | 整次中止，不寫入任何檔案 |
 
 出現 `.harness-new` 時，把需要的內容合併進原檔，再刪除旁置檔。處理完之前，`verify-project.py` 會失敗，migrate 也不會再次執行。填寫 Project Charter 之後，只要範本更新了 `AGENTS.md`，就會產生它的旁置檔；合併時保留你的 Charter。

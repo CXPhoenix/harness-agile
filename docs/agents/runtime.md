@@ -114,6 +114,12 @@ the gate is incomplete; isolated local passes are diagnostics only. Other review
 stages retain their own documented fallback and disclosure rules. Keep all four
 spec-review axes and the two-round ceiling.
 
+Outside stage 3, a skill that starts a subagent "with a fresh context window"
+needs only the inheritance setting described for stage 3 (`fork_turns: "none"` or
+the host's equivalent); its launch-evidence and agent-ID rules stay stage-3 only.
+Put what the subagent needs in its brief. If the host cannot start a subagent
+without the parent conversation, do that work in the main session and say so.
+
 Codex can use its terminal, patching tools, app worktrees and native `review` for
 implementation and verification. Native `review` is a supplemental opinion; stage 6
 still needs the standards/spec evidence required by the project `code-review` skill.
