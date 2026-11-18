@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import tomllib
 import zipfile
 
 
@@ -70,7 +71,7 @@ def main():
             output = run([*command, 'init', str(target), '--name', '套件驗證', '--one-liner', '保留 $() 與 `literal`。', '--no-input', '--json'], parent)
             report = json.loads(output.strip().splitlines()[-1])
             assert report['source']['content_sha256'] == python_bundle['source']['content_sha256'], report
-            assert report['skills'] == report['codex_skills'] == 33, report
+            assert report['skills'] == report['codex_skills'] == 34, report
             for name in notice_paths:
                 assert (target / name).read_bytes() == base64.b64decode(python_bundle['files'][name]), (label, name)
             for tree in ('.agents/skills', '.claude/skills'):
@@ -78,6 +79,9 @@ def main():
                 assert (skill / 'SKILL.md').is_file(), label
                 assert (skill / '../../../docs/agents/drift-report.md').resolve() == (target / 'docs/agents/drift-report.md').resolve(), label
                 assert (skill / '../../../docs/agents/drift-report.md').read_bytes() == base64.b64decode(python_bundle['files']['docs/agents/drift-report.md']), label
+            assert (target / '.mcp.json').is_file(), label
+            assert 'codegraph' in tomllib.loads((target / '.codex/config.toml').read_text(encoding='utf-8'))['mcp_servers'], label
+            assert (target / 'codegraph.json').is_file(), label
             assert not (target / 'CHANGELOG.md').exists()
             assert not (target / 'package.json').exists()
             assert not (target / 'pyproject.toml').exists()

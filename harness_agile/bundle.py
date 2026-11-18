@@ -10,7 +10,7 @@ SOURCE_URL = 'https://github.com/CXPhoenix/harness-agile'
 PATHS = (
     'LICENSE', 'THIRD_PARTY_NOTICES.md', 'CHANGELOG.md',
     'AGENTS.md', 'CLAUDE.md', 'README.md', 'README.en.md', 'INSTALL.md', 'bootstrap', '.gitignore', '.gitattributes', 'skills-lock.json',
-    '.agents/skills', '.claude/skills', '.claude/agents', '.codex/agents', '.codex/config.toml',
+    '.agents/skills', '.claude/skills', '.claude/agents', '.codex/agents', '.codex/config.toml', '.mcp.json', 'codegraph.json',
     'docs', '.tmpl.docs', 'scripts/init-project.py', 'scripts/verify-project.py',
     'scripts/project-readme.md', 'tests/test_init_project.py',
 )

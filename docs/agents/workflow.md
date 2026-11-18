@@ -100,6 +100,11 @@ under test does not exist yet.
 | Seam | Tests | Measured coverage | Acceptance criterion | Uncovered, and why |
 |---|---|---|---|---|
 
+The executor runs the gate's test and coverage runs and returns raw output; when the decider
+delegates the ticket's implementation, the executor also runs the transcribed `/tdd` loop, red and
+green runs included ([orchestration.md](orchestration.md#verification-hand-off)). The decider still
+owns the gate.
+
 **Gate:** test plan table approved before the loop starts; coverage report table produced before
 stage 6.
 
@@ -130,6 +135,8 @@ Verify the behaviour against the surface that actually runs it.
   this project supplies. `/agent-browser` drives Chrome/Chromium and Electron over CDP, so anything
   outside that is outside its reach.
 
+The executor runs the harness or browser checks and returns raw output
+([orchestration.md](orchestration.md#verification-hand-off)); the decider still owns the gate.
 Report which surface a verification covered. A browser screenshot is evidence about a browser
 surface, and saying so keeps it from being read as evidence about anything else.
 

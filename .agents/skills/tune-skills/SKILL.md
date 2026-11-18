@@ -20,7 +20,8 @@ decisions (budget, approval), not review checkpoints.
 | Surface | Reader | Where an edit may go |
 | --- | --- | --- |
 | `.agents/skills/**`, `agents/openai.yaml` descriptions | the user's Codex model | that file |
-| `docs/agents/codex.md`, `.codex/agents/*.toml` | same (Codex roles inherit the session model) | that file |
+| `docs/agents/codex.md` | the user's Codex model | that file |
+| `.codex/agents/*.toml` | the role's `model` key, else the user's model | `developer_instructions` only; `$setup-roles` owns `model` and `model_reasoning_effort` |
 | `AGENTS.md`, `docs/agents/*.md` shared docs | Codex **and** Claude | runtime-neutral wording only; Codex-only guidance goes to `codex.md` |
 
 ## Model guidance

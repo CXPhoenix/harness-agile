@@ -498,6 +498,13 @@ class RenameStepTests(unittest.TestCase):
         self.assertIn(('rename', 'CONTEXT-MAP.md', 'GLOSSARY-MAP.md'), step.ops)
         self.assertIn(('report_nested', 'CONTEXT.md', 'GLOSSARY.md'), step.ops)
 
+    def test_registry_ignores_codegraph_index_in_0_6_0(self):
+        step = next(s for s in migrate.STEPS if s.id == 'codegraph-gitignore')
+        self.assertEqual(step.version, '0.6.0')
+        self.assertEqual(step.ops, (('ensure_line', '.gitignore', '/.codegraph/'),))
+        # The local index is never template content, even outside a Git checkout.
+        self.assertIn('.codegraph', migrate.NOISE_DIRS)
+
 
 if __name__ == '__main__':
     unittest.main()

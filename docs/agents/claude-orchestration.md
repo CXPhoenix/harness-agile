@@ -1,42 +1,44 @@
 # Claude model orchestration
 
-This project assigns Claude models by role. The main session decides; critics on
-other models challenge; an executor applies approved changes. Codex has its own
-settings in [codex.md](codex.md); nothing here applies to it.
+Claude Code's mapping of the three tiers in [orchestration.md](orchestration.md):
+the main session decides, the executor applies approved changes and runs checks,
+the verifier challenges from evidence. Codex has its own settings in
+[codex.md](codex.md); nothing here applies to it.
 
-| Role | Where | Model | Used for |
-|---|---|---|---|
-| Main session | the conversation | the user's selection (usually Claude Opus 5.5) | understanding, planning, decisions, synthesis, user communication; loads the project skills |
-| `harness-reviewer` | `.claude/agents/` | `claude-opus-5-5`, effort `high` | red teaming: spec-review axes (stage 3), code-review axes (stage 6), security candidate and false-positive passes (stage 7) |
-| `harness-challenger` | `.claude/agents/` | `claude-opus-4-8` | devil's advocacy, alternative analysis and reasoning checks on plans, decisions and findings |
-| `harness-executor` | `.claude/agents/` | `claude-sonnet-5` | applying an approved, fully specified change and running the named checks |
-| `harness-researcher` | `.claude/agents/` | inherit | primary-source research that feeds the main session |
+| Role | Tier | Where | Model | Used for |
+|---|---|---|---|---|
+| Main session | decider | the conversation | the user's selection | understanding, planning, decisions, synthesis, user communication, commits; loads the project skills |
+| `harness-executor` | executor | `.claude/agents/` | executor setting from `/setup-roles` (template default `inherit`) | applying an approved, fully specified change and running every command whose output a gate or a verifier judges |
+| `harness-reviewer` | verifier | `.claude/agents/` | verifier setting from `/setup-roles`, shared with the challenger (template default `inherit`) | red teaming: spec-review axes (stage 3), code-review axes (stage 6), security candidate and false-positive passes (stage 7) |
+| `harness-challenger` | verifier | `.claude/agents/` | same verifier setting | devil's advocacy, alternative analysis and reasoning checks on plans, decisions and findings |
+| `harness-researcher` | decider extension | `.claude/agents/` | `inherit`, always | primary-source research that feeds the main session |
 
-This split is the user's choice for this project. The reviewer runs Opus 5.5
-because its prompting page reports stronger code review than Opus 5 (more bugs
-caught, fewer false alarms); effort `high` sits above the Opus 5.5 default of
-`medium`. Model diversity between author and critic comes from the challenger.
-None of this has been measured here; revisit it with evidence from real runs.
+When choosing settings in `/setup-roles`: a verifier on a different model from the
+main session adds diversity between author and critic, and reviewer quality bounds
+stages 3, 6 and 7. Revisit the choice with evidence from real runs.
 
 ## Delegating
 
-- **Critics.** Use `harness-reviewer` where a stage prescribes independent review.
+- **Verifiers.** Use `harness-reviewer` where a stage prescribes independent review.
   Use `harness-challenger` when a plan or decision is expensive to reverse, or when
   the user asks for devil's advocacy. Resolve small questions in the main session.
 - **Stage 3 stays four axes.** The challenger is not a fifth reviewer and does not
   arbitrate. Review disagreements go to the user with both positions and their
   evidence, as [review.md](review.md) requires.
-- **Findings reach the user unfiltered.** Critics report every finding with
+- **Findings reach the user unfiltered.** Verifiers report every finding with
   confidence and severity. The main session may deduplicate, rank and annotate
   them, but it shows the user any finding it proposes to drop, so no P0 can
   disappear before the gate.
 - **Executor.** Hand over a change once its scope is decided and large enough that
-  a separate context pays for itself; the main session may apply small edits
-  directly. The executor cannot load skills: when the work falls under a skill
-  (for example the `/tdd` loop required by hard rule 2), put that skill's steps
-  and gates into the handoff. Commits stay with the main session and the commit
-  skill.
-- **Nesting.** Critics and the executor do not start subagents.
+  a separate context pays for itself. The executor runs every command whose output
+  a gate or a verifier judges and returns raw output for judgement
+  ([orchestration.md](orchestration.md#verification-hand-off)). The main session may
+  still make a trivial edit, with the quick checks that edit needs, when delegating
+  would cost more. The executor cannot load skills: when the work falls under a
+  skill (for example the `/tdd` loop required by hard rule 2), put that skill's
+  steps and gates into the handoff, and the executor runs the loop's red and green
+  tests. Commits stay with the main session and the commit skill.
+- **Nesting.** Verifiers and the executor do not start subagents.
 
 ## Writing for the reader
 
@@ -46,7 +48,7 @@ for the main session's model (recorded as `runtime_trees.claude_tuned_for` in
 `skill-sources.json`), and run `/tune-skills` when that model changes; adopters
 of this template should do the same for their own model. Keep
 model names out of skill text; model-specific guidance belongs in this file.
-The critic and executor models read their role files in `.claude/agents/`, the
+The verifier and executor models read their role files in `.claude/agents/`, the
 documents those files tell them to read, and the handoff; write a handoff for
 its reader, for example stating scope explicitly when it goes to the executor.
 Official prompting pages:
@@ -75,11 +77,12 @@ The differences that most often change the text:
 
 ## Changing the assignment
 
-Model IDs live in each role's `model:` frontmatter; Claude Code accepts an alias,
-a full model ID or `inherit`. A full model ID only works on a Claude Code version
-that recognizes it; an older version fails the delegation with an unrecognized
-model error, so update Claude Code or fall back to `inherit`. After adding or renaming a role, start a new
-session and confirm it in `/agents`: a running session may not see new role
-files. If an account lacks a pinned model, or the model is retired, set that role
-to `inherit` or a current model and update the table above. A role's `effort:`
-frontmatter overrides the session effort; roles without it inherit the session's.
+`/setup-roles`, run by the user, changes the executor or verifier model and effort
+and writes the `roles.claude` record. It sets each role's `model:` frontmatter (an
+alias, a full model ID or `inherit`) and `effort:` frontmatter; a role without
+`effort:` inherits the session's effort when it runs on the session's model. After
+changing, adding or renaming a role, start a new session and confirm it in
+`/agents`: a running session may not see the new role files. If an account lacks a
+pinned model or the model is retired, offer `/setup-roles` again for a current model
+or `inherit`. Version, override and effort pitfalls:
+[orchestration.md](orchestration.md#fallbacks).

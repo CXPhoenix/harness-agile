@@ -73,7 +73,10 @@ Pass user values through argv; avoid constructing shell code from them.
    do not infer an unknown commit from the package version.
    The content digest identifies the template bytes across all entry points.
 4. Open a fresh Claude Code or Codex session in the target. Keep account setup and
-   Codex trust local. Use `grill-with-docs` to define the Project Charter.
+   Codex trust local. Run `setup-roles` for that runtime (`/setup-roles` in Claude
+   Code, `$setup-roles` in Codex) to set the executor and verifier models, optionally
+   set up the CodeGraph code map (`docs/agents/codegraph.md`), then use
+   `grill-with-docs` to define the Project Charter.
 
 The one-liner is not an approved Charter. Default init creates no Git repository,
 commit or remote. `--git` creates an independent repo without committing; all later

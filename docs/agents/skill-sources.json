@@ -100,6 +100,17 @@
         "evidence": "Authored with Claude Code in this project at the maintainer's request. Covered by the maintainer-selected root MIT license."
       }
     },
+    "setup-roles": {
+      "source": "Written for this template on 2026-11-18. Each tree configures only its own runtime's executor and verifier roles.",
+      "adaptations": [],
+      "licensing": {
+        "status": "maintainer-confirmed-project-origin",
+        "license": "MIT",
+        "license_location": "LICENSE",
+        "confirmed_on": "2026-11-18",
+        "evidence": "Authored with Claude Code in this project at the maintainer's request. Covered by the maintainer-selected root MIT license."
+      }
+    },
     "init-template": {
       "source": ".claude/skills/init-template in template commit 501c8a2",
       "adaptations": [

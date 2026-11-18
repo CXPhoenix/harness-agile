@@ -73,6 +73,9 @@ class InitializeProjectTests(unittest.TestCase):
         for name in ("research", "tw-emoji-commit"):
             self.assertTrue((self.root / ".claude/skills" / name / "SKILL.md").is_file())
         self.assertTrue((self.root / ".proj.handoffs").is_dir())
+        # Next steps: setup-roles, then optional CodeGraph, then the Charter.
+        steps = [result.stdout.index(s) for s in ("/setup-roles", "$setup-roles", "codegraph.md", "/grill-with-docs")]
+        self.assertEqual(steps, sorted(steps))
 
     def test_preview_changes_nothing(self):
         before = self.snapshot()

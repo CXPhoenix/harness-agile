@@ -74,7 +74,10 @@ def create(args):
         run([sys.executable, '-B', 'scripts/verify-project.py'], staging)
         # skill_mode stays for JSON compatibility; runtimes now keep separate copies.
         result.update(skills=sum(p.is_dir() for p in (staging / '.claude/skills').iterdir()), codex_skills=sum(p.is_dir() for p in (staging / '.agents/skills').iterdir()), skill_mode='copy')
-        result['next_step'] = 'Open this directory in Claude Code or Codex and use grill-with-docs to define the Project Charter.'
+        result['next_step'] = ('Open this directory in Claude Code or Codex. 1. Run setup-roles for that runtime (Claude Code: /setup-roles; '
+                               'Codex: $setup-roles) to set the executor and verifier model and effort; they inherit the session\'s until then. '
+                               '2. Optional: set up the CodeGraph code map (docs/agents/codegraph.md). '
+                               '3. Use grill-with-docs (Claude Code: /grill-with-docs; Codex: $grill-with-docs) to define the Project Charter.')
         record_source(staging, bundle['source'], args.date)
         if args.git:
             run(['git', 'init', '-b', 'main'], staging)

@@ -1,6 +1,6 @@
 # 協作指南
 
-在專案目錄開啟 Claude Code 或 Codex，從目前的 spec、ticket 與驗證紀錄接續工作。如果剛完成初始化，先用 `grill-with-docs` 定義 `AGENTS.md` 裡的 Project Charter，再建立 walking skeleton。
+在專案目錄開啟 Claude Code 或 Codex，從目前的 spec、ticket 與驗證紀錄接續工作。如果剛完成初始化，依序進行：先用 `setup-roles` 設定執行者與驗證者的 model 與 effort（第一個 session 也會提醒）；視需要設定 CodeGraph（見[程式碼地圖](#程式碼地圖codegraph)）；再用 `grill-with-docs` 定義 `AGENTS.md` 裡的 Project Charter，然後建立 walking skeleton。
 
 ## 開始一段工作
 
@@ -8,6 +8,7 @@
 
 | 操作 | Claude Code | Codex |
 | --- | --- | --- |
+| 設定執行者與驗證者 | `/setup-roles` | `$setup-roles` |
 | 定義需求與 Charter | `/grill-with-docs` | `$grill-with-docs` |
 | 查看 skills | `/skills` | `/skills` |
 | 審查變更 | `/code-review` | `$code-review` |
@@ -18,11 +19,11 @@ Codex 專案設定需在自己的環境信任這個 checkout 後才會套用。�
 
 ## 找到適合的 skill
 
-目前 checkout 初始化後保留 33 個 skills；母範本另外有 `init-template`，共 34 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
+目前 checkout 初始化後保留 34 個 skills；母範本另外有 `init-template`，共 35 個。固定 tag 的內容可能不同，請以 `python3 scripts/verify-project.py` 檢查所採用版本的數量與結構。
 
 | 工作 | Skills |
 | --- | --- |
-| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依使用者的模型重新調校自己 runtime 的 skills，手動觸發） |
+| 環境與工具設定 | `setup-matt-pocock-skills`、`wizard`、`tune-skills`（依使用者的模型重新調校自己 runtime 的 skills，手動觸發）、`setup-roles`（設定自己 runtime 的執行者與驗證者 model／effort，手動觸發） |
 | 需求與決策 | `grilling`、`grill-me`、`grill-with-docs`、`wayfinder`、`to-questionnaire` |
 | 規格與實作 | `to-spec`、`to-tickets`、`implement`、`tdd`、`prototype` |
 | 架構與診斷 | `codebase-design`、`domain-modeling`、`diagnosing-bugs`、`improve-codebase-architecture`、`archify`、`egm-drift-report`（手動觸發） |
@@ -44,9 +45,17 @@ Claude Code 有同名的原生 `/security-review`。要使用專案版本，可�
 
 ## 兩套工具如何共用工作
 
-`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。skills 依工具分開保存：Claude Code 使用 `.claude/skills/`，Codex 使用 `.agents/skills/`。Anthropic 與 OpenAI 的 prompt 撰寫建議不同，同名 skill 可以各自調整措辭。Codex 的 reviewer／researcher 預設繼承當前 session 的模型與 reasoning effort；Claude 的 researcher 繼承 session，reviewer 則使用角色指定的模型與 effort。Claude 其他角色與完整分工見[模型協作規則](agents/claude-orchestration.md)。
+`AGENTS.md` 是共用規範；`CLAUDE.md` 匯入它。skills 依工具分開保存：Claude Code 使用 `.claude/skills/`，Codex 使用 `.agents/skills/`。Anthropic 與 OpenAI 的 prompt 撰寫建議不同，同名 skill 可以各自調整措辭。
+
+代理角色分三層。主 session 是**決策者**：理解需求、規劃、委派並做最終決定，沿用你在工具中選擇的 model 與 effort。**執行者**（`harness-executor`）套用已核准的變更；**驗證者**（`harness-reviewer`、`harness-challenger`）唯讀審查與唱反調：可以讀檔、搜尋、查看 Git 紀錄與差異、查詢 CodeGraph，但不執行檢查、建置、測試、腳本，也不執行任何會寫入或改變狀態的指令。這類指令由執行者跑，回報原始輸出，再交給驗證者判斷。`harness-researcher` 是決策者的延伸，一律繼承主 session。執行者與驗證者預設也繼承主 session，可用 `setup-roles` 各自指定 model 與 effort；Claude Code 與 Codex 各自只設定自己的角色檔。完整分工見[三層分工](agents/orchestration.md)。
 
 切換工具前，使用 `handoff` 保存工作目標、spec／ticket 路徑、branch／HEAD、未提交變更、驗證結果與下一步。交接文件存放在 `.proj.handoffs/`，不進版控，frontmatter 標註以 session 數或時間計算的到期條件。接手者先確認文件未過期，再確認 Git 狀態後繼續。同一張 ticket 維持一位寫入者；並行實作使用不同 worktree。完整對應見 [runtime.md](agents/runtime.md)。
+
+## 程式碼地圖（CodeGraph）
+
+範本已為兩套工具註冊 CodeGraph（Claude Code 用 `.mcp.json`，Codex 用 `.codex/config.toml`），讓開發助理先查 symbol、呼叫者與影響範圍，再讀相關檔案。範本隨附的 MCP 設定以環境變數關閉 telemetry；這只套用在開發助理啟動的 MCP server，不涵蓋你在 shell 直接執行的 `codegraph` 指令。
+
+專案不附帶 CLI，每台機器自行安裝。先執行一次 `codegraph telemetry off`（或在該 shell 設定 `export DO_NOT_TRACK=1`），再於專案根目錄執行 `codegraph init` 建立索引；安裝與建立索引都需要你同意。索引存放在 `.codegraph/`，已列入 `.gitignore`，不進版控。沒有索引時，開發助理會略過這一步、照常讀檔。版本建議、升級方式、尚未驗證的項目，以及已有 `.mcp.json` 或 `.codex/config.toml` 時如何合併，見[程式碼地圖設定](agents/codegraph.md)。
 
 ## 更新與搬移 skills
 
@@ -84,7 +93,7 @@ npx --yes --package='create-harness-agile@X.Y.Z' create-harness-agile migrate .
 | 根目錄的領域詞彙表 `CONTEXT.md`／`CONTEXT-MAP.md` | 升級到 0.5.0 以上時改名為 `GLOSSARY.md`／`GLOSSARY-MAP.md`，降級時改回。新檔名已存在，或子目錄還有 `CONTEXT.md` 時不動，計畫會列在 `by hand`，請自行合併或 `git mv` |
 | 路徑上有 symlink 或 junction | 整次中止，不寫入任何檔案 |
 
-出現 `.harness-new` 時，把需要的內容合併進原檔，再刪除旁置檔。處理完之前，`verify-project.py` 會失敗，migrate 也不會再次執行。填寫 Project Charter 之後，只要範本更新了 `AGENTS.md`，就會產生它的旁置檔；合併時保留你的 Charter。
+出現 `.harness-new` 時，把需要的內容合併進原檔，再刪除旁置檔。處理完之前，`verify-project.py` 會失敗，migrate 也不會再次執行。填寫 Project Charter 之後，只要範本更新了 `AGENTS.md`，就會產生它的旁置檔；合併時保留你的 Charter。用 `setup-roles` 改過的角色檔（`.claude/agents/`、`.codex/agents/`）也可能產生旁置檔；合併時保留你的 model／effort 設定行。
 
 專案沒有這份紀錄，或紀錄是舊格式時，第一次執行要加上 `--adopt --name … --one-liner … --date <建立日期>`。與目標版本不同的檔案都會先寫成旁置檔；若手邊有建立時那一版的未初始化範本 checkout，加上 `--baseline-source PATH`，就能分辨哪些檔案真的改過。
 

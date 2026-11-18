@@ -88,6 +88,49 @@ upstream examples; use the existing configuration without asking to set it up ag
    the message with that skill, then use a UTF-8 message file for Git. If one is
    unavailable, stop the affected action and report; do not write a fallback message.
 
+## Orchestration
+
+Work runs in three tiers. The **decider** is the main session, on the model and effort
+the user chose in the host: it understands the request, plans, delegates, makes the
+final call, talks to the user and commits. The **executor** applies approved changes
+and runs every command whose output a gate or a verifier judges, reporting raw output
+and exit status; when the decider delegates a ticket's implementation, the executor
+also runs the transcribed `/tdd` loop, red and green runs included. The **verifier**
+reviews, challenges and confirms from evidence. It inspects read-only (reading, listing
+and searching files, `git show`/`diff`/`log`/`status`, CodeGraph queries) and leaves
+checks, builds, tests, scripts and anything that changes state to the executor, whose
+output comes back to it. The decider may make a trivial edit, with the quick checks
+that edit needs, when delegating would cost more than the work. Roles, delegation and
+the verification hand-off: [docs/agents/orchestration.md](docs/agents/orchestration.md).
+
+**Role setup reminder.** The main session gives this reminder and the CodeGraph one;
+subagents skip both. When `docs/agents/template-source.json` exists (an initialized
+project) and lacks your runtime's key (`roles.claude` in Claude Code, `roles.codex` in
+Codex; the other runtime's key does not matter), tell the user once per session, at the
+start of your first reply, which model and effort the executor and verifier role files
+currently set (read them first), and offer `/setup-roles`. Change role models only
+through that skill. Role setup changes only the active runtime's role files (Claude
+Code `.claude/agents/`, Codex `.codex/agents/`) and its own key; template maintenance
+and skill-tree porting still edit both trees. The reminder blocks nothing.
+
+## Code map
+
+[CodeGraph](https://github.com/colbymchenry/codegraph) indexes the repository into a
+local graph of symbols, calls and imports. When `.codegraph/` exists at the repository
+root (in a git worktree, the worktree's own root), query it before grep, find or broad
+file reads to locate symbols, callers, callees and impact: the `codegraph_explore` MCP
+tool, or `DO_NOT_TRACK=1 codegraph explore "<question>"` in a shell. Otherwise skip
+CodeGraph. Read a file directly before editing it or citing it as evidence; the index
+can lag behind recent edits.
+
+**CodeGraph reminder.** In an initialized project where your runtime's file still
+registers CodeGraph (`mcpServers.codegraph` in `.mcp.json` for Claude Code,
+`[mcp_servers.codegraph]` in `.codex/config.toml` for Codex) and `.codegraph/` is
+absent, mention the setup once per session at the start of your first reply, in the
+same message as the role setup reminder when both apply. Installing the CLI and
+indexing are the user's call; removing the registration declines it. Registration,
+install, indexing and privacy: [docs/agents/codegraph.md](docs/agents/codegraph.md).
+
 ## Language
 
 All Chinese output uses Taiwan Traditional Chinese, including conversation, documents,
@@ -135,6 +178,8 @@ discover from `package.json`, `Makefile`, or `--help`.
 
 - **[docs/agents/workflow.md](docs/agents/workflow.md)** — the nine stages in full: entry conditions, gates, the walking-skeleton exemption, epic close-out, branching and landing.
 - **[docs/agents/issue-tracker.md](docs/agents/issue-tracker.md)** — where specs and tickets live, ticket frontmatter, the six status views, how blocking is derived.
+- **[docs/agents/orchestration.md](docs/agents/orchestration.md)** — the three tiers, role files per runtime, `/setup-roles`, and the verification hand-off.
+- **[docs/agents/codegraph.md](docs/agents/codegraph.md)** — CodeGraph registration, install, indexing and privacy.
 - **[docs/agents/review.md](docs/agents/review.md)** — the four adversarial-review axes, P0/P1/P2 grading, and the two-stage security review.
 - **[docs/agents/language.md](docs/agents/language.md)** — which documents are English, which are Traditional Chinese, and how the bilingual spec stays in sync.
 - **[docs/agents/domain.md](docs/agents/domain.md)** — how to consume `GLOSSARY.md` and ADRs while exploring.

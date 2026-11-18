@@ -2,12 +2,17 @@
 
 {{PROJECT_ONE_LINER}}
 
-此專案採用 Claude Code 與 Codex 共用的開發流程。在這個目錄開啟開發助理，用 `grill-with-docs` 定義 Project Charter，確認產品服務誰、解決什麼問題，以及必須做到什麼，再建立 walking skeleton。
+此專案採用 Claude Code 與 Codex 共用的開發流程。在這個目錄開啟開發助理後：
+
+1. 在該工具執行 `setup-roles`，設定執行者與驗證者的 model 與 effort；未設定前，兩者沿用目前 session 的設定。
+2. 視需要設定 CodeGraph 程式碼地圖，見 [docs/agents/codegraph.md](docs/agents/codegraph.md)。
+3. 用 `grill-with-docs` 定義 Project Charter，確認產品服務誰、解決什麼問題，以及必須做到什麼，再建立 walking skeleton。
 
 ## 開始協作
 
 | 操作 | Claude Code | Codex |
 | --- | --- | --- |
+| 設定執行者與驗證者 | `/setup-roles` | `$setup-roles` |
 | 定義 Charter | `/grill-with-docs` | `$grill-with-docs` |
 | 查看 skills | `/skills` | `/skills` |
 | 審查變更 | `/code-review` | `$code-review` |

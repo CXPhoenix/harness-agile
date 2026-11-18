@@ -7,18 +7,18 @@ chain analysis at epic close-out).
 ## Adversarial review
 
 Four independent reviewers, one fresh conversation per axis per round, at most two
-rounds. Select the active
-runtime's `harness-reviewer` role. Claude's role runs on the model assigned in
-[claude-orchestration.md](claude-orchestration.md); Codex's inherits the session
-model. Batch within actual concurrency limits. Supply identical captured
-scope and the frozen prompt to each pass; do not replace missing axes with a vote.
+rounds. Select the active runtime's `harness-reviewer` role. Each runtime's role runs
+on that runtime's verifier-tier setting from `/setup-roles` (default: inherit); see
+[orchestration.md](orchestration.md). Batch within actual concurrency limits. Supply
+identical captured scope and the frozen prompt to each pass; do not replace missing
+axes with a vote.
 
 ### Fresh context and the review packet
 
 The parent creates a new reviewer invocation for each axis and each round, without
 inheriting its conversation or resuming a previous reviewer. Runtime-specific
 launch controls are in [runtime.md](runtime.md). Model inheritance is separate
-from conversation inheritance; existing role model assignments still apply.
+from conversation inheritance; the verifier-tier setting still applies.
 
 Before dispatch, capture the round's spec, `traceability.md`, frozen prompt,
 applicable project rules, glossary/ADRs and necessary interface/source evidence.
@@ -132,6 +132,8 @@ Use the project `security-review` skill (`.claude/skills/` or `.agents/skills/`)
 findings and verify those fixes. Claude's built-in command has the same name;
 explicitly load the project file so both runtimes apply the same scope and policy.
 The parent captures the diff and persists the report; delegated reviewers stay read-only.
+Fixes may go to the executor; the checks that verify them run on the executor, and reviewers
+judge the returned output ([orchestration.md](orchestration.md#verification-hand-off)).
 
 If this project's domain makes some findings expected rather than defects — a security-training
 range, a deliberately vulnerable fixture, a red-team target — define that distinction here before
