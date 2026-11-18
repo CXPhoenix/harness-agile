@@ -55,11 +55,11 @@ python3 scripts/init-project.py --name '我的專案' --one-liner '它要解決�
 
 ## 初始化後會留下什麼
 
-目前 checkout 預設會填入專案名稱、描述與 ADR 日期，將根目錄 README 改為產品入口，保留共用規範、Claude 與 Codex 各 33 個 skills、協作指南與驗證工具。範本歷史、banner、英文範本 README、建立器、初始化工具及其專用測試則會移除。固定 tag 的內容可能不同，以該版本的驗證結果為準。
+目前 checkout 預設會填入專案名稱、描述與 ADR 日期，將根目錄 README 改為產品入口，保留共用規範、Claude 與 Codex 各 34 個 skills、協作指南與驗證工具。範本歷史、banner、英文範本 README、建立器、初始化工具及其專用測試則會移除。固定 tag 的內容可能不同，以該版本的驗證結果為準。
 
 `--keep-template-files` 保留範本文件與初始化工具，包含中英文 README。歷史文件中的 placeholders 不會替換，因為它們記錄的是母範本的設計背景。
 
-初始化完成後，在新 session 使用 `grill-with-docs` 定義 Project Charter，再建立 walking skeleton。初始化不會選擇技術棧、安裝產品依賴或建立產品功能。日常操作請接著讀[協作指南](../docs/guide.md)。
+初始化完成後，在新 session 依序進行：先用 `setup-roles` 設定執行者與驗證者的 model／effort（Claude Code 與 Codex 各自設定）；視需要安裝 CodeGraph 並建立索引；再用 `grill-with-docs` 定義 Project Charter，然後建立 walking skeleton。第一個 session 會提醒前兩項，兩者都不阻擋工作。初始化不會選擇技術棧、安裝產品依賴或建立產品功能。日常操作請接著讀[協作指南](../docs/guide.md)。
 
 ## 之後更新範本版本
 

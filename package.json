@@ -33,6 +33,8 @@
     ".claude/agents",
     ".codex/agents",
     ".codex/config.toml",
+    ".mcp.json",
+    "codegraph.json",
     "docs",
     ".tmpl.docs",
     "scripts/init-project.py",

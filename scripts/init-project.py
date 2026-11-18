@@ -73,7 +73,7 @@ CHECKOUT_ONLY = (
     "tests/test_bootstrap.py", "tests/test_bundle.py", "tests/test_verify_project.py",
     "tests/test_migrate.py", "scripts/verify-distributions.py",
 )
-NOISE_DIRS = {"__pycache__", "node_modules", ".venv"}
+NOISE_DIRS = {"__pycache__", "node_modules", ".venv", ".codegraph"}
 
 
 def managed(rel: str) -> bool:
@@ -274,8 +274,12 @@ def main() -> int:
     (root / STATE_FILE).write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(
-        "\nDone. Next: use grill-with-docs to fill the Project Charter in AGENTS.md.\n"
-        "Claude Code: /grill-with-docs; Codex: $grill-with-docs.\n"
+        "\nDone. Next: open the project in Claude Code or Codex.\n"
+        "1. Run setup-roles for that runtime to set the executor and verifier model and effort;\n"
+        "   they inherit the session's until then. Claude Code: /setup-roles; Codex: $setup-roles.\n"
+        "2. Optional: set up the CodeGraph code map (docs/agents/codegraph.md).\n"
+        "3. Use grill-with-docs to fill the Project Charter in AGENTS.md.\n"
+        "   Claude Code: /grill-with-docs; Codex: $grill-with-docs.\n"
         "Until that section is written, AGENTS.md's gate blocks specs, tickets, and implementation."
     )
     return 0

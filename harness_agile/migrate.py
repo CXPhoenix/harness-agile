@@ -25,7 +25,7 @@ CHECKOUT_ONLY = (
     'tests/test_bootstrap.py', 'tests/test_bundle.py', 'tests/test_verify_project.py',
     'tests/test_migrate.py', 'scripts/verify-distributions.py',
 )
-NOISE_DIRS = {'__pycache__', 'node_modules', '.venv'}
+NOISE_DIRS = {'__pycache__', 'node_modules', '.venv', '.codegraph'}
 CATEGORIES = ('updated', 'added', 'removed', 'conflict', 'orphaned', 'skipped_deleted', 'adopted')
 
 Step = namedtuple('Step', 'id version ops')
@@ -36,6 +36,8 @@ STEPS = (
     Step('glossary-rename', '0.5.0', (('rename', 'CONTEXT.md', 'GLOSSARY.md'),
                                       ('rename', 'CONTEXT-MAP.md', 'GLOSSARY-MAP.md'),
                                       ('report_nested', 'CONTEXT.md', 'GLOSSARY.md'))),
+    # The shipped CodeGraph registration builds a local index that must stay out of Git.
+    Step('codegraph-gitignore', '0.6.0', (('ensure_line', '.gitignore', '/.codegraph/'),)),
 )
 
 

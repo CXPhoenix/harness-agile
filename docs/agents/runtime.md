@@ -50,18 +50,20 @@ skills are real directories in `.claude/skills/`, tuned for Claude; edit them in
 and run `python3 scripts/verify-project.py`. Existing user or managed
 permissions continue to apply; the template does not enable permission bypass.
 
-Project roles in `.claude/agents/`:
+Project roles in `.claude/agents/`, by tier ([orchestration.md](orchestration.md)):
 
-- `harness-reviewer`: file-reading tools, one axis per invocation. For stage 3,
-  the parent supplies the spec packet defined in [review.md](review.md). For code
-  or security review, it supplies exact Git base/HEAD, captured diffs and requested
-  pending/untracked contents.
-- `harness-challenger`: devil's advocacy and alternative analysis on plans,
-  decisions and findings; returns evidence only.
-- `harness-executor`: applies an approved, fully specified change and runs the
-  named checks; it has no Skill tool, so the parent transcribes any skill steps.
-- `harness-researcher`: primary-source research with native web and file tools;
-  returns citations so the parent can save the research artifact.
+- `harness-executor` (executor): applies an approved, fully specified change and
+  runs every command whose output a gate or a verifier judges, returning raw output;
+  it has no Skill tool, so the parent transcribes any skill steps.
+- `harness-reviewer` (verifier): file-reading tools, one axis per invocation. For
+  stage 3, the parent supplies the spec packet defined in [review.md](review.md).
+  For code or security review, it supplies exact Git base/HEAD, captured diffs and
+  requested pending/untracked contents.
+- `harness-challenger` (verifier): devil's advocacy and alternative analysis on
+  plans, decisions and findings; returns evidence only.
+- `harness-researcher` (decider extension, inherits the session model):
+  primary-source research with native web and file tools; returns citations so the
+  parent can save the research artifact.
 
 Role models and when to delegate are in [claude-orchestration.md](claude-orchestration.md).
 The main session keeps the user's model choice; model brands are not
@@ -92,10 +94,16 @@ Codex reads `AGENTS.md` and discovers project skills in `.agents/skills/`.
 checkout in their Codex environment. Keep trust decisions and account credentials
 local. CLI overrides, managed policy and the active host's permissions take priority.
 
-`.codex/agents/*.toml` defines the Codex Agent roles `harness-reviewer` and `harness-researcher`. Models
-and reasoning effort inherit the session. Read-only sandbox defaults express their
-role, but the active runtime may override them; check effective permissions and keep
-the assignment read-only. The parent captures Git context and writes final reports.
+`.codex/agents/*.toml` defines the Codex Agent roles `harness-executor`,
+`harness-reviewer`, `harness-challenger` and `harness-researcher`
+([orchestration.md](orchestration.md) maps them to tiers). Models and reasoning effort
+inherit the session unless `$setup-roles` pinned the executor or verifier tier or a
+spawn-time or `[agents]` default overrides it ([orchestration.md](orchestration.md#fallbacks)).
+Role files cannot set sandbox, approval or MCP servers: subagents inherit the parent
+session's, and role instructions that forbid edits create no separate read-only
+sandbox. The reviewer, challenger and researcher are read-only by instruction; check
+effective permissions and keep the assignment read-only. The parent captures Git
+context and writes final reports.
 Use the available native agent API with these roles where supported; an API without
 custom-role selection can receive the role instructions explicitly.
 
@@ -158,7 +166,8 @@ It checks local structure and portability, not model quality or pipeline complet
 initializer removes its own template-only test. Fresh sessions should confirm skills
 and native roles in their actual host; a long-running session may have an old catalog.
 
-External CLIs (Python 3.11+, Git, agent-browser, gh/glab when used) and MCP account
-connections are installed per machine. No API key, browser profile, home path or
+External CLIs (Python 3.11+, Git, agent-browser, gh/glab when used, the `codegraph`
+CLI behind the registered CodeGraph MCP server) and MCP account connections are
+installed per machine; CodeGraph setup is in [codegraph.md](codegraph.md). No API key, browser profile, home path or
 global skill symlink is copied into the project. Browser verification may use the
 host's native browser tools when the documented surface and evidence are equivalent.

@@ -43,11 +43,21 @@ the `{{INIT_DATE}}` placeholder are dated when this project adopts them, not whe
 
 ## 4. Hand over
 
-Report what changed, then give the user the one next step: **use `grill-with-docs` (`/grill-with-docs` in Claude Code, `$grill-with-docs` in Codex) to write the
-Project Charter.** Until that section of `AGENTS.md` is written, its gate blocks specs, tickets, and
-implementation code — the walking skeleton is the only work it permits.
+Report what changed, then give the user the next steps in this order:
 
-Two things worth telling the user in the same breath, because both are cheap now and awkward later:
+1. **`$setup-roles`** — choose the model and reasoning effort of
+   `harness-executor`, `harness-reviewer` and `harness-challenger`; until then
+   they run on what the role files say (the template ships no `model` or
+   `model_reasoning_effort`, so they inherit). Suggest it; leave running it to the
+   user.
+2. **CodeGraph (optional)** — registration ships in `.codex/config.toml`; the
+   per-machine CLI install and `codegraph init` are the user's call. See
+   `docs/agents/codegraph.md`.
+3. **`$grill-with-docs` to write the Project Charter.** Until that section of
+   `AGENTS.md` is written, its gate blocks specs, tickets, and implementation
+   code — the walking skeleton is the only work it permits.
+
+A few things worth telling the user in the same breath, because each is cheap now and awkward later:
 
 - **`git remote`** — with a remote, pipeline stage 9 lands work through PRs; without one it falls
   back to `git merge --no-ff`. `git remote -v` says which mode this clone is in.

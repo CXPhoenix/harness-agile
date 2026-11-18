@@ -22,6 +22,8 @@ It is designed for individuals and teams who want their AI development workflow 
 - **One shared contract.** `AGENTS.md` holds the project purpose and workflow. Each tool has its own skill copies, tuned to its vendor's prompting guidance, and keeps its native tools and role configurations.
 - **Traceable delivery.** Requirements become specs, acceptance criteria lead to tickets, and reviews, tests, and unresolved questions stay in the repository.
 - **Portable projects.** The creator ships its template data, stores skills as real directories, and records the source and content digest.
+- **Tiered agent roles.** The main session decides; the executor applies changes and runs verification commands, and the verifiers review and challenge. Set the executor's and verifiers' model and effort with `setup-roles` when the project starts; Claude Code and Codex each configure only their own roles.
+- **A code map.** Both tools register CodeGraph, with telemetry off in the bundled MCP server configuration (run `codegraph telemetry off` once before using the CLI in a shell). Each machine installs the CLI itself, and the `.codegraph/` index stays local and out of Git.
 
 ## Quick start
 
@@ -39,10 +41,11 @@ uv run --python 3.11 python scripts/verify-project.py
 
 This creates a project directory, fills in its name and description, and checks the collaboration setup. The target must be absent or empty, and its parent must exist. The command installs a fixed version from PyPI; no GitHub account is required.
 
-Next, open Claude Code or Codex in the new directory and run `grill-with-docs` to define the Project Charter in `AGENTS.md`: who the product serves, what problem it solves, and what it must do. A name and one-line description do not constitute approved requirements.
+Next, open Claude Code or Codex in the new directory. Run `setup-roles` to set the executor's and verifiers' model and effort, optionally set up the CodeGraph code map, then run `grill-with-docs` to define the Project Charter in `AGENTS.md`: who the product serves, what problem it solves, and what it must do. A name and one-line description do not constitute approved requirements.
 
 | Action | Claude Code | Codex |
 | --- | --- | --- |
+| Configure the executor and verifiers | `/setup-roles` | `$setup-roles` |
 | Define the Project Charter | `/grill-with-docs` | `$grill-with-docs` |
 | List available skills | `/skills` | `/skills` |
 | Review a change | `/code-review` | `$code-review` |

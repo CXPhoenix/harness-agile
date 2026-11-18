@@ -13,10 +13,12 @@
 | Spec 與 tickets 放哪裡？狀態怎麼判定？ | [Issue tracker](agents/issue-tracker.md) |
 | 四軸 review 與安全審查如何進行？ | [審查規則](agents/review.md) |
 | Claude Code 與 Codex 如何共用 skills、交接？ | [Runtime adapters](agents/runtime.md) |
-| Claude 各角色用哪個模型？何時委派？ | [Claude 模型分工](agents/claude-orchestration.md) |
+| 決策者、執行者、驗證者怎麼分工？角色 model 怎麼設定？ | [三層分工](agents/orchestration.md) |
+| Claude 各角色對應哪一層？何時委派？ | [Claude 模型分工](agents/claude-orchestration.md) |
 | Codex 如何區分 prompt、skill 與宿主能力？ | [Codex 執行指引](agents/codex.md) |
 | 哪些文件用英文？中英文規格如何同步？ | [語言規則](agents/language.md) |
 | 探索程式碼前，如何閱讀領域模型？ | [領域文件指引](agents/domain.md) |
+| 如何安裝 CodeGraph、建立程式碼地圖？ | [CodeGraph 程式碼地圖](agents/codegraph.md) |
 | 如何顯式檢查文件與實作的差異？ | [文件漂移診斷契約](agents/drift-report.md) |
 
 `agents/` 內的英文文件供開發助理執行流程，也可用來查核工作是否符合規範。面向使用者的說明採台灣繁體中文。

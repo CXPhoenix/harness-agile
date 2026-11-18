@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check portable project instructions, per-runtime skill trees and native role configs.
+"""Check portable project instructions, per-runtime skill trees, native role configs and CodeGraph wiring.
 
 Python 3.11+. Read-only and offline; run from any working directory.
 This checks configuration structure, not model-backed workflow behavior.
@@ -14,7 +14,7 @@ import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED = ("research", "security-review", "tw-emoji-commit", "tw-emoji-pr-note", "tw-emoji-release-note", "evidence-report", "agent-browser", "i-have-adhd", "tune-skills", "egm-drift-report")
+REQUIRED = ("research", "security-review", "tw-emoji-commit", "tw-emoji-pr-note", "tw-emoji-release-note", "evidence-report", "agent-browser", "i-have-adhd", "tune-skills", "egm-drift-report", "setup-roles")
 SANITIZERS = (("tw-emoji-commit", "sanitize_commit.py"), ("tw-emoji-pr-note", "sanitize_pr_note.py"), ("tw-emoji-release-note", "sanitize_release_note.py"))
 
 
@@ -102,28 +102,55 @@ def verify(root):
     except (OSError, ValueError, KeyError) as error:
         errors.append(f"Skill provenance cannot be checked: {error}")
 
+    config = {}
     try:
         config = tomllib.loads((root / ".codex/config.toml").read_text(encoding="utf-8"))
         check(config.get("sandbox_mode") == "workspace-write", "Unexpected Codex project sandbox default")
-        for name in ("harness-reviewer", "harness-researcher"):
+        # Executor and verifier roles may pin a model (setup-roles); the researcher
+        # extends the decider and always inherits the session model.
+        for name in ("harness-executor", "harness-reviewer", "harness-challenger", "harness-researcher"):
             role = tomllib.loads((root / f".codex/agents/{name}.toml").read_text(encoding="utf-8"))
             check(role.get("name") == name and bool(role.get("description")) and bool(role.get("developer_instructions")), f"Incomplete Codex role: {name}")
-            check("model" not in role, f"Codex role unexpectedly pins a model: {name}")
             native = root / f".claude/agents/{name}.md"
-            check(native.is_file() and f"name: {name}" in native.read_text(encoding="utf-8"), f"Missing Claude role: {name}")
+            text = native.read_text(encoding="utf-8") if native.is_file() else ""
+            check(f"name: {name}" in text, f"Missing Claude role: {name}")
+            parts = text.split("---", 2)
+            header = parts[1] if len(parts) == 3 and not parts[0].strip() else ""
+            if name == "harness-researcher":
+                check(not {"model", "model_reasoning_effort"} & role.keys(), f"Codex {name} must inherit the session model")
+                check(bool(re.search(r"^model:\s*inherit\s*$", header, re.M)), f"Claude {name} must inherit the session model")
+                check(not re.search(r"^effort:", header, re.M), f"Claude {name} must inherit the session effort")
     except (OSError, ValueError) as error:
         errors.append(f"Runtime configuration cannot be checked: {error}")
 
-    return names, errors
+    # A registered CodeGraph server builds .codegraph/, a local index kept out of Git.
+    servers = config.get("mcp_servers", {})
+    check(isinstance(servers, dict), ".codex/config.toml mcp_servers must be a table")
+    registered = isinstance(servers, dict) and "codegraph" in servers
+    mcp = root / ".mcp.json"
+    if mcp.exists():
+        try:
+            data = json.loads(mcp.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            errors.append(f".mcp.json cannot be parsed: {error}")
+        else:
+            servers = data.get("mcpServers", {}) if isinstance(data, dict) else None
+            check(isinstance(servers, dict), ".mcp.json must be a JSON object whose mcpServers is an object")
+            registered = registered or isinstance(servers, dict) and "codegraph" in servers
+    if registered:
+        check(any(line.strip() in {"/.codegraph/", ".codegraph/"} for line in ignored), ".gitignore must exclude /.codegraph/ while CodeGraph is registered")
+
+    return names, errors, registered
 
 
 def main():
-    names, errors = verify(ROOT)
+    names, errors, registered = verify(ROOT)
     for error in errors:
         print(f"FAIL: {error}", file=sys.stderr)
     if errors:
         return 1
-    print(f"PASS: shared instructions, {len(names)} skills across Claude/Codex trees, invocation policies, helper assets and native role configs")
+    codegraph = " and the CodeGraph index ignore rule" if registered else "; CodeGraph is not registered, so its ignore rule was not checked"
+    print(f"PASS: shared instructions, {len(names)} skills across Claude/Codex trees, invocation policies, helper assets, native role configs{codegraph}")
     print("Static/offline checks only; confirm discovery in fresh Claude Code and Codex sessions.")
     return 0
 

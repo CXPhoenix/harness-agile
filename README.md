@@ -22,6 +22,8 @@ harness-agile 是一份可攜的 AI 協作開發範本。從釐清需求到合�
 - **一份共用規範。** `AGENTS.md` 保存專案目的與工作流程，兩套工具各有依官方 prompt 建議調整的 skills 副本，並保留原生工具與角色設定。
 - **可追溯的交付紀錄。** 需求寫成 spec，驗收條件對應到 tickets；review、測試與尚未解決的問題一起留在 repository。
 - **可搬移的專案。** 建立器攜帶範本資料，skills 以實體目錄隨專案保存，並記錄採用來源與內容 digest。
+- **分層的代理角色。** 主 session 負責決策；執行者套用變更並執行驗證指令，驗證者負責審查與唱反調。執行者與驗證者的 model／effort 在專案開始時用 `setup-roles` 設定，Claude Code 與 Codex 各自只設定自己的角色。
+- **程式碼地圖。** 兩套工具都已註冊 CodeGraph，範本隨附的 MCP 設定已關閉 telemetry（在 shell 直接使用 CLI 前，先執行一次 `codegraph telemetry off`）；CLI 由每台機器自行安裝，`.codegraph/` 索引留在本機、不進 Git。
 
 ## 快速開始
 
@@ -39,10 +41,11 @@ uv run --python 3.11 python scripts/verify-project.py
 
 這會建立專案目錄、填入名稱與描述，並檢查協作設定。目標須不存在或為空，父目錄須已存在。指令從 PyPI 安裝固定版本，不需要 GitHub 帳號。
 
-接著在新目錄開啟 Claude Code 或 Codex，執行 `grill-with-docs`，定義 `AGENTS.md` 裡的 Project Charter：產品服務誰、解決什麼問題、必須做到什麼。名稱與一句話描述只是起點，尚未代表需求確認。
+接著在新目錄開啟 Claude Code 或 Codex：先執行 `setup-roles` 設定執行者與驗證者的 model 與 effort，視需要設定 CodeGraph 程式碼地圖，再執行 `grill-with-docs`，定義 `AGENTS.md` 裡的 Project Charter：產品服務誰、解決什麼問題、必須做到什麼。名稱與一句話描述只是起點，尚未代表需求確認。
 
 | 操作 | Claude Code | Codex |
 | --- | --- | --- |
+| 設定執行者與驗證者 | `/setup-roles` | `$setup-roles` |
 | 定義 Project Charter | `/grill-with-docs` | `$grill-with-docs` |
 | 查看可用 skills | `/skills` | `/skills` |
 | 審查變更 | `/code-review` | `$code-review` |

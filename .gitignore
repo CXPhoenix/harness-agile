@@ -23,3 +23,6 @@ harness_agile/data/template.json
 
 # Session handoffs expire and stay local; init creates the directory.
 /.proj.handoffs/
+
+# CodeGraph's local index; each machine rebuilds it.
+/.codegraph/

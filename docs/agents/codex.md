@@ -1,7 +1,13 @@
 # Codex execution boundaries
 
 Use this reference for Codex work; shared workflow gates remain in AGENTS.md and
-workflow.md. Model and effort selection stay with the host.
+workflow.md. The main session's model and effort stay with the host. Executor and
+verifier roles in `.codex/agents/` may pin `model` and `model_reasoning_effort`
+through `$setup-roles` (default: inherit); `harness-researcher` always inherits.
+
+Codex roles map to the tiers in [orchestration.md](orchestration.md):
+`harness-executor` is the executor, `harness-reviewer` and `harness-challenger` form
+the verifier tier, and `harness-researcher` extends the main session.
 
 - Load a Skill when its trigger matches the task or the user explicitly invokes it.
   Read the required branch and its references; a catalog entry is not a request to

@@ -9,8 +9,9 @@ disable-model-invocation: true
 `.claude/skills/` is tuned for one main-session model, recorded in
 `docs/agents/skill-sources.json` under `runtime_trees.claude_tuned_for`. This skill
 re-tunes it when the user's main model differs, following that model's official
-prompting guidance. It changes only the Claude tree and `.claude/agents/`; the
-Codex tree has its own copy of this job.
+prompting guidance. It changes text only in the Claude tree and `.claude/agents/`;
+which model and effort each role runs is set by `/setup-roles`. The Codex tree has
+its own copy of this job.
 
 ## 1. Decide whether tuning is needed
 
@@ -41,7 +42,11 @@ Give it the reader of each surface:
 
 - `.claude/skills/**`: the main-session model from step 1.
 - `.claude/agents/*.md` and the docs those roles are told to read: each role's
-  own model, per `docs/agents/claude-orchestration.md`.
+  `model:` line (`inherit` means the main-session model).
+
+Shared docs Codex also reads (`AGENTS.md` and every `docs/agents/*.md` other than
+`claude-orchestration.md`) take runtime-neutral edits only; Claude-only guidance
+goes to `claude-orchestration.md`.
 
 Judge each surface against its reader's official prompting page (links in
 `claude-orchestration.md`) and the all-models best-practices page. When the

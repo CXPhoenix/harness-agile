@@ -10,3 +10,10 @@ max_concurrent_threads_per_session = 4
 
 [sandbox_workspace_write]
 network_access = false
+
+# CodeGraph code map; install the CLI per machine (docs/agents/codegraph.md).
+# env turns off telemetry and the daily update check.
+[mcp_servers.codegraph]
+command = "codegraph"
+args = ["serve", "--mcp"]
+env = { DO_NOT_TRACK = "1", CODEGRAPH_TELEMETRY = "0" }
