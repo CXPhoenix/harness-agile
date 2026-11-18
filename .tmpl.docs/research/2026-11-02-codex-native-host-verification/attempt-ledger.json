@@ -1,0 +1,385 @@
+{
+  "attempts": [
+    {
+      "case": "S01",
+      "batch": "A",
+      "id": "/root/native_s01_completeness",
+      "started_utc": "2026-11-01T17:33:02.855Z",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none",
+        "model_override": null,
+        "effort_override": null
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 74987,
+        "cached_input_tokens": 45952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1679,
+        "reasoning_output_tokens": 258,
+        "total_tokens": 76666
+      },
+      "completed_recorded_utc": "2026-11-01T17:33:48.427754+00:00",
+      "session_id": "01a1982b-ff81-7001-b68d-210c9f3211e5",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-02-01a1982b-ff81-7001-b68d-210c9f3211e5.jsonl",
+      "raw_sha256": "57fcf4bacfd1310d37312389580a1783d2d48329ec5716c11c9ab3e9ac67820f",
+      "selected_trace": "native_s01_completeness-trace.json",
+      "completed": true,
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-02-01a1982b-ff81-7001-b68d-210c9f3211e5.jsonl",
+      "source_snapshot_bytes": 328073,
+      "source_snapshot_sha256": "57fcf4bacfd1310d37312389580a1783d2d48329ec5716c11c9ab3e9ac67820f",
+      "ended_utc": "2026-11-01T17:33:24.265Z",
+      "aborted": false,
+      "native_tool_outputs": 1,
+      "read_hash_matches": {
+        "spec.en.md": true,
+        "prompt.md": true,
+        "contract.md": true,
+        "traceability.md": true,
+        "AGENTS.md": true,
+        ".codex/agents/harness-reviewer.toml": true,
+        "docs/agents/codex.md": true,
+        "docs/agents/runtime.md": true,
+        "docs/agents/review.md": true
+      }
+    },
+    {
+      "case": "S01",
+      "batch": "A",
+      "id": "/root/native_s01_verifiability",
+      "started_utc": "2026-11-01T17:33:05.395Z",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none",
+        "model_override": null,
+        "effort_override": null
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 107823,
+        "cached_input_tokens": 97536,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1909,
+        "reasoning_output_tokens": 293,
+        "total_tokens": 109732
+      },
+      "completed_recorded_utc": "2026-11-01T17:33:48.427973+00:00",
+      "session_id": "01a1982c-0996-7832-834e-a085997ef88c",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-05-01a1982c-0996-7832-834e-a085997ef88c.jsonl",
+      "raw_sha256": "8530bb371149a47d14ad9d2f7a297687e09ab2a933ca1ccf3e2810033900a595",
+      "selected_trace": "native_s01_verifiability-trace.json",
+      "completed": true,
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-05-01a1982c-0996-7832-834e-a085997ef88c.jsonl",
+      "source_snapshot_bytes": 334210,
+      "source_snapshot_sha256": "8530bb371149a47d14ad9d2f7a297687e09ab2a933ca1ccf3e2810033900a595",
+      "ended_utc": "2026-11-01T17:33:30.640Z",
+      "aborted": false,
+      "native_tool_outputs": 2,
+      "read_hash_matches": {
+        "spec.en.md": true,
+        "prompt.md": true,
+        "contract.md": true,
+        "traceability.md": true,
+        "AGENTS.md": true,
+        ".codex/agents/harness-reviewer.toml": true,
+        "docs/agents/codex.md": true,
+        "docs/agents/runtime.md": true,
+        "docs/agents/review.md": true
+      }
+    },
+    {
+      "case": "S01",
+      "batch": "A",
+      "id": "/root/native_s01_contract",
+      "recorded_utc": "2026-11-01T17:33:48.427977+00:00",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none",
+        "model_override": null,
+        "effort_override": null
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 108011,
+        "cached_input_tokens": 97280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1729,
+        "reasoning_output_tokens": 180,
+        "total_tokens": 109740
+      },
+      "session_id": "01a1982c-7f92-7742-a056-1729e259d239",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-35-01a1982c-7f92-7742-a056-1729e259d239.jsonl",
+      "raw_sha256": "ddc3a4e235ce3dfe9869d20f5b931ef4c94524e855f1b9a986c455f8c8abc593",
+      "selected_trace": "native_s01_contract-trace.json",
+      "completed": true,
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-35-01a1982c-7f92-7742-a056-1729e259d239.jsonl",
+      "source_snapshot_bytes": 330132,
+      "source_snapshot_sha256": "ddc3a4e235ce3dfe9869d20f5b931ef4c94524e855f1b9a986c455f8c8abc593",
+      "started_utc": "2026-11-01T17:33:35.637Z",
+      "ended_utc": "2026-11-01T17:33:59.681Z",
+      "aborted": false,
+      "native_tool_outputs": 2,
+      "read_hash_matches": {
+        "spec.en.md": true,
+        "prompt.md": true,
+        "contract.md": true,
+        "traceability.md": true,
+        "AGENTS.md": true,
+        ".codex/agents/harness-reviewer.toml": true,
+        "docs/agents/codex.md": true,
+        "docs/agents/runtime.md": true,
+        "docs/agents/review.md": true
+      }
+    },
+    {
+      "case": "S01",
+      "batch": "A",
+      "id": "/root/native_s01_redteam",
+      "recorded_utc": "2026-11-01T17:33:48.427980+00:00",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none",
+        "model_override": null,
+        "effort_override": null
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 108443,
+        "cached_input_tokens": 97280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1573,
+        "reasoning_output_tokens": 108,
+        "total_tokens": 110016
+      },
+      "session_id": "01a1982c-8a33-7930-9b49-d3401f2d86dd",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-38-01a1982c-8a33-7930-9b49-d3401f2d86dd.jsonl",
+      "raw_sha256": "e952024c67f23b8310e6277da35084ad7d8106bfdc9d7040acd182c28eef97a2",
+      "selected_trace": "native_s01_redteam-trace.json",
+      "completed": true,
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-38-01a1982c-8a33-7930-9b49-d3401f2d86dd.jsonl",
+      "source_snapshot_bytes": 329408,
+      "source_snapshot_sha256": "e952024c67f23b8310e6277da35084ad7d8106bfdc9d7040acd182c28eef97a2",
+      "started_utc": "2026-11-01T17:33:38.349Z",
+      "ended_utc": "2026-11-01T17:33:59.377Z",
+      "aborted": false,
+      "native_tool_outputs": 2,
+      "read_hash_matches": {
+        "spec.en.md": true,
+        "prompt.md": true,
+        "contract.md": true,
+        "traceability.md": true,
+        "AGENTS.md": true,
+        ".codex/agents/harness-reviewer.toml": true,
+        "docs/agents/codex.md": true,
+        "docs/agents/runtime.md": true,
+        "docs/agents/review.md": true
+      }
+    },
+    {
+      "case": "D01",
+      "batch": "B",
+      "id": "egm-d01",
+      "recorded_utc": "2026-11-01T17:34:42.041623+00:00",
+      "status": "blocked",
+      "usage": {
+        "input_tokens": 238294,
+        "cached_input_tokens": 206720,
+        "output_tokens": 4476,
+        "reasoning_output_tokens": 1122
+      },
+      "api": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--json",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/harness-native-20261102-e1rmy3p6/egm-d01",
+        "-"
+      ],
+      "model_override": null,
+      "effort_override": null,
+      "reason": "session reported read-only; zero new files; full saved-report control not established",
+      "seconds": 58.845
+    },
+    {
+      "case": "S04",
+      "batch": "A",
+      "id": "/root/native_s04_cancel",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none"
+      },
+      "recorded_utc": "2026-11-01T17:35:53.283709+00:00",
+      "status": "aborted",
+      "cancel_ack": {
+        "previous_status": "running"
+      },
+      "usage": null,
+      "session_id": "01a1982e-76ae-7053-9657-52c199c80bf8",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-35-44-01a1982e-76ae-7053-9657-52c199c80bf8.jsonl",
+      "source_snapshot_bytes": 227150,
+      "source_snapshot_sha256": "c69cadf09a7d75d7acbb1d67fad8e87d5c945b99ff83943bf0c2b585b00e2670",
+      "selected_trace": "native_s04_cancel-trace.json",
+      "started_utc": "2026-11-01T17:35:44.467Z",
+      "ended_utc": "2026-11-01T17:35:46.945Z",
+      "completed": false,
+      "aborted": true,
+      "native_tool_outputs": 0
+    },
+    {
+      "case": "S07",
+      "batch": "A",
+      "id": "/root/native_s07_completeness",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none"
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 107635,
+        "cached_input_tokens": 97408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1529,
+        "reasoning_output_tokens": 195,
+        "total_tokens": 109164
+      },
+      "session_id": "01a1982e-a47a-7bf2-8975-90be7f5fa8d4",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-35-56-01a1982e-a47a-7bf2-8975-90be7f5fa8d4.jsonl",
+      "source_snapshot_bytes": 327933,
+      "source_snapshot_sha256": "60ff93be7c05e3b8b8f754c23b0676b6f3f1fd935cfdea8e5bed8076c41d20fc",
+      "selected_trace": "native_s07_completeness-trace.json",
+      "started_utc": "2026-11-01T17:35:56.131Z",
+      "ended_utc": "2026-11-01T17:36:15.861Z",
+      "completed": true,
+      "aborted": false,
+      "native_tool_outputs": 2
+    },
+    {
+      "case": "S07",
+      "batch": "A",
+      "id": "/root/native_s07_verifiability",
+      "api": {
+        "agent_type": "harness-reviewer",
+        "fork_turns": "none"
+      },
+      "status": "completed",
+      "usage": {
+        "input_tokens": 153207,
+        "cached_input_tokens": 141568,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2098,
+        "reasoning_output_tokens": 404,
+        "total_tokens": 155305
+      },
+      "session_id": "01a1982e-b0a3-7ca3-9e7c-dc1cb1ef5bf4",
+      "originator": "Codex Desktop",
+      "version": "0.166.0-alpha.5.1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "sandbox": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "source_trace_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-35-59-01a1982e-b0a3-7ca3-9e7c-dc1cb1ef5bf4.jsonl",
+      "source_snapshot_bytes": 344570,
+      "source_snapshot_sha256": "46d32ce42681ba8bfde05ffed434d6fa025a0e09f026a2a7625e51b49fb95fd2",
+      "selected_trace": "native_s07_verifiability-trace.json",
+      "started_utc": "2026-11-01T17:35:59.296Z",
+      "ended_utc": "2026-11-01T17:36:27.492Z",
+      "completed": true,
+      "aborted": false,
+      "native_tool_outputs": 3
+    }
+  ],
+  "limits": {
+    "A": 19,
+    "B": 7,
+    "C": 7,
+    "total": 33
+  }
+}

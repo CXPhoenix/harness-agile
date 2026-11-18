@@ -1,0 +1,16 @@
+{
+  "AGENTS.md": "d90eba47efbd06424eecc9c811068f2a9996717ca5c9acaae887ab4255e53950",
+  ".codex/config.toml": "79d32bc214f44f5d0e06b171024a0140dbc1b816c9b34784225e4bbdd390314e",
+  "ops/03-planned.md": "e06adbef64831bdf646684e44172329f7cc1a81d1f55f6b5f309718f0a054cb4",
+  "ops/04-history.md": "b5720ffa843c33eb7d3f86174e3cd2844e759731f57f97046d18e241956e48ba",
+  "ops/01-quota.md": "2a83c3ef0492161bafbaf041d225c6b8a524ff742fc8d87a41a24c219b67eae8",
+  "ops/02-timeout.md": "5c25045d36c028e7d9941a7ed84f802947f2ccd9b76821bebf86fcac650cb6bc",
+  "src/options.py": "dd6311693dddc838fc5876f1fcfadb688cf3dd6d0129592ed1a32275703c638a",
+  "src/exporter.py": "cc0aef6dbc81205ec006dae0fdda2eb1a6a83f2ae5bf8071659fd4484a2f441f",
+  "docs/agents/codex.md": "20ab3a45cf34c28f7f4973c4c978aaba188674add1ecb2a585b1667605db1929",
+  "docs/agents/drift-report.md": "407d225e1d551ed14ecc6d0291ec491b442b82424ab7fd624d1eae4abbf62cd3",
+  "docs/agents/runtime.md": "1088214a9ae85f345251ce1b0c08382bddaaf604eda48287f3ada0f7557e4b15",
+  ".agents/skills/egm-drift-report/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+  ".agents/skills/egm-drift-report/SKILL.md": "a340b35f51d80f91a4e90ec67284cc6a72c77c48877920b12c43a447f4a9d1ca",
+  ".agents/skills/egm-drift-report/agents/openai.yaml": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94"
+}

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "codex",
+    "app-server",
+    "--listen",
+    "stdio://"
+  ],
+  "cwd": "/private/tmp/codex-continuation-a-b_xd1q1u",
+  "profile": null,
+  "model_requests": 0,
+  "results": [],
+  "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n{\"timestamp\":\"2026-11-01T18:47:53.429429Z\",\"level\":\"ERROR\",\"fields\":{\"message\":\"Project-local config, hooks, and exec policies are disabled in the following folders until the project is trusted, but skills still load.\\n    1. /private/tmp/codex-continuation-a-b_xd1q1u/.codex\\n       To load project-local config, hooks, and exec policies, add /private/tmp/codex-continuation-a-b_xd1q1u as a trusted project in /Users/phoenix/.codex/config.toml.\\n\"},\"target\":\"codex_app_server\"}\nError: Operation not permitted (os error 1)\n",
+  "exit_code_after_controlled_stop": 1,
+  "scope_limit": "app-server on-disk resolution, not codex exec effective runtime policy"
+}

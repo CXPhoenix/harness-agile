@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "codex",
+    "debug",
+    "prompt-input"
+  ],
+  "cwd": "/private/tmp/codex-continuation-a-b_xd1q1u",
+  "profile": null,
+  "exit_code": 1,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\nError: Operation not permitted (os error 1)\n",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)",
+  "stdout_prefix": ""
+}

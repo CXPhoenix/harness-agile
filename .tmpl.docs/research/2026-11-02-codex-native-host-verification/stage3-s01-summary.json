@@ -1,0 +1,82 @@
+[
+  {
+    "id": "/root/native_s01_contract",
+    "session_id": "01a1982c-7f92-7742-a056-1729e259d239",
+    "originator": "Codex Desktop",
+    "version": "0.166.0-alpha.5.1",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-35-01a1982c-7f92-7742-a056-1729e259d239.jsonl",
+    "raw_sha256": "ddc3a4e235ce3dfe9869d20f5b931ef4c94524e855f1b9a986c455f8c8abc593",
+    "selected_trace": "native_s01_contract-trace.json",
+    "usage": {
+      "input_tokens": 108011,
+      "cached_input_tokens": 97280,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1729,
+      "reasoning_output_tokens": 180,
+      "total_tokens": 109740
+    },
+    "completed": true
+  },
+  {
+    "id": "/root/native_s01_redteam",
+    "session_id": "01a1982c-8a33-7930-9b49-d3401f2d86dd",
+    "originator": "Codex Desktop",
+    "version": "0.166.0-alpha.5.1",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-38-01a1982c-8a33-7930-9b49-d3401f2d86dd.jsonl",
+    "raw_sha256": "e952024c67f23b8310e6277da35084ad7d8106bfdc9d7040acd182c28eef97a2",
+    "selected_trace": "native_s01_redteam-trace.json",
+    "usage": {
+      "input_tokens": 108443,
+      "cached_input_tokens": 97280,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1573,
+      "reasoning_output_tokens": 108,
+      "total_tokens": 110016
+    },
+    "completed": true
+  },
+  {
+    "id": "/root/native_s01_completeness",
+    "session_id": "01a1982b-ff81-7001-b68d-210c9f3211e5",
+    "originator": "Codex Desktop",
+    "version": "0.166.0-alpha.5.1",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-02-01a1982b-ff81-7001-b68d-210c9f3211e5.jsonl",
+    "raw_sha256": "57fcf4bacfd1310d37312389580a1783d2d48329ec5716c11c9ab3e9ac67820f",
+    "selected_trace": "native_s01_completeness-trace.json",
+    "usage": {
+      "input_tokens": 74987,
+      "cached_input_tokens": 45952,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1679,
+      "reasoning_output_tokens": 258,
+      "total_tokens": 76666
+    },
+    "completed": true
+  },
+  {
+    "id": "/root/native_s01_verifiability",
+    "session_id": "01a1982c-0996-7832-834e-a085997ef88c",
+    "originator": "Codex Desktop",
+    "version": "0.166.0-alpha.5.1",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "raw_path": "/Users/phoenix/.codex/sessions/2026/11/02/rollout-2026-11-02T01-33-05-01a1982c-0996-7832-834e-a085997ef88c.jsonl",
+    "raw_sha256": "8530bb371149a47d14ad9d2f7a297687e09ab2a933ca1ccf3e2810033900a595",
+    "selected_trace": "native_s01_verifiability-trace.json",
+    "usage": {
+      "input_tokens": 107823,
+      "cached_input_tokens": 97536,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1909,
+      "reasoning_output_tokens": 293,
+      "total_tokens": 109732
+    },
+    "completed": true
+  }
+]

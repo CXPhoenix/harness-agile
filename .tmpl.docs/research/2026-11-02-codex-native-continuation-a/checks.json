@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-11-02T02:49:09.343765+08:00",
+  "source_files_checked": 882,
+  "changed": [],
+  "missing": [],
+  "tracked_diff_paths": [],
+  "staged_diff_paths": [],
+  "fixture_changes": {},
+  "required_dependency_hash_errors": [],
+  "settings_changes": [],
+  "head_before": "0fcd87f9053311c4372a8c6b4867f7ea30aa8d9e",
+  "head_after": "0fcd87f9053311c4372a8c6b4867f7ea30aa8d9e",
+  "fixture_regular_sources": 30,
+  "oracle_inside_fixture": false,
+  "native_cli_model_sessions": 0,
+  "tests": "source/evidence integrity only; no product behavior or full unrelated suite"
+}

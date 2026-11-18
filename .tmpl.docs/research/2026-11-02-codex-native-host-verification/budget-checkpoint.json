@@ -1,0 +1,97 @@
+{
+  "observed_utc": "2026-11-01T17:36:53.032534+00:00",
+  "parent_delta": {
+    "input_tokens": 4271391,
+    "cached_input_tokens": 4224768,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 19208,
+    "reasoning_output_tokens": 7709,
+    "total_tokens": 4290599
+  },
+  "children": [
+    {
+      "id": "/root/native_s07_completeness",
+      "usage": {
+        "input_tokens": 107635,
+        "cached_input_tokens": 97408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1529,
+        "reasoning_output_tokens": 195,
+        "total_tokens": 109164
+      }
+    },
+    {
+      "id": "/root/native_s01_contract",
+      "usage": {
+        "input_tokens": 108011,
+        "cached_input_tokens": 97280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1729,
+        "reasoning_output_tokens": 180,
+        "total_tokens": 109740
+      }
+    },
+    {
+      "id": "/root/native_s01_redteam",
+      "usage": {
+        "input_tokens": 108443,
+        "cached_input_tokens": 97280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1573,
+        "reasoning_output_tokens": 108,
+        "total_tokens": 110016
+      }
+    },
+    {
+      "id": "/root/native_s01_completeness",
+      "usage": {
+        "input_tokens": 74987,
+        "cached_input_tokens": 45952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1679,
+        "reasoning_output_tokens": 258,
+        "total_tokens": 76666
+      }
+    },
+    {
+      "id": "/root/native_s01_verifiability",
+      "usage": {
+        "input_tokens": 107823,
+        "cached_input_tokens": 97536,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1909,
+        "reasoning_output_tokens": 293,
+        "total_tokens": 109732
+      }
+    },
+    {
+      "id": "/root/native_s04_cancel",
+      "usage": null
+    },
+    {
+      "id": "/root/native_s07_verifiability",
+      "usage": {
+        "input_tokens": 153207,
+        "cached_input_tokens": 141568,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2098,
+        "reasoning_output_tokens": 404,
+        "total_tokens": 155305
+      }
+    }
+  ],
+  "cli": {
+    "input_tokens": 238294,
+    "cached_input_tokens": 206720,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 4476,
+    "reasoning_output_tokens": 1122
+  },
+  "total": {
+    "input_tokens": 5169791,
+    "cached_input_tokens": 5008512,
+    "output_tokens": 34201,
+    "reasoning_output_tokens": 10269
+  },
+  "stop_new_cases": true
+}

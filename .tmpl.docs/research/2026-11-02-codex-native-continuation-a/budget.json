@@ -1,0 +1,42 @@
+{
+  "scope": "A only",
+  "start_native_timestamp": "2026-11-01T18:46:32.807Z",
+  "artifact_setup_start": "2026-11-02T02:47:12.632579+08:00",
+  "cutoff": "2026-11-02T02:49:09.343765+08:00",
+  "input_budget": 700000,
+  "closing_allowance_input": 200000,
+  "test_session_cap": 3,
+  "test_sessions_started": 0,
+  "R01": "not_run_budget_stop",
+  "R02": "not_run_prerequisites_unverified_and_budget_stop",
+  "CLI_actual_model": null,
+  "CLI_actual_effort": null,
+  "CLI_usage": "not applicable: no model session launched",
+  "controller_last_cumulative": {
+    "timestamp": "2026-11-01T18:48:15.491Z",
+    "total_token_usage": {
+      "input_tokens": 916348,
+      "cached_input_tokens": 839680,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 7546,
+      "reasoning_output_tokens": 1923,
+      "total_tokens": 923894
+    },
+    "last_token_usage": {
+      "input_tokens": 88320,
+      "cached_input_tokens": 87424,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 707,
+      "reasoning_output_tokens": 516,
+      "total_tokens": 89027
+    }
+  },
+  "observed_closing_input_since_stop_detection": 175159,
+  "post_cutoff_usage": "unknown; final reply not measured",
+  "budget_is_tool_enforced": false,
+  "budget_status": "stopped new model tests on first obtained usage snapshot; batch budget exceeded by controller input",
+  "missing_usage": [
+    "final reply and subsequent control processing after cutoff"
+  ],
+  "cancelled_tests": 0
+}

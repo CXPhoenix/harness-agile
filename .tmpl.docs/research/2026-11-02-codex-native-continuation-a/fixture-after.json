@@ -1,0 +1,122 @@
+{
+  ".gitignore": {
+    "sha256": "ec13005b749dc300455df6af9a30f0309a76f189d26d642d54bdbb0e5bbec84d",
+    "bytes": 527
+  },
+  "AGENTS.md": {
+    "sha256": "d90eba47efbd06424eecc9c811068f2a9996717ca5c9acaae887ab4255e53950",
+    "bytes": 8539
+  },
+  ".codex/config.toml": {
+    "sha256": "79d32bc214f44f5d0e06b171024a0140dbc1b816c9b34784225e4bbdd390314e",
+    "bytes": 348
+  },
+  "ops/roadmap.md": {
+    "sha256": "421df09bd56667f5e4ef56301024c1dd3d1892a4bd08ac60eddbf8185638063e",
+    "bytes": 156
+  },
+  "ops/current.md": {
+    "sha256": "c31918abe262246903eba28eccf3f699e838d794cf6f10c75d932f73b50a3533",
+    "bytes": 251
+  },
+  "ops/maintenance.md": {
+    "sha256": "037f1c785fdf1a8418a3fbf083e71c46ee9aa13d6b76fbf93bbf7d5dacf6f3d1",
+    "bytes": 229
+  },
+  "ops/interface.md": {
+    "sha256": "5e8609093ce9fe7bfa57b9ad3000d76ba8d7005cef312b8e3e047dfacbfdfa50",
+    "bytes": 161
+  },
+  ".tmpl.docs/CONTEXT.md": {
+    "sha256": "af014f9442eb48543fbc33700d82a7489491eb8abfdd79f325bd9aa9a94b0816",
+    "bytes": 1130
+  },
+  ".tmpl.docs/README.md": {
+    "sha256": "04e6257d103528ffbc233176597efedbeb8d5c79912ac440ea1adab304f2f71d",
+    "bytes": 2916
+  },
+  ".tmpl.docs/contributing.md": {
+    "sha256": "1de563981c525c720f86206c872f6725f4ade50d63229377d3596bb33a87f38b",
+    "bytes": 2370
+  },
+  "src/options.py": {
+    "sha256": "95839a84fbdd1daee5872e82adca7f5f316836202e3bc7df3faee444cb07f264",
+    "bytes": 65
+  },
+  "src/exporter.py": {
+    "sha256": "5d433cb989a5799cfba5a3ae972109dd19608fa84ef3016ee920fc4ad53a7fb7",
+    "bytes": 169
+  },
+  "src/retention.py": {
+    "sha256": "f1052bb0166dde6e2770c61182cf701b278cc10a447d5aa1834f18ba92bc1b36",
+    "bytes": 20
+  },
+  ".tmpl.docs/research/drift-reports/controller-io-probe.txt": {
+    "sha256": "e3b884242cbebebdaeab50b9c2d7f5c2c3b587b54bf1ecc9e4ef78a4f19d35ea",
+    "bytes": 32
+  },
+  "ops/history/2026-04.md": {
+    "sha256": "7bf01ab3683328822cb1ccfd9fb4c01afb18df3d3c90c0512e3ac5d2f58a3b66",
+    "bytes": 167
+  },
+  "docs/adr/0001-walking-skeleton-then-epic-loop.md": {
+    "sha256": "916e752995b2997a610ca69564d788a681df0e50bb1016aed6b7e66b42f71288",
+    "bytes": 2063
+  },
+  "docs/adr/0004-fresh-context-spec-review.md": {
+    "sha256": "1dc3898d3d7718478805c11b20467d843761bf58e6b80c8b7d70f2420131bb00",
+    "bytes": 2058
+  },
+  "docs/adr/0005-drift-diagnosis-native-host-verification.md": {
+    "sha256": "016dac5a64bf52bcca0d142913cc0148af88dce5ca3fb1cf6eca2e08bf6c3c0b",
+    "bytes": 1787
+  },
+  "docs/agents/language.md": {
+    "sha256": "b3da5aee9cfcc3495f865f91f5f881aa925e2fe5641759be6ded17d46943af45",
+    "bytes": 3240
+  },
+  "docs/agents/workflow.md": {
+    "sha256": "b3c000482fc0c25c18615ce84271be6c196e34e834ed46454c7cc863eaadfae1",
+    "bytes": 9111
+  },
+  "docs/agents/codex.md": {
+    "sha256": "20ab3a45cf34c28f7f4973c4c978aaba188674add1ecb2a585b1667605db1929",
+    "bytes": 1655
+  },
+  "docs/agents/domain.md": {
+    "sha256": "a8787a7e5b90612009b44db690c66d32169505048f767a480bed389ce3d8ac84",
+    "bytes": 2128
+  },
+  "docs/agents/drift-report.md": {
+    "sha256": "407d225e1d551ed14ecc6d0291ec491b442b82424ab7fd624d1eae4abbf62cd3",
+    "bytes": 8836
+  },
+  "docs/agents/skill-sources.json": {
+    "sha256": "544d1fd9f85ed37367bdcf01e6d1bfe2d5d32c4e1d71d88df1b97670e56d3c5d",
+    "bytes": 15713
+  },
+  "docs/agents/issue-tracker.md": {
+    "sha256": "baa7ee97b3fa6c880e5ee8aad112af3d6d3bbb071231bb0c71196f467e21f6dd",
+    "bytes": 6172
+  },
+  "docs/agents/runtime.md": {
+    "sha256": "1088214a9ae85f345251ce1b0c08382bddaaf604eda48287f3ada0f7557e4b15",
+    "bytes": 9899
+  },
+  "docs/agents/review.md": {
+    "sha256": "039fb97e77b5ac346c062356a26f7fd1d424a11df99f3b6f6a852f9967b4df43",
+    "bytes": 8300
+  },
+  ".agents/skills/egm-drift-report/LICENSE": {
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "bytes": 11358
+  },
+  ".agents/skills/egm-drift-report/SKILL.md": {
+    "sha256": "a340b35f51d80f91a4e90ec67284cc6a72c77c48877920b12c43a447f4a9d1ca",
+    "bytes": 1160
+  },
+  ".agents/skills/egm-drift-report/agents/openai.yaml": {
+    "sha256": "a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94",
+    "bytes": 43
+  }
+}

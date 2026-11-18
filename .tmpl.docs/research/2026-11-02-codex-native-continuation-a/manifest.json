@@ -1,0 +1,115 @@
+{
+  "generated_at": "2026-11-02T02:49:09.343765+08:00",
+  "algorithm": "SHA-256",
+  "self_excluded": true,
+  "files": {
+    "README.md": {
+      "sha256": "e35c08368ee7d23a1c8fe6a2129e4c2c789a08c84297b38d31dce249383d9ca8",
+      "bytes": 2021
+    },
+    "app-server-config-selected.json": {
+      "sha256": "54fce772161609985076dcd2cd320aa7701702773e35f09f3c83bd17b99aac9a",
+      "bytes": 993
+    },
+    "budget.json": {
+      "sha256": "31cc13c3bd4a50d9cb596e6191febad8fb4b4905368339493b9eb72f43563e95",
+      "bytes": 1455
+    },
+    "budget.md": {
+      "sha256": "d7a4d3bc79a94a8b2098ddb4c23ef9c079dba0af19bd8fba157bb705ed11f8c6",
+      "bytes": 1383
+    },
+    "capabilities.md": {
+      "sha256": "f6f4ee7f13b1cebadaefd73b0a58288b47c65292f0d32b250d111fb4c7364ec2",
+      "bytes": 2745
+    },
+    "checks.json": {
+      "sha256": "f874ee67e2ea49f05979d92b159873dd513a65f3947e0e801d1f4e147e24c0b1",
+      "bytes": 578
+    },
+    "cli-app-server-help.txt": {
+      "sha256": "620f9ae2cb4fc4e49929de9cf2d553847c8b79cf9b1c0e39aca5d5a4431b4aea",
+      "bytes": 3318
+    },
+    "cli-debug-help.txt": {
+      "sha256": "e9d72296c710e057ae11b8172969d3bce4c186b7558999e3dae4cec6001268b8",
+      "bytes": 1178
+    },
+    "cli-exec-help.txt": {
+      "sha256": "1bfa5230a30f306eb4e3eba3b265aad23916f813debe8758a8640c0516d9227c",
+      "bytes": 4435
+    },
+    "cli-help.txt": {
+      "sha256": "95f8c3c929939296d3a7200974987764d615630ff86bc2ab1808f6f767289f26",
+      "bytes": 5953
+    },
+    "cli-prompt-input-help.txt": {
+      "sha256": "ddff4b06b4f3114b05649d75504e06c1200918d32ff2e7db0595404645a99a96",
+      "bytes": 1136
+    },
+    "cli-version.txt": {
+      "sha256": "723716ec2b0c0953027dbe9eea6b72ad91877b1bbd484c19f934864d34693181",
+      "bytes": 122
+    },
+    "controller-io.json": {
+      "sha256": "a47fb0a8dc5ad3190c44f9ef4d09b431da1673376299a1a1058397e6f773bf31",
+      "bytes": 365
+    },
+    "controller-usage-cutoff.json": {
+      "sha256": "d4fcd12efbfeb72fdc7d52c04beba4c2caead4f58bda0c6a68f1bfc8fe296936",
+      "bytes": 10340
+    },
+    "controller-usage-pre.json": {
+      "sha256": "a3b57f7102753a2b5cd1328b0a27cafadaa4ef18a8e01563f2d532f6fbb98357",
+      "bytes": 1379
+    },
+    "coverage.md": {
+      "sha256": "b05416d87afa5f51c67ba6e65bbd79da4945b6f1feabf15e2f58e6a2feb60e12",
+      "bytes": 678
+    },
+    "fixture-after.json": {
+      "sha256": "78d1711ee2e9a4d569e3caf652884abeb18d7f79225193399eb2d716d0432b18",
+      "bytes": 4160
+    },
+    "fixture-before.json": {
+      "sha256": "17c046d5cd1be086c89a2b53b613fbb16a0f0523e9bd5b501ff975b7dce30085",
+      "bytes": 4159
+    },
+    "fixture-dependencies.json": {
+      "sha256": "49f5cc641e8e944f93a795374004e143708308f9b8c930feab2b50ad12e5bf69",
+      "bytes": 6810
+    },
+    "fixture-dependencies.md": {
+      "sha256": "9f8ad50cd6fd5f708475231762bbf4b7a2a453622c532e452e3fa63d8739ddcb",
+      "bytes": 1079
+    },
+    "fixture-inputs.tar.gz": {
+      "sha256": "d98abdff54aafdb46e09314c56a6ef176d94a671d5c416509f367b354f1c7cda",
+      "bytes": 39822
+    },
+    "oracle.json": {
+      "sha256": "3107c47e7cdf076ce368c2b7e960ed186c9af3f8eab9bcbbc73fe21f9a9a74d7",
+      "bytes": 301
+    },
+    "prompt-input-selected.json": {
+      "sha256": "b0a58cb80ab480cd8ad5e630f02818cc391757937401bbee91dafddf4a653293",
+      "bytes": 494
+    },
+    "run.json": {
+      "sha256": "9084eef09b754b73ab39127b6660b10affe8af43b6d6e860eb55434755995b06",
+      "bytes": 376
+    },
+    "schema-generation.json": {
+      "sha256": "ccf951299956151657a8a24d6bc6f0108f45b91d3989297f685d2551f6e16722",
+      "bytes": 203
+    },
+    "settings-files-selected.json": {
+      "sha256": "fb097bb66c7dfa59792d098731c8986f38816de9a37c26b88d311b1c94d504a6",
+      "bytes": 1362
+    },
+    "source-before.json": {
+      "sha256": "3e16e9a37cc5b58b66614e43c13ae0a8c75fb52cb1fe41af695a08ab293c07fe",
+      "bytes": 147364
+    }
+  }
+}
