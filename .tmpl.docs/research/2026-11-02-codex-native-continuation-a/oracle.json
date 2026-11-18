@@ -1,0 +1,11 @@
+{
+  "scope": "ops / src",
+  "expected": [
+    "confirmed drift: batch limit 25 vs 40",
+    "match: JSON format and return interface",
+    "match: retention 14",
+    "expected exclusion: planned checksum",
+    "expected exclusion: April history 7 days"
+  ],
+  "expected_writes": "one new report only"
+}

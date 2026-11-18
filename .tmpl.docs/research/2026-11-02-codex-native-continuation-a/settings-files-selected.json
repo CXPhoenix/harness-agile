@@ -1,0 +1,51 @@
+{
+  "codex_home": "/Users/phoenix/.codex",
+  "profile_flag": null,
+  "files": [
+    {
+      "path": "/Users/phoenix/.codex/config.toml",
+      "exists": true,
+      "sha256": "c21f5cacf7ff33b60f8a21c306348fbc7a2a9147904a0aaac5f35b18040dbeef",
+      "relevant": {
+        "model": "gpt-6.1-sol",
+        "model_reasoning_effort": "high"
+      },
+      "applicable_project_trust": {
+        "/Users/phoenix/dev/edu-projects/harness-agile-template": {
+          "trust_level": "trusted"
+        }
+      }
+    },
+    {
+      "path": "/etc/codex/config.toml",
+      "exists": false
+    },
+    {
+      "path": "/etc/codex/requirements.toml",
+      "exists": false
+    },
+    {
+      "path": "/etc/codex/managed_config.toml",
+      "exists": false
+    },
+    {
+      "path": "/Users/phoenix/dev/edu-projects/harness-agile-template/.codex/config.toml",
+      "exists": true,
+      "sha256": "79d32bc214f44f5d0e06b171024a0140dbc1b816c9b34784225e4bbdd390314e",
+      "relevant": {
+        "sandbox_mode": "workspace-write",
+        "approval_policy": "on-request",
+        "sandbox_workspace_write": {
+          "network_access": false
+        }
+      }
+    }
+  ],
+  "environment_presence_only": {
+    "CODEX_SANDBOX": true,
+    "CODEX_SANDBOX_NETWORK_DISABLED": true,
+    "CODEX_MANAGED_CONFIG": false,
+    "CODEX_CONFIG_PROFILE": false,
+    "CODEX_THREAD_ID": true
+  }
+}

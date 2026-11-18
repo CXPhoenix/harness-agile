@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "out": "/private/tmp/codex-continuation-a-b_xd1q1u-schema",
+  "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n"
+}

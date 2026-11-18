@@ -30,10 +30,13 @@ def main():
     wheel, npm = args.wheel.resolve(), args.npm.resolve()
     with zipfile.ZipFile(wheel) as archive:
         python_bundle = json.loads(archive.read('harness_agile/data/template.json'))
+    # .tmpl.docs/ is template-maintenance evidence that init removes; notice copies in its
+    # fixtures are not distribution licenses and pyproject license-files does not list them.
     notice_paths = [name for name in python_bundle['files'] if
-                    name in {'LICENSE', 'THIRD_PARTY_NOTICES.md'} or
-                    name.endswith('/LICENSE') or name.endswith('/THIRD_PARTY_NOTICES.md') or
-                    name.endswith('/JetBrainsMono-OFL.txt')]
+                    not name.startswith('.tmpl.docs/') and (
+                        name in {'LICENSE', 'THIRD_PARTY_NOTICES.md'} or
+                        name.endswith('/LICENSE') or name.endswith('/THIRD_PARTY_NOTICES.md') or
+                        name.endswith('/JetBrainsMono-OFL.txt'))]
     assert '.agents/skills/evidence-report/LICENSE' in notice_paths
     assert '.claude/skills/evidence-report/LICENSE' in notice_paths
     assert not any(any(part in {'.proj.vuln.recur', 'node_modules'} for part in name.split('/'))

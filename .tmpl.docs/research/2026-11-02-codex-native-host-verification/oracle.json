@@ -1,0 +1,9 @@
+{
+  "stage3_s01": "All four axes can validly complete; do not force a clean finding if evidence contradicts this.",
+  "egm": {
+    "current_mismatch": "document quota 37 versus implementation 29",
+    "current_match": "timeout=12",
+    "planned": "73 is future, not current drift",
+    "history": "snapshot quota=19 is historical"
+  }
+}

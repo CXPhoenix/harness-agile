@@ -1,0 +1,7 @@
+{
+  "read_denied": true,
+  "read_errno": 13,
+  "write_denied": true,
+  "write_errno": 13,
+  "uid": 501
+}

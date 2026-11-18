@@ -1,0 +1,21 @@
+{
+  "case": "egm-d01",
+  "args": [
+    "codex",
+    "exec",
+    "--ephemeral",
+    "--json",
+    "--skip-git-repo-check",
+    "-C",
+    "/private/tmp/harness-native-20261102-e1rmy3p6/egm-d01",
+    "-"
+  ],
+  "started_utc": "2026-11-01T17:34:32.479265+00:00",
+  "timeout_seconds": 600,
+  "model_override": null,
+  "effort_override": null,
+  "termination": "completed",
+  "exit_code": 0,
+  "seconds": 58.845,
+  "trace_sha256": "aec9ec63644ea09ed7e54844b2f65eeb63e3a7211f17cb7e46b124eaaabc901a"
+}

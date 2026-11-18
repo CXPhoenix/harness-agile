@@ -1,0 +1,110 @@
+[
+  {
+    "timestamp": "2026-11-01T17:35:44.460Z",
+    "ordinal": 0,
+    "type": "session_meta",
+    "payload": {
+      "id": "01a1982e-76ae-7053-9657-52c199c80bf8",
+      "timestamp": "2026-11-01T17:35:44.332Z",
+      "cwd": "/Users/phoenix/dev/edu-projects/harness-agile-template",
+      "originator": "Codex Desktop",
+      "cli_version": "0.166.0-alpha.5.1",
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a19639-d8d8-76b1-a54c-d0d8719f85a5",
+            "depth": 1,
+            "agent_path": "/root/native_s04_cancel",
+            "agent_nickname": "Tesla",
+            "agent_role": "harness-reviewer"
+          }
+        }
+      },
+      "parent_thread_id": "01a19639-d8d8-76b1-a54c-d0d8719f85a5",
+      "agent_role": "harness-reviewer"
+    }
+  },
+  {
+    "timestamp": "2026-11-01T17:35:44.467Z",
+    "ordinal": 1,
+    "type": "event_msg",
+    "payload": {
+      "type": "task_started",
+      "turn_attribution": {
+        "turn_id": "01a1982e-76f8-7711-a3d0-21e2fbff9d1d",
+        "turn_trigger": "composer",
+        "parent_turn_id": "01a1982a-efbb-79d3-815a-2f841328d308",
+        "initiating_agent_path": "/root",
+        "root_turn_id": "01a1982a-efbb-79d3-815a-2f841328d308"
+      },
+      "turn_id": "01a1982e-76f8-7711-a3d0-21e2fbff9d1d",
+      "root_turn_id": "01a1982a-efbb-79d3-815a-2f841328d308",
+      "started_at": 1793554544,
+      "model_context_window": 475000,
+      "collaboration_mode_kind": "default"
+    }
+  },
+  {
+    "timestamp": "2026-11-01T17:35:45.804Z",
+    "ordinal": 9,
+    "type": "turn_context",
+    "payload": {
+      "turn_id": "01a1982e-76f8-7711-a3d0-21e2fbff9d1d",
+      "cwd": "/Users/phoenix/dev/edu-projects/harness-agile-template",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "approval_policy": "on-request",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/phoenix/.codex/visualizations/2026/11/01/01a19639-d8d8-76b1-a54c-d0d8719f85a5"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      }
+    }
+  },
+  {
+    "timestamp": "2026-11-01T17:35:46.937Z",
+    "ordinal": 13,
+    "type": "event_msg",
+    "payload": {
+      "type": "token_count",
+      "info": null,
+      "rate_limits": {
+        "limit_id": "codex",
+        "limit_name": null,
+        "primary": {
+          "used_percent": 31.0,
+          "window_minutes": 10080,
+          "resets_at": 1793776449
+        },
+        "secondary": null,
+        "credits": {
+          "has_credits": false,
+          "unlimited": false,
+          "balance": "0"
+        },
+        "individual_limit": null,
+        "spend_control_reached": null,
+        "plan_type": "prolite",
+        "rate_limit_reached_type": null
+      }
+    }
+  },
+  {
+    "timestamp": "2026-11-01T17:35:46.945Z",
+    "ordinal": 15,
+    "type": "event_msg",
+    "payload": {
+      "type": "turn_aborted",
+      "root_turn_id": "01a1982a-efbb-79d3-815a-2f841328d308",
+      "turn_id": "01a1982e-76f8-7711-a3d0-21e2fbff9d1d",
+      "reason": "interrupted",
+      "started_at": 1793554544,
+      "completed_at": 1793554546,
+      "duration_ms": 2543
+    }
+  }
+]
