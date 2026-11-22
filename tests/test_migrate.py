@@ -268,6 +268,51 @@ class MigrateTests(unittest.TestCase):
         self.assertEqual((self.project / 'CONTEXT.md').read_bytes(), b'# Terms\n')
         self.assertFalse((self.project / 'GLOSSARY.md').exists())
 
+    @staticmethod
+    def without_codegraph(root):
+        """The CodeGraph state of a 0.5.0 source: no registration and no index ignore rule."""
+        for rel in ('.mcp.json', 'codegraph.json'):
+            (root / rel).unlink()
+        # Bytes, not text mode, so Windows runs the same LF files as the other platforms.
+        ignore = root / '.gitignore'
+        rule = b"\n# CodeGraph's local index; each machine rebuilds it.\n/.codegraph/\n"
+        body = ignore.read_bytes()
+        assert rule in body, rule
+        ignore.write_bytes(body.replace(rule, b''))
+        config = root / '.codex/config.toml'
+        body = config.read_bytes()
+        # v0.5.0 ends at its sandbox table: 'network_access = false\n'.
+        config.write_bytes(body[:body.index(b'\n\n# CodeGraph code map')] + b'\n')
+
+    # The real registry ignores the CodeGraph index across 0.5.0 -> 0.6.0 and back.
+    def test_codegraph_gitignore_step_round_trips(self):
+        old = self.source('0.5.0', self.without_codegraph)
+        new = self.source('0.6.0')
+        self.project = self.temp / '索引 project'
+        self.create(old)
+        ignore = self.project / '.gitignore'
+        before = ignore.read_bytes()
+        self.assertNotIn('/.codegraph/', before.decode('utf-8').splitlines())
+        _, plan = self.migrate(new)
+        self.assertEqual(plan['steps']['apply'], ['codegraph-gitignore'])
+        self.assertEqual(ignore.read_bytes(), before)
+        config = (self.project / '.codex/config.toml').read_bytes()
+        report = self.applied(new)
+        self.assertIn('/.codegraph/', ignore.read_bytes().decode('utf-8').splitlines())
+        for rel in ('.mcp.json', 'codegraph.json'):
+            self.assertIn(rel, report['files']['added'])
+        self.assertEqual([e['id'] for e in self.state()['migrations']], ['codegraph-gitignore'])
+        # 0.6.0 registers CodeGraph, so verify fails unless the step added the ignore rule.
+        self.assertEqual(report['verify']['status'], 'passed')
+        report = self.applied(old)
+        self.assertEqual(report['steps']['undo'], ['codegraph-gitignore'])
+        self.assertEqual(ignore.read_bytes(), before)
+        for rel in ('.mcp.json', 'codegraph.json'):
+            self.assertFalse((self.project / rel).exists(), rel)
+        self.assertEqual((self.project / '.codex/config.toml').read_bytes(), config)
+        self.assertEqual(self.state()['migrations'], [])
+        self.assertEqual(report['verify']['status'], 'passed')
+
     # T11
     def test_adopt_without_baseline_never_overwrites(self):
         (self.project / CHANGED).write_text('local rules\n', encoding='utf-8')

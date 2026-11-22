@@ -27,3 +27,18 @@
 - Codex `network_access = false` 對 MCP server 子行程的影響；Windows 上 npm shim（`codegraph.cmd`）的啟動方式。
 - `scripts/verify-distributions.py` 需要先建置 wheel 與 npm 套件，這次沒有執行。
 - 0.5.0 → 0.6.0 的 migrate round-trip 測試留給發版 commit（見計畫「發版時」）。
+
+後續（2026-11-22）：
+- 前兩項**部分完成**，只驗證了 Codex CLI 的 `exec` 這個 surface（[宿主驗證紀錄](../research/2026-11-22-host-verification-roles-codegraph.md)）。
+  - 通過：Codex 載入專案角色、`codegraph_explore` 可用、建索引後不再提 CodeGraph。
+  - 子代理略過提醒通過，但鑑別力低。
+  - 主 session 在第一則回覆開頭提醒，嚴格只有 2／4 次。
+  - `network_access = false` 下 MCP 照常運作，但這個值本來就是 workspace-write 的預設值，無法證明是專案那一行生效。
+  - `$setup-roles` 在 `codex exec` 下寫不進 `.codex/agents/`，因為 `.codex/` 是 Codex 的受保護路徑。[#24](https://github.com/CXPhoenix/harness-agile/pull/24) 改善了文件與 skill 的處理方式，受保護路徑本身不變。
+  - 仍未驗證：
+    - Claude Code 的 `/agents`、`.mcp.json` 核准與提醒。
+    - Codex 互動 session 的核准流程。
+    - 設定後的下一個 session 不再提醒。
+    - Windows shim。
+- 第三項：PR #23 的 head 與 merge commit `886e9bb` 的三平台 CI 都執行過 verify-distributions，並且通過。
+- 第四項：0.6.0 的 release 分支新增了 `test_codegraph_gitignore_step_round_trips`，涵蓋 0.5.0 的 CodeGraph 狀態升到 0.6.0 再降回；結果見 0.6.0 的發版紀錄。

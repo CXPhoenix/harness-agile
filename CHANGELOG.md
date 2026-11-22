@@ -2,6 +2,40 @@
 
 ## [Unreleased]
 
+## ✨ [0.6.0] - 2026-11-22
+
+> 新增三層 orchestrator 角色與 `setup-roles`，並隨附 CodeGraph 程式碼地圖；Codex 的 `setup-roles` 遇到受保護的 `.codex/` 時會停下並引導重跑。
+
+### ✨ 新增
+- 三層分工：決策者（主 session）、執行者（`harness-executor`）、驗證者（`harness-reviewer`、`harness-challenger`），定義在 `AGENTS.md` 與 `docs/agents/orchestration.md`。gate 或驗證者要判讀的指令由執行者執行，驗證者只做唯讀檢視 ([#23])。
+- 新增 `setup-roles` skill（Claude Code `/setup-roles`、Codex `$setup-roles`，只能手動觸發）：設定自己 runtime 的執行者與驗證者 model 與 effort，並記錄在 `docs/agents/template-source.json` 的 `roles.<runtime>` ([#23])。
+- `AGENTS.md` 要求主 session 在已初始化的專案缺少目前 runtime 的角色紀錄，或註冊了 CodeGraph 卻沒有索引時，在第一則回覆提醒一次；子代理不提醒 ([#23])。
+- 隨附 CodeGraph 註冊（`.mcp.json`、`.codex/config.toml` 的 `[mcp_servers.codegraph]`），以環境變數關閉 MCP server 的 telemetry；`codegraph.json` 把 skill 樹排除在索引外；`docs/agents/codegraph.md` 說明安裝、建立索引、隱私與移除方式。CLI 安裝與建立索引由每台機器自行決定 ([#23])。
+- `AGENTS.md` 新增 Code map 規則：有 `.codegraph/` 時，開發助理先查 CodeGraph 找 symbol、呼叫者與影響範圍，再用 grep 或讀檔；編輯或引用前仍直接讀檔 ([#23])。
+- migrate 新增 `codegraph-gitignore` step：升級到 0.6.0 時在 `.gitignore` 加入 `/.codegraph/`，降級時移除 ([#23])。
+
+### 🔄 變更
+- 角色預設一律繼承主 session：Claude 四個角色改為 `model: inherit`，`harness-reviewer` 不再固定 `effort: high`；Codex 新增 `harness-executor`、`harness-challenger`，並移除角色檔中不會生效的 `sandbox_mode` ([#23])。
+- 初始化後的下一步順序統一為：`setup-roles`、選用的 CodeGraph、`grill-with-docs` ([#23])。
+- `verify-project.py` 新增檢查：`setup-roles` 必須存在；四個角色在兩個 runtime 都要有對應檔；researcher 不得 pin model 或 effort；註冊 CodeGraph 時 `.gitignore` 必須排除 `/.codegraph/`；`.mcp.json` 無法解析或 `mcpServers` 不是 object、`.codex/config.toml` 的 `mcp_servers` 不是 table 時也會失敗 ([#23])。
+- `docs/agents/runtime.md` 說明 Codex 在 `workspace-write` 下會把 `.git`、`.agents`、`.codex`、`.aws` 視為唯讀：commit、`$setup-roles`、`$tune-skills` 的寫入要經使用者核准，`codex exec` 則會直接拒絕 ([#24])。
+
+### 🐛 修復
+- Codex 樹的 `setup-roles` 寫入 `.codex/agents/` 被拒時，改為停在該步驟、不寫角色紀錄，列出每個檔案預定的內容，並請使用者在互動 session 重跑；先前只會看到字面上令人誤解的 `writing outside of the project` 錯誤 ([#24])。
+- `verify-distributions.py` 挑選授權檔時排除 `.tmpl.docs/`，修正驗證證據內的 LICENSE 複本讓三平台 packages job 失敗的問題 ([#22])。
+
+### 使用注意
+- 沒改過的角色檔升級後會換成 inherit 版本：原本固定的 model（executor `claude-sonnet-5`、reviewer `claude-opus-5-5` 加 `effort: high`、challenger `claude-opus-4-8`）都會改成繼承主 session，成本與審查深度會跟著主 session 的選擇變動；需要時用 `setup-roles` 重新指定。
+- 改過的角色檔或 `.codex/config.toml`，以及原本就有自己的 `.mcp.json` 時，migrate 會產生 `.harness-new` 旁置檔；合併時保留自己的 model／effort 設定行與既有的 MCP server。
+- 曾刪除範本 `harness-*` 角色檔的專案，升級後 `verify-project.py` 會要求補回，因為 migrate 不會重建使用者刪除的檔案。
+- CodeGraph 是選用功能：沒有安裝 CLI 或沒有索引時，開發助理照常讀檔。隨附的環境變數只套用在開發助理啟動的 MCP server；在 shell 直接執行 `codegraph` 前，先執行一次 `codegraph telemetry off`。不採用時，移除 `.mcp.json` 與 `.codex/config.toml` 裡的 codegraph 註冊即可。
+- 角色設定與 CodeGraph 的提醒依模型行為出現，不保證每個 session 都會出現；初始化輸出的下一步也列有 `setup-roles`。
+- Codex 的 `$setup-roles` 請在互動 session 執行。Claude Code 的互動流程與 Codex 的核准請求尚未在真實宿主完整驗證。
+
+[#22]: https://github.com/CXPhoenix/harness-agile/pull/22
+[#23]: https://github.com/CXPhoenix/harness-agile/pull/23
+[#24]: https://github.com/CXPhoenix/harness-agile/pull/24
+
 ## ✨ [0.5.0] - 2026-11-12
 
 > 新增 `harness-agile migrate`，讓已建立的專案可以升級或降級範本；領域詞彙表跟隨上游改名為 `GLOSSARY.md`，並同步 mattpocock/skills 至 `4ae2317`。
