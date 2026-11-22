@@ -94,6 +94,15 @@ Codex reads `AGENTS.md` and discovers project skills in `.agents/skills/`.
 checkout in their Codex environment. Keep trust decisions and account credentials
 local. CLI overrides, managed policy and the active host's permissions take priority.
 
+Under `workspace-write`, Codex keeps the project's `.git`, `.agents`, `.codex` and
+`.aws` read-only for patches and shell commands alike
+([Codex approvals and security](https://learn.chatgpt.com/docs/agent-approvals-security.md)).
+Commits, `$setup-roles` role files, `$tune-skills` and skill-tree maintenance
+therefore write only after the user approves Codex's request, which the project's
+`approval_policy = "on-request"` lets it ask for. `codex exec` runs with approval
+`never` and refuses these writes; a refused patch reads `writing outside of the
+project` even though the path is inside it. Run such tasks in an interactive session.
+
 `.codex/agents/*.toml` defines the Codex Agent roles `harness-executor`,
 `harness-reviewer`, `harness-challenger` and `harness-researcher`
 ([orchestration.md](orchestration.md) maps them to tiers). Models and reasoning effort

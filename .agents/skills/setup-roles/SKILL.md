@@ -13,8 +13,8 @@ Leave `harness-researcher.toml` and every Claude file untouched.
 **Done means**: the user chose an executor and a verifier setting (`inherit` is
 allowed), the three role files carry it, the role record is written (in the
 template source, the user was told there is none), and the user knows how to
-confirm it. The only stop is waiting for the user's values, or step 1 stopping in
-the template source without the user's explicit go-ahead.
+confirm it. The only stops are waiting for the user's values, step 1 stopping in
+the template source without the user's explicit go-ahead, and step 4 refused.
 
 ## Work
 
@@ -50,6 +50,11 @@ the template source without the user's explicit go-ahead.
    after `description`, before `developer_instructions`. For `inherit`, remove
    the key; never write the string `"inherit"` into TOML. Never leave a duplicate
    key, and change no other line; `developer_instructions` stays as is.
+   `workspace-write` keeps `.codex/` read-only, so the edit goes through Codex's
+   approval request (`docs/agents/runtime.md`, Codex section). When the write is
+   refused (approval `never`, as in `codex exec`), stop here with the record
+   unwritten: show the user each file's intended lines and ask them to rerun
+   `$setup-roles` in an interactive session, where they can approve the write.
 5. **Record.** When `docs/agents/template-source.json` exists, set its
    `roles.codex` key to `{"configured_on": "<today, YYYY-MM-DD>", "executor":
    {"model": ..., "effort": ...}, "verifier": {"model": ..., "effort": ...}}`,
