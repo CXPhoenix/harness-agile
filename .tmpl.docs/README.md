@@ -33,6 +33,7 @@
 | 範本文件分離 | — | [搬移歷程](history/2026-09-08-template-docs-relocation.md) |
 | v0.5.0 發版 | — | [發版紀錄](history/2026-11-12-release-0.5.0.md) |
 | 三層 orchestrator 與 CodeGraph | [計畫](plans/2026-11-18-orchestrator-tiers-codegraph.md) · [宿主驗證](research/2026-11-22-host-verification-roles-codegraph.md) | [交付與驗證](history/2026-11-18-orchestrator-tiers-codegraph.md) |
+| v0.6.0 發版 | — | [發版紀錄](history/2026-11-22-release-0.6.0.md) |
 
 ## 保存與初始化
 
